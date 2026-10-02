@@ -1,0 +1,282 @@
+{
+  "$description": "Wisdom Design System · 设计令牌唯一真源（DTCG 格式）。v1.0 定稿：温和蓝，浅色版为主。原始层不直接用于界面，界面只用 semantic 层。",
+
+  "color": {
+    "$type": "color",
+
+    "named": {
+      "$description": "来自定稿色卡，按层位命名，方便和设计稿对照",
+      "lake":      { "$value": "#B0D5DF", "$description": "湖水蓝 · 背景层" },
+      "mist":      { "$value": "#7EC4CF", "$description": "天青 · 背景层" },
+      "slate":     { "$value": "#4C8DAE", "$description": "群青 · 背景层 / 描边" },
+      "cyan":      { "$value": "#1685A9", "$description": "石青 · 组件层" },
+      "blue":      { "$value": "#1677B3", "$description": "天蓝 · 组件层 / 文字与图标" },
+      "indigo":    { "$value": "#2A5CAA", "$description": "景泰蓝 · 深色版按钮终点" },
+      "navy":      { "$value": "#065279", "$description": "靛蓝 · 按下态 / 深色模式" },
+      "navy-deep": { "$value": "#1E3B7A", "$description": "海军蓝 · 深色模式表面" },
+      "abyss":     { "$value": "#080F40", "$description": "海青 · 最深，仅深色模式备用" }
+    },
+
+    "derived": {
+      "$description": "由色卡派生的填充与文字色，均已验证对比度",
+      "fill-light-1": { "$value": "#8FCFDD", "$description": "浅色版按钮渐变起点" },
+      "fill-light-2": { "$value": "#63BAD2", "$description": "浅色版按钮渐变终点（配 #0E3A55 深字 5.4:1）" },
+      "fill-mid-1":   { "$value": "#4FB0C8", "$description": "小面积标记渐变起点" },
+      "fill-mid-2":   { "$value": "#1685A9", "$description": "小面积标记渐变终点" },
+      "text-on-soft": { "$value": "#123F5C", "$description": "背景层上的文字色" },
+      "text-on-fill": { "$value": "#0E3A55", "$description": "浅色按钮上的文字色" }
+    },
+
+    "su": {
+      "0":   { "$value": "#FFFFFF" },
+      "50":  { "$value": "#F1F8FA" },
+      "100": { "$value": "#E4F0F5" },
+      "200": { "$value": "#D2E4EB" },
+      "300": { "$value": "#B9D2DC" },
+      "400": { "$value": "#8FA9B5" },
+      "500": { "$value": "#6B8794" },
+      "600": { "$value": "#3E5764" },
+      "700": { "$value": "#2C4250" },
+      "800": { "$value": "#1B2E38" },
+      "900": { "$value": "#0A1B24" },
+      "950": { "$value": "#061017" }
+    }
+  },
+
+  "gradient": {
+    "$type": "gradient",
+    "surface":    { "$value": "linear-gradient(135deg,#B0D5DF 0%,#7EC4CF 100%)", "$description": "背景层。只配 #123F5C 深字" },
+    "fill-light": { "$value": "linear-gradient(135deg,#8FCFDD 0%,#63BAD2 100%)", "$description": "浅色版按钮 / 芯片。配 #0E3A55 深字 5.4–6.9:1" },
+    "fill-dark":  { "$value": "linear-gradient(135deg,#1677B3 0%,#2A5CAA 100%)", "$description": "深色版按钮。白字 4.9–6.7:1" },
+    "mid":        { "$value": "linear-gradient(135deg,#4FB0C8 0%,#1685A9 100%)", "$description": "小面积标记：勾选、开关、圆点" },
+    "deep":       { "$value": "linear-gradient(135deg,#065279 0%,#1E3B7A 100%)", "$description": "重组件、按下态。白字 8.4–10.7:1" },
+    "abyss":      { "$value": "linear-gradient(135deg,#0E3A56 0%,#0A1D2E 100%)", "$description": "深色模式页面底" },
+    "sunrise":    { "$value": "linear-gradient(135deg,#FFE7C2 0%,#FFD2C4 100%)", "$description": "暖色点缀，仅用于插画与空状态" }
+  },
+
+  "semantic": {
+    "light": {
+      "$type": "color",
+      "bg": {
+        "canvas":  { "$value": "#F1F8FA" },
+        "grouped": { "$value": "#E8F2F7" }
+      },
+      "surface": {
+        "card":         { "$value": "#FFFFFFF0", "$description": "96% 白，边缘干净，不再叠内高光与背景模糊" },
+        "card-solid":   { "$value": "#FFFFFF" },
+        "card-sunken":  { "$value": "#EDF6F9" },
+        "glass":        { "$value": "#FFFFFFB3", "$description": "仅导航栏 / Tab 栏 / 材质演示" },
+        "glass-strong": { "$value": "#FFFFFFDB" }
+      },
+      "text": {
+        "primary":   { "$value": "#0A1B24" },
+        "secondary": { "$value": "#3E5764" },
+        "tertiary":  { "$value": "#5B7784" },
+        "on-soft":   { "$value": "#123F5C" },
+        "on-fill":   { "$value": "#0E3A55" },
+        "on-dark":   { "$value": "#FFFFFF" },
+        "brand":     { "$value": "#1677B3" }
+      },
+      "border": {
+        "hairline":        { "$value": "#0A1B2414" },
+        "hairline-strong": { "$value": "#0A1B2429" },
+        "glass-top":       { "$value": "#FFFFFFCC" }
+      },
+      "fill": {
+        "field":   { "$value": "#0A1B240D" },
+        "pressed": { "$value": "#0A1B2412" }
+      },
+      "status": {
+        "success": { "$value": "#2A7F5C" },
+        "info":    { "$value": "#1677B3" },
+        "warning": { "$value": "#97651F" },
+        "danger":  { "$value": "#B8564D" }
+      },
+      "status-soft": {
+        "success": { "$value": "#E3F5EC" },
+        "info":    { "$value": "#E1F0F8" },
+        "warning": { "$value": "#FFF4DC" },
+        "danger":  { "$value": "#FBE7E4" }
+      }
+    },
+
+    "dark": {
+      "$type": "color",
+      "bg": {
+        "canvas":  { "$value": "#0A1B2A" },
+        "grouped": { "$value": "#0D2334" }
+      },
+      "surface": {
+        "card":         { "$value": "#14283AD1" },
+        "card-solid":   { "$value": "#0C2130" },
+        "card-sunken":  { "$value": "#0A1E2C" },
+        "glass":        { "$value": "#0A1A288C" },
+        "glass-strong": { "$value": "#0C1E2EC7" }
+      },
+      "text": {
+        "primary":   { "$value": "#E6F1F6" },
+        "secondary": { "$value": "#A4BCCB" },
+        "tertiary":  { "$value": "#839EB0" },
+        "on-soft":   { "$value": "#B0D5DF" },
+        "on-fill":   { "$value": "#DCEEF4" },
+        "on-dark":   { "$value": "#FFFFFF" },
+        "brand":     { "$value": "#7EC4CF" }
+      },
+      "border": {
+        "hairline":        { "$value": "#FFFFFF1A" },
+        "hairline-strong": { "$value": "#FFFFFF2E" },
+        "glass-top":       { "$value": "#FFFFFF29" }
+      },
+      "fill": {
+        "field":   { "$value": "#FFFFFF12" },
+        "pressed": { "$value": "#FFFFFF17" }
+      },
+      "status": {
+        "success": { "$value": "#7FD3B4" },
+        "info":    { "$value": "#8FC4E8" },
+        "warning": { "$value": "#EFC683" },
+        "danger":  { "$value": "#EDA79E" }
+      },
+      "status-soft": {
+        "success": { "$value": "#0D2E24" },
+        "info":    { "$value": "#0C2740" },
+        "warning": { "$value": "#33260E" },
+        "danger":  { "$value": "#3A211E" }
+      }
+    }
+  },
+
+  "typography": {
+    "$type": "typography",
+    "family": {
+      "sans":    { "$value": "SF Pro Text / Roboto Flex" },
+      "rounded": { "$value": "SF Pro Rounded / MiSans" }
+    },
+    "largeTitle":  { "$value": { "fontSize": "34", "lineHeight": "41", "fontWeight": 700 } },
+    "title1":      { "$value": { "fontSize": "28", "lineHeight": "34", "fontWeight": 700 } },
+    "title2":      { "$value": { "fontSize": "22", "lineHeight": "28", "fontWeight": 600 } },
+    "title3":      { "$value": { "fontSize": "20", "lineHeight": "25", "fontWeight": 600 } },
+    "headline":    { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 600 } },
+    "body":        { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 400 } },
+    "callout":     { "$value": { "fontSize": "16", "lineHeight": "21", "fontWeight": 400 } },
+    "subheadline": { "$value": { "fontSize": "15", "lineHeight": "20", "fontWeight": 400 } },
+    "footnote":    { "$value": { "fontSize": "13", "lineHeight": "18", "fontWeight": 400 } },
+    "caption1":    { "$value": { "fontSize": "12", "lineHeight": "16", "fontWeight": 400 } },
+    "caption2":    { "$value": { "fontSize": "11", "lineHeight": "13", "fontWeight": 500 } },
+    "overline":    { "$value": { "fontSize": "12", "lineHeight": "16", "fontWeight": 500, "letterSpacing": "0.6" } }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "1":  { "$value": "2" },
+    "2":  { "$value": "4" },
+    "3":  { "$value": "8" },
+    "4":  { "$value": "12" },
+    "5":  { "$value": "16" },
+    "6":  { "$value": "20" },
+    "7":  { "$value": "24" },
+    "8":  { "$value": "32" },
+    "9":  { "$value": "40" },
+    "10": { "$value": "48" }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "xs":       { "$value": "8" },
+    "sm":       { "$value": "10" },
+    "md":       { "$value": "14" },
+    "lg":       { "$value": "18" },
+    "xl":       { "$value": "24" },
+    "xxl":      { "$value": "32" },
+    "full":     { "$value": "999" },
+    "checkbox": { "$value": "9" },
+    "fab":      { "$value": "19" }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "control": {
+      "sm": { "$value": "32" },
+      "md": { "$value": "44" },
+      "lg": { "$value": "52" }
+    },
+    "touch-target-min": { "$value": "44" },
+    "checkbox":         { "$value": "26" },
+    "icon": {
+      "sm": { "$value": "16" },
+      "md": { "$value": "20" },
+      "lg": { "$value": "24" },
+      "xl": { "$value": "28" }
+    },
+    "avatar": {
+      "xs":  { "$value": "20" },
+      "sm":  { "$value": "28" },
+      "md":  { "$value": "32" },
+      "lg":  { "$value": "40" },
+      "xl":  { "$value": "56" },
+      "xxl": { "$value": "72" }
+    },
+    "tabbar-height":   { "$value": "56" },
+    "navbar-compact":  { "$value": "44" },
+    "navbar-standard": { "$value": "56" }
+  },
+
+  "elevation": {
+    "$type": "shadow",
+    "$description": "带品牌色的柔和阴影，不用纯黑。深色模式退化为黑阴影。",
+    "0": { "$value": { "layers": [] } },
+    "1": { "$value": { "layers": [
+      { "x": "0", "y": "1",  "blur": "2",  "color": "#0A3C640A" },
+      { "x": "0", "y": "6",  "blur": "16", "color": "#0A3C640F" }
+    ] } },
+    "2": { "$value": { "layers": [
+      { "x": "0", "y": "2",  "blur": "6",  "color": "#0A3C640F" },
+      { "x": "0", "y": "14", "blur": "32", "color": "#0A3C6417" }
+    ] } },
+    "3": { "$value": { "layers": [
+      { "x": "0", "y": "8",  "blur": "20", "color": "#0A3C6417" },
+      { "x": "0", "y": "28", "blur": "56", "color": "#0A3C6421" }
+    ] } },
+    "brand": { "$value": { "layers": [
+      { "x": "0", "y": "6", "blur": "16", "color": "#1677B32E" }
+    ] } }
+  },
+
+  "material": {
+    "$description": "玻璃 = 模糊 + 半透明填充 + 顶部高光 + 外圈细线。四条缺一不可。仅用于导航栏、Tab 栏、浮层、材质演示；卡片用近实底，避免圆角边缘出现重影。",
+    "ultraThin": { "$value": { "blur": "14", "fillLight": "#FFFFFF61", "fillDark": "#0C203857" } },
+    "thin":      { "$value": { "blur": "22", "fillLight": "#FFFFFF8A", "fillDark": "#0C20387A" } },
+    "regular":   { "$value": { "blur": "30", "fillLight": "#FFFFFFB3", "fillDark": "#0C20389E" } },
+    "thick":     { "$value": { "blur": "44", "fillLight": "#FFFFFFDB", "fillDark": "#0C2038C7" } },
+    "tinted":    { "$value": { "blur": "30", "tint": "linear-gradient(135deg,#B0D5DF4D 0%,#7EC4CF3D 100%)" } },
+    "sheen":     { "$value": { "gradient": "linear-gradient(100deg,transparent 18%,#FFFFFFA8 50%,transparent 82%)", "duration": "3800" } }
+  },
+
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "instant": { "$value": "100" },
+      "fast":    { "$value": "160" },
+      "base":    { "$value": "240" },
+      "slow":    { "$value": "340" },
+      "slower":  { "$value": "500" }
+    },
+    "spring": {
+      "gentle": { "$value": { "response": 0.40, "dampingFraction": 0.85, "stiffness": 380 } },
+      "snappy": { "$value": { "response": 0.28, "dampingFraction": 0.82, "stiffness": 900 } },
+      "bouncy": { "$value": { "response": 0.42, "dampingFraction": 0.68, "stiffness": 300 } }
+    },
+    "component": {
+      "press-scale":      { "$value": 0.97 },
+      "checkbox-press":   { "$value": 0.90 },
+      "checkbox-draw":    { "$value": "260" },
+      "checkbox-glow":    { "$value": "400" },
+      "switch-knob":      { "$value": "300" },
+      "switch-track":     { "$value": "260" },
+      "progress-easeout": { "$value": "3200" },
+      "toast-in":         { "$value": "320" },
+      "list-stagger":     { "$value": "20" },
+      "skeleton-shimmer": { "$value": "2200" }
+    }
+  }
+}
