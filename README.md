@@ -31,19 +31,40 @@ Android 端用 Material 3 Expressive 的对应能力做等效还原。
 语义色全部降饱和：成功 `#2A7F5C` · 信息 `#1677B3` · 警示 `#97651F` · 危险 `#B8564D`。
 按钮、开关、勾选、进度等控件一律用蓝，红黄只出现在语义提示里。
 
+## 三个仓库
+
+本仓库只管设计，组件实现分别在两个平台仓库里：
+
+```
+WisdomDesign/                  容器目录，本身不是 git 仓库
+├── iOS/                       → github.com/wlunc/WisdomDesign-iOS      SPM
+├── android/                   → github.com/wlunc/WisdomDesign-Android  Maven Central
+└── wisdomdesign/              本仓库：设计令牌与规范
+```
+
 ## 目录
 
 ```
-WisdomDesign/
+wisdomdesign/
 ├── docs/
 │   ├── 01-foundation.md        设计原则与基础（色彩/字体/间距/形状/材质/动效/无障碍）
-│   ├── 02-components.md        组件清单 v0.1 与关键组件规格
-│   └── 03-platform-mapping.md  令牌到 SwiftUI / Compose 的落地映射
+│   ├── 02-components.md        组件清单与关键组件规格
+│   ├── 03-platform-mapping.md  令牌到 SwiftUI / Compose 的落地映射
+│   └── 04-architecture.md      工程架构：三仓库划分、组件分层、命名、分发
 ├── tokens/
 │   └── wisdom.tokens.json      设计令牌唯一真源（DTCG 格式）
+├── tools/
+│   └── token-build/build.js    令牌生成器，输出到两个平台仓库
 └── design/
     └── preview/
         └── wisdom-light.html   浅色版完整预览（自包含，可直接用浏览器打开）
+```
+
+## 生成令牌
+
+```bash
+node tools/token-build/build.js          # 生成到 ../iOS 与 ../android
+node tools/token-build/build.js --check  # 只校验生成产物与提交是否一致
 ```
 
 ## 令牌流向
@@ -78,4 +99,3 @@ tokens/wisdom.tokens.json   ← 唯一真源，只在这里改数值
 | v1.2 | SwiftUI 组件实现 + SwiftUI Preview 画廊 |
 | v1.3 | Compose 组件实现 + Compose Preview 画廊 |
 | v1.4 | 无障碍与动态字体验证、深浅色回归 |
-
