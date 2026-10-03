@@ -109,3 +109,4 @@
 | --- | --- |
 | [`design/gallery/wisdom-components.html`](../design/gallery/wisdom-components.html) | 01–20 基础组件 |
 | [`design/gallery/wisdom-advanced.html`](../design/gallery/wisdom-advanced.html) | 21–36 高级组件 |
+| [`design/gallery/wisdom-patterns.html`](../design/gallery/wisdom-patterns.html) | 37 + R1–R5 场景配方 |

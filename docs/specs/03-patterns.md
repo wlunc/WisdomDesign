@@ -2,7 +2,7 @@
 
 这一层服务的是"多人协作的家庭工具"这个具体场景。但它和上面两层**性质不同**，写法也不同。
 
-← [返回规格索引](README.md)｜配方可视化：[场景配方画廊](../../design/gallery/wisdom-patterns.html)（待补）
+← [返回规格索引](README.md)｜配方可视化：[场景配方画廊](../../design/gallery/wisdom-patterns.html)
 
 ---
 
@@ -372,7 +372,7 @@ type FamilySpace = {
 
 # 37 · AssigneePicker
 
-**视觉参考**：场景配方画廊（待补）｜ **优先级** P1
+**视觉参考**：[场景配方画廊](../../design/gallery/wisdom-patterns.html) 37 ｜ **优先级** P1
 
 这是本层唯一的正式组件——有独立状态机，且名称不依赖产品语义。
 

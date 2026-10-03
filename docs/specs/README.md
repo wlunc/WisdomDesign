@@ -33,7 +33,7 @@
 | --- | --- | --- | --- |
 | [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ | [基础组件画廊](../../design/gallery/wisdom-components.html) |
 | [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../../design/gallery/wisdom-advanced.html) |
-| [`03-patterns.md`](03-patterns.md) | 37 场景组件 + R1–R5 配方 | ✅ | ⏳ 待补 |
+| [`03-patterns.md`](03-patterns.md) | 37 组件 + R1–R5 配方 | ✅ | [场景配方画廊](../../design/gallery/wisdom-patterns.html) |
 
 **第三层和上面两层写法不同**：场景模式里 6 个是「配方」（用已有组件拼出来的固定组合），只有 1 个是正式组件。
 配方的验收方式是撞边界数据，不是逐条对像素。原因见 [`03-patterns.md`](03-patterns.md) 开头。
