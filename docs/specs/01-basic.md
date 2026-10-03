@@ -2,7 +2,7 @@
 
 单一职责、无内部状态机、直接对应平台原生控件。也是 M2 / M3 的实现范围。
 
-← [返回规格索引](README.md) ｜ 编号与画廊一致：[基础组件画廊](../design/gallery/wisdom-components.html)
+← [返回规格索引](README.md) ｜ 编号与画廊一致：[基础组件画廊](../../design/gallery/wisdom-components.html)
 
 ---
 

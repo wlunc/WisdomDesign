@@ -54,6 +54,8 @@ wisdomdesign/
 │   ├── 05-preview-and-theme.md 预览体系与主题
 │   ├── 06-accessibility.md     无障碍规范（验收硬门槛）
 │   ├── 07-content.md           内容与文案规范
+│   ├── 08-icons.md             图标规范与双端语义对照
+│   ├── 09-layout.md            布局与响应式规范
 │   └── specs/                  组件详细规格（开发依据与验收标准）
 │       ├── README.md           模板、编写规则、组件索引
 │       ├── 01-basic.md         01–20 基础组件

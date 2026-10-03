@@ -2,7 +2,7 @@
 
 由基础组件组合，带内部状态机与交互流程。也是 M4 / M5 的实现范围。
 
-← [返回规格索引](README.md) ｜ 编号与画廊一致：[高级组件画廊](../design/gallery/wisdom-advanced.html)
+← [返回规格索引](README.md) ｜ 编号与画廊一致：[高级组件画廊](../../design/gallery/wisdom-advanced.html)
 
 ---
 

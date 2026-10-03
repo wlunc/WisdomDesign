@@ -1,7 +1,7 @@
 # 06 · 组件详细规格
 
 > 本文是**开发的依据**与**验收的标准**。组件实现完成、且本文的验收清单全部勾选，才视为交付。
-> 清单见 [`02-components.md`](02-components.md)，可视化见 [`design/gallery/wisdom-components.html`](../design/gallery/wisdom-components.html)。
+> 清单见 [`02-components.md`](../02-components.md)，可视化见 [`design/gallery/wisdom-components.html`](../../design/gallery/wisdom-components.html)。
 
 ## 规格模板
 
@@ -27,12 +27,12 @@
 
 ## 文件划分
 
-规格按**层级**拆分，编号与[可视化画廊](../design/gallery/wisdom-components.html)一致：
+规格按**层级**拆分，编号与[可视化画廊](../../design/gallery/wisdom-components.html)一致：
 
 | 文件 | 范围 | 规格 | 画廊 |
 | --- | --- | --- | --- |
-| [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ | [基础组件画廊](../design/gallery/wisdom-components.html) |
-| [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../design/gallery/wisdom-advanced.html) |
+| [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ | [基础组件画廊](../../design/gallery/wisdom-components.html) |
+| [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../../design/gallery/wisdom-advanced.html) |
 | [`03-patterns.md`](03-patterns.md) | 37 场景组件 + R1–R5 配方 | ✅ | ⏳ 待补 |
 
 **第三层和上面两层写法不同**：场景模式里 6 个是「配方」（用已有组件拼出来的固定组合），只有 1 个是正式组件。

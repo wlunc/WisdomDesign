@@ -204,6 +204,8 @@ Compose 不做自动解析，所以主题提供 `WDGradients` 的浅深两套实
 
 基准栅格 **4pt**。
 
+> 页面骨架、边距与栅格、多设备与密度见 [`09-layout.md`](09-layout.md)，本节只定间距阶梯。
+
 | 令牌 | 值 | 用途 |
 | --- | --- | --- |
 | `space.1` | 2 | 图标与角标 |
@@ -293,6 +295,8 @@ Compose 没有等价 API，用 `RoundedCornerShape` 并把数值 **+2** 补偿�
 性能与降级：低于 iOS 26 / Android 12 的系统降级为 `material.regular` 的纯色 + 描边版本，不做模糊。
 
 ## 8. 图标
+
+> 完整对照表、尺寸与线宽、新增流程见 [`08-icons.md`](08-icons.md)，本节只列原则。
 
 - iOS 用 **SF Symbols**，优先 `.rounded` 变体；Android 用 **Material Symbols Rounded**。
 - 尺寸阶梯：16 / 20 / 24 / 28。同一层级不混用。
