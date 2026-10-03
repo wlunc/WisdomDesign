@@ -55,7 +55,8 @@ wisdomdesign/
 │   └── specs/                  组件详细规格（开发依据与验收标准）
 │       ├── README.md           模板、编写规则、组件索引
 │       ├── 01-basic.md         01–20 基础组件
-│       └── 02-advanced.md      21–36 高级组件
+│       ├── 02-advanced.md      21–36 高级组件
+│       └── 03-patterns.md      37 组件 + R1–R5 场景配方
 ├── tokens/
 │   └── wisdom.tokens.json      设计令牌唯一真源（DTCG 格式）
 ├── tools/

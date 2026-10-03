@@ -72,19 +72,22 @@
 | E5 | HapticFeedback | 触觉规范（非视觉组件） | P0 |
 | E6 | LoadingOverlay | 遮罩 + 进度 | P1 |
 
-## F. 家庭场景模式 Patterns
+## F. 场景模式 Patterns
 
-这一组是本库区别于通用组件库的部分，服务于"多人协作的家庭工具"。
+服务于"多人协作的家庭工具"。**这一组里只有 1 个是组件，其余 5 个是配方**：
 
-| # | 模式 | 说明 | 优先级 |
-| --- | --- | --- | --- |
-| F1 | TaskRow | 勾选 + 标题 + 负责人头像 + 截止时间 | P0 |
-| F2 | MemberAvatarStack | 家庭成员堆叠 + 溢出计数 | P0 |
-| F3 | SharedBadge | "共享给全家 / 仅自己"状态标记 | P1 |
-| F4 | StreakRing | 连续完成进度环 + 天数 | P1 |
-| F5 | ReminderChip | 提醒时间选择胶囊 | P1 |
-| F6 | FamilySpaceCard | 家庭空间入口卡（成员 + 概览） | P1 |
-| F7 | AssigneePicker | 指派给谁（头像横排选择） | P1 |
+| # | 名称 | 类型 | 说明 | 优先级 |
+| --- | --- | --- | --- | --- |
+| R1 | TaskRow | 配方 | 勾选 + 标题 + 负责人 + 截止时间 | P0 |
+| R2 | SharedBadge | 配方 | "共享给全家 / 仅自己"状态标记 | P1 |
+| R3 | StreakRing | 配方 | 连续完成进度环 + 天数 | P1 |
+| R4 | ReminderChip | 配方 | 提醒时间选择胶囊 | P1 |
+| R5 | FamilySpaceCard | 配方 | 家庭空间入口卡 | P1 |
+| 37 | AssigneePicker | **组件** | 指派给谁（头像横排选择） | P1 |
+
+~~F2 MemberAvatarStack~~ 已由组件 13 `WDAvatarStack` 覆盖，删除。
+
+配方是用已有组件拼出来的固定组合，不当组件承诺兼容性；提升为组件的三条标准见 [`specs/03-patterns.md`](specs/03-patterns.md)。
 
 ---
 

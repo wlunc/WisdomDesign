@@ -33,7 +33,10 @@
 | --- | --- | --- | --- |
 | [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ | [基础组件画廊](../design/gallery/wisdom-components.html) |
 | [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../design/gallery/wisdom-advanced.html) |
-| `03-patterns.md` | 37–43 场景组件 | ⏳ 待写 | ⏳ 待补 |
+| [`03-patterns.md`](03-patterns.md) | 37 场景组件 + R1–R5 配方 | ✅ | ⏳ 待补 |
+
+**第三层和上面两层写法不同**：场景模式里 6 个是「配方」（用已有组件拼出来的固定组合），只有 1 个是正式组件。
+配方的验收方式是撞边界数据，不是逐条对像素。原因见 [`03-patterns.md`](03-patterns.md) 开头。
 
 ## 组件索引
 
@@ -59,6 +62,19 @@
 | 18 | ListRow | P0 | [01-basic.md](01-basic.md) |
 | 19 | ListSection | P0 | [01-basic.md](01-basic.md) |
 | 20 | Icon | P0 | [01-basic.md](01-basic.md) |
+| 37 | AssigneePicker | P1 | [03-patterns.md](03-patterns.md) |
+
+### 场景配方
+
+配方没有组件编号，用 `R` 前缀区分。
+
+| 编号 | 配方 | 说明 |
+| --- | --- | --- |
+| R1 | TaskRow | 任务行：勾选 + 标题 + 负责人 + 时间 |
+| R2 | SharedBadge | 共享状态标记：全家 / 指定成员 / 仅自己 |
+| R3 | StreakRing | 连续完成环 |
+| R4 | ReminderChip | 提醒时间胶囊 |
+| R5 | FamilySpaceCard | 家庭空间入口卡 |
 | 21 | SegmentedControl | P0 | [02-advanced.md](02-advanced.md) |
 | 22 | Picker | P1 | [02-advanced.md](02-advanced.md) |
 | 23 | DatePicker | P1 | [02-advanced.md](02-advanced.md) |
