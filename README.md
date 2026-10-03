@@ -61,8 +61,11 @@ wisdomdesign/
 ├── tools/
 │   └── token-build/build.js    令牌生成器，输出到两个平台仓库
 └── design/
-    └── preview/
-        └── wisdom-light.html   浅色版完整预览（自包含，可直接用浏览器打开）
+    ├── preview/
+    │   └── wisdom-light.html   浅色版完整预览（自包含，可直接用浏览器打开）
+    └── gallery/
+        ├── wisdom-components.html  01–20 基础组件规格画廊
+        └── wisdom-advanced.html    21–36 高级组件规格画廊
 ```
 
 ## 生成令牌

@@ -29,11 +29,11 @@
 
 规格按**层级**拆分，编号与[可视化画廊](../design/gallery/wisdom-components.html)一致：
 
-| 文件 | 范围 | 状态 |
-| --- | --- | --- |
-| [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ |
-| [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ |
-| `03-patterns.md` | 37–43 场景组件 | ⏳ 待写 |
+| 文件 | 范围 | 规格 | 画廊 |
+| --- | --- | --- | --- |
+| [`01-basic.md`](01-basic.md) | 01–20 基础组件 | ✅ | [基础组件画廊](../design/gallery/wisdom-components.html) |
+| [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../design/gallery/wisdom-advanced.html) |
+| `03-patterns.md` | 37–43 场景组件 | ⏳ 待写 | ⏳ 待补 |
 
 ## 组件索引
 
