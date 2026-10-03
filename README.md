@@ -52,6 +52,8 @@ wisdomdesign/
 │   ├── 03-platform-mapping.md  令牌到 SwiftUI / Compose 的落地映射
 │   ├── 04-architecture.md      工程架构：三仓库划分、组件分层、命名、分发
 │   ├── 05-preview-and-theme.md 预览体系与主题
+│   ├── 06-accessibility.md     无障碍规范（验收硬门槛）
+│   ├── 07-content.md           内容与文案规范
 │   └── specs/                  组件详细规格（开发依据与验收标准）
 │       ├── README.md           模板、编写规则、组件索引
 │       ├── 01-basic.md         01–20 基础组件

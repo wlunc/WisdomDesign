@@ -98,3 +98,5 @@
 - 令牌真源：[`../../tokens/wisdom.tokens.json`](../../tokens/wisdom.tokens.json)
 - 可视化画廊：[`../../design/gallery/wisdom-components.html`](../../design/gallery/wisdom-components.html)
 - 工程架构与排期：[`../04-architecture.md`](../04-architecture.md)
+- 无障碍规范（验收硬门槛）：[`../06-accessibility.md`](../06-accessibility.md)
+- 内容与文案规范：[`../07-content.md`](../07-content.md)
