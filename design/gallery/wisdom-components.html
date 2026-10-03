@@ -1642,7 +1642,12 @@ html&gt;body{padding:0}&lt;/style&gt;
 #wd-gallery .wd-ibtn.outline{border-color:var(--g-line2)}
 
 /* TextField / SearchField */
-#wd-gallery .wd-field{height:46px;border-radius:var(--g-r-md);background:light-dark(rgba(255,255,255,.92),rgba(16,36,54,.62));border:1.5px solid var(--g-line);display:flex;align-items:center;gap:8px;padding:0 12px;font-size:15px;color:var(--g-text);min-width:0;flex:1}
+/* 高度固定 46，绝不设 flex：在纵向堆叠里 flex-basis:0 会让高度跟着内容变 */
+#wd-gallery .wd-field{height:46px;box-sizing:border-box;border-radius:var(--g-r-md);background:light-dark(rgba(255,255,255,.92),rgba(16,36,54,.62));border:1.5px solid var(--g-line);display:flex;align-items:center;gap:8px;padding:0 12px;font-size:15px;color:var(--g-text);min-width:0}
+#wd-gallery .wd-items &gt; .wd-field{flex:1 1 170px}
+#wd-gallery .wd-field.inset{background:var(--g-field);border-color:transparent}
+#wd-gallery .wd-field.outline{background:transparent;border-color:var(--g-line2)}
+#wd-gallery .wd-field.glass{background:var(--g-glass-strong);border-color:var(--g-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 #wd-gallery .wd-field.on{border-color:color-mix(in srgb,var(--g-brand) 70%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--g-brand) 18%,transparent)}
 #wd-gallery .wd-field.err{border-color:var(--g-danger)}
 #wd-gallery .wd-field.off{opacity:.45}
@@ -1651,6 +1656,9 @@ html&gt;body{padding:0}&lt;/style&gt;
 #wd-gallery .wd-field input::placeholder{color:var(--g-text3)}
 #wd-gallery .wd-field [data-lucide]{color:var(--g-text3)}
 #wd-gallery .wd-field .suffix{color:var(--g-text3);display:inline-grid;place-items:center}
+#wd-gallery .wd-field .unit{color:var(--g-text2);font-size:14px;white-space:nowrap;padding-left:2px}
+#wd-gallery .wd-field .suffix-sep{width:1px;height:20px;background:var(--g-line);flex:none}
+#wd-gallery .wd-field .counter{color:var(--g-text3);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
 #wd-gallery .wd-hint{font-size:12px;color:var(--g-text2)}
 #wd-gallery .wd-hint.err{color:var(--g-danger)}
 
@@ -1777,6 +1785,22 @@ html&gt;body{padding:0}&lt;/style&gt;
 #wd-gallery .wd-skel.w70{width:70%}
 #wd-gallery .wd-skel.w45{width:45%}
 @keyframes galShimmer{0%{background-position:-120% 0}100%{background-position:220% 0}}
+
+/* 左滑删除：直接展示滑开后的结果状态，不做位移，避免窄容器里内容被裁掉 */
+#wd-gallery .wd-swipe{position:relative;display:flex;align-items:stretch;border-radius:var(--g-r-md);overflow:hidden;border:1px solid var(--g-line);width:100%;background:var(--g-card)}
+#wd-gallery .wd-swipe .del{flex:none;width:var(--del,86px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(135deg,#B8564D,#A94A42);color:#fff;font-size:12px;font-weight:600;text-align:center;padding:0 6px}
+#wd-gallery .wd-swipe .del [data-lucide]{width:18px;height:18px}
+#wd-gallery .wd-swipe .body{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:11px;padding:11px 12px;background:var(--g-card)}
+#wd-gallery .wd-swipe.armed .del{flex:1 1 auto;width:auto}
+#wd-gallery .wd-swipe .body .wd-item-t{flex:1;min-width:0}
+#wd-gallery .wd-swipe .body .wd-item-t b{display:block;font-size:15px;font-weight:500;color:var(--g-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wd-gallery .wd-swipe .body .wd-item-t span{font-size:12px;color:var(--g-text2)}
+#wd-gallery .wd-swipe .del [data-lucide]{width:18px;height:18px}
+#wd-gallery .wd-swipe.armed .del{width:120px}
+#wd-gallery .wd-hintbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g-text2)}
+#wd-gallery .wd-hintbar [data-lucide]{width:14px;height:14px}
+#wd-gallery .wd-multibar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:var(--g-r-md);background:var(--g-glass-strong);border:1px solid var(--g-line);box-shadow:var(--g-sh1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);width:100%}
+#wd-gallery .wd-multibar .n{font-size:14px;font-weight:600;color:var(--g-text);font-variant-numeric:tabular-nums}
 
 /* Segmented / Picker / DatePicker */
 #wd-gallery .wd-seg{display:inline-flex;background:light-dark(rgba(255,255,255,.88),rgba(16,36,54,.6));border:1px solid var(--g-line);border-radius:999px;padding:3px;gap:2px}
@@ -1923,23 +1947,36 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;!-- 03 TextField --&gt;
 &lt;section class=&quot;spec&quot;&gt;
   &lt;div class=&quot;spec-head&quot;&gt;&lt;span class=&quot;spec-id&quot;&gt;03&lt;/span&gt;&lt;h2 class=&quot;spec-name&quot;&gt;TextField&lt;/h2&gt;&lt;span class=&quot;spec-tier&quot;&gt;P0&lt;/span&gt;&lt;/div&gt;
-  &lt;p class=&quot;spec-desc text-small&quot;&gt;单行输入。标签常驻，不复用占位符当标签。&lt;/p&gt;
+  &lt;p class=&quot;spec-desc text-small&quot;&gt;单行输入。高度一律 46，标签常驻，不复用占位符当标签。&lt;/p&gt;
   &lt;div class=&quot;pair&quot;&gt;
     &lt;div class=&quot;cell wd-light&quot; data-label=&quot;浅色&quot;&gt;
-      &lt;div class=&quot;wd-stack-v&quot;&gt;
+      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;状态&lt;/span&gt;&lt;div class=&quot;wd-stack-v&quot;&gt;
         &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; placeholder=&quot;请输入任务名称&quot; aria-label=&quot;默认态&quot;&gt;&lt;/label&gt;
         &lt;label class=&quot;wd-field on&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;整理储物间&quot; aria-label=&quot;聚焦态&quot;&gt;&lt;/label&gt;
-        &lt;div&gt;&lt;label class=&quot;wd-field err&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;家庭计划&quot; aria-label=&quot;错误态&quot;&gt;&lt;/label&gt;&lt;div class=&quot;wd-hint err&quot;&gt;名称已被占用&lt;/div&gt;&lt;/div&gt;
+        &lt;span&gt;&lt;label class=&quot;wd-field err&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;家庭计划&quot; aria-label=&quot;错误态&quot;&gt;&lt;/label&gt;&lt;span class=&quot;wd-hint err&quot;&gt;名称已被占用&lt;/span&gt;&lt;/span&gt;
         &lt;label class=&quot;wd-field off&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;只读内容&quot; aria-label=&quot;禁用态&quot; disabled&gt;&lt;/label&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;结构&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
-        &lt;label class=&quot;wd-field&quot;&gt;&lt;i data-lucide=&quot;user&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;input type=&quot;text&quot; placeholder=&quot;带前缀图标&quot; aria-label=&quot;前缀&quot;&gt;&lt;/label&gt;
-        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;可清除&quot; aria-label=&quot;可清除&quot;&gt;&lt;span class=&quot;suffix&quot;&gt;&lt;i data-lucide=&quot;x-circle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;变体&lt;/span&gt;&lt;div class=&quot;wd-stack-v&quot;&gt;
+        &lt;label class=&quot;wd-field inset&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;inset · 填充底，表单里默认用&quot; aria-label=&quot;inset 变体&quot;&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field outline&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;outline · 透明底加描边&quot; aria-label=&quot;outline 变体&quot;&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field glass&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;glass · 玻璃底，浮在内容上&quot; aria-label=&quot;glass 变体&quot;&gt;&lt;/label&gt;
+      &lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;后缀&lt;/span&gt;&lt;div class=&quot;wd-stack-v&quot;&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;18&quot; aria-label=&quot;单位后缀&quot;&gt;&lt;span class=&quot;unit&quot;&gt;:00&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;家务&quot; aria-label=&quot;文字后缀&quot;&gt;&lt;span class=&quot;unit&quot;&gt;分类&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;家庭日程&quot; aria-label=&quot;清除按钮&quot;&gt;&lt;span class=&quot;suffix&quot;&gt;&lt;i data-lucide=&quot;x-circle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;••••••&quot; aria-label=&quot;显隐切换&quot;&gt;&lt;span class=&quot;suffix&quot;&gt;&lt;i data-lucide=&quot;eye&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;任务说明&quot; aria-label=&quot;字数计数&quot;&gt;&lt;span class=&quot;counter&quot;&gt;6/30&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;每天&quot; aria-label=&quot;下拉后缀&quot;&gt;&lt;span class=&quot;suffix-sep&quot;&gt;&lt;/span&gt;&lt;span class=&quot;unit&quot;&gt;频次&lt;/span&gt;&lt;span class=&quot;suffix&quot;&gt;&lt;i data-lucide=&quot;chevron-down&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;前缀&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;i data-lucide=&quot;user&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;input type=&quot;text&quot; placeholder=&quot;成员名&quot; aria-label=&quot;前缀图标&quot;&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-field&quot;&gt;&lt;span class=&quot;unit&quot;&gt;¥&lt;/span&gt;&lt;input type=&quot;text&quot; value=&quot;128&quot; aria-label=&quot;前缀文字&quot;&gt;&lt;/label&gt;
       &lt;/div&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;cell wd-dark&quot; data-label=&quot;深色&quot; data-clone&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;聚焦&lt;/em&gt; → 品牌色描边 + 12% 光环&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;输入非法&lt;/em&gt; → 红色描边 + 下方说明&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;回车&lt;/em&gt; → 提交并收起键盘&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;聚焦&lt;/em&gt; → 品牌色描边 + 12% 光环&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;输入非法&lt;/em&gt; → 红色描边 + 下方说明&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;后缀最多一个&lt;/em&gt; → 清除和计数不要同时出现&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;回车&lt;/em&gt; → 提交并收起键盘&lt;/span&gt;&lt;/div&gt;
 &lt;/section&gt;
 
 &lt;!-- 04 SearchField --&gt;
@@ -2009,14 +2046,14 @@ html&gt;body{padding:0}&lt;/style&gt;
   &lt;div class=&quot;pair&quot;&gt;
     &lt;div class=&quot;cell wd-light&quot; data-label=&quot;浅色&quot;&gt;
       &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;状态&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
-        &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-r1&quot; class=&quot;wd-radio&quot; checked aria-label=&quot;已选&quot;&gt;&lt;span&gt;已选&lt;/span&gt;&lt;/label&gt;
-        &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-r1&quot; class=&quot;wd-radio&quot; aria-label=&quot;未选&quot;&gt;&lt;span&gt;未选&lt;/span&gt;&lt;/label&gt;
-        &lt;label class=&quot;wd-checkrow&quot; style=&quot;opacity:.4&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-r2&quot; class=&quot;wd-radio&quot; disabled aria-label=&quot;禁用&quot;&gt;&lt;span&gt;禁用&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-radio-on&quot; class=&quot;wd-radio&quot; checked aria-label=&quot;已选&quot;&gt;&lt;span&gt;已选&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-radio-off&quot; class=&quot;wd-radio&quot; aria-label=&quot;未选&quot;&gt;&lt;span&gt;未选&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;wd-checkrow&quot; style=&quot;opacity:.4&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-radio-dis&quot; class=&quot;wd-radio&quot; checked disabled aria-label=&quot;禁用已选&quot;&gt;&lt;span&gt;禁用&lt;/span&gt;&lt;/label&gt;
       &lt;/div&gt;&lt;/div&gt;
       &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;分组&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
         &lt;div class=&quot;wd-stack-v&quot; style=&quot;gap:6px&quot;&gt;
-          &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-r3&quot; class=&quot;wd-radio&quot; checked aria-label=&quot;仅自己&quot;&gt;&lt;span&gt;仅自己可见&lt;/span&gt;&lt;/label&gt;
-          &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-r3&quot; class=&quot;wd-radio&quot; aria-label=&quot;全家&quot;&gt;&lt;span&gt;共享给全家&lt;/span&gt;&lt;/label&gt;
+          &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-radio-grp&quot; class=&quot;wd-radio&quot; checked aria-label=&quot;仅自己&quot;&gt;&lt;span&gt;仅自己可见&lt;/span&gt;&lt;/label&gt;
+          &lt;label class=&quot;wd-checkrow&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;gal-radio-grp&quot; class=&quot;wd-radio&quot; aria-label=&quot;全家&quot;&gt;&lt;span&gt;共享给全家&lt;/span&gt;&lt;/label&gt;
         &lt;/div&gt;
       &lt;/div&gt;&lt;/div&gt;
     &lt;/div&gt;
@@ -2247,10 +2284,27 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;wd-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;wd-check&quot; checked aria-label=&quot;带勾选&quot;&gt;&lt;span class=&quot;wd-item-t&quot;&gt;&lt;b&gt;带勾选&lt;/b&gt;&lt;span&gt;任务行形态&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;wd-time&quot;&gt;18:00&lt;/span&gt;&lt;/div&gt;
         &lt;div class=&quot;wd-item&quot; style=&quot;opacity:.45&quot;&gt;&lt;span class=&quot;wd-ico&quot;&gt;&lt;i data-lucide=&quot;ban&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;wd-item-t&quot;&gt;&lt;b&gt;禁用&lt;/b&gt;&lt;span&gt;不可操作&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
       &lt;/div&gt;
+      &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;删除&lt;/span&gt;&lt;div class=&quot;wd-stack-v&quot; style=&quot;gap:8px&quot;&gt;
+        &lt;div class=&quot;wd-swipe&quot;&gt;
+          &lt;div class=&quot;body&quot;&gt;&lt;span class=&quot;wd-ico&quot;&gt;&lt;i data-lucide=&quot;bath&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;wd-item-t&quot;&gt;&lt;b&gt;左滑露出删除&lt;/b&gt;&lt;span&gt;松手停在 86pt，不直接删&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;del&quot;&gt;&lt;i data-lucide=&quot;trash-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;删除&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;wd-swipe armed&quot;&gt;
+          &lt;div class=&quot;del&quot;&gt;&lt;i data-lucide=&quot;trash-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;松手删除&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;wd-hintbar&quot;&gt;&lt;i data-lucide=&quot;undo-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;删除后弹撤销条，停留 5 秒，可一键恢复&lt;/div&gt;
+        &lt;div class=&quot;wd-multibar&quot;&gt;
+          &lt;span class=&quot;n&quot;&gt;已选 2 项&lt;/span&gt;
+          &lt;span style=&quot;display:flex;gap:8px;align-items:center&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;wd-btn outline sm cursor-interaction&quot;&gt;取消&lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;wd-btn destructive sm cursor-interaction&quot;&gt;&lt;i data-lucide=&quot;trash-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;删除&lt;/button&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;cell wd-dark&quot; data-label=&quot;深色&quot; data-clone&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;点击&lt;/em&gt; → 整行响应，尾部箭头表示进入下一级&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;左滑&lt;/em&gt; → 露出删除/归档，滑到底触发&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;长按&lt;/em&gt; → 进入多选模式&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;点击&lt;/em&gt; → 整行响应，尾部箭头表示进入下一级&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;左滑&lt;/em&gt; → 露出删除，松手停在 86pt；越过阈值才直接删&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;删除后&lt;/em&gt; → 弹撤销条而不是二次确认弹窗，撤销停留 5 秒&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;长按&lt;/em&gt; → 进入多选，底部换成删除工具条&lt;/span&gt;&lt;/div&gt;
 &lt;/section&gt;
 
 &lt;!-- 19 ListSection --&gt;
@@ -2317,7 +2371,13 @@ html&gt;body{padding:0}&lt;/style&gt;
     var source = target.previousElementSibling;
     if (!source) return;
     Array.prototype.slice.call(source.children).forEach(function (node) {
-      target.appendChild(node.cloneNode(true));
+      var copy = node.cloneNode(true);
+      // 必须在插入文档之前改名单选按钮：插入后同名会短暂成组，
+      // 浏览器会把浅色列那一份取消选中
+      copy.querySelectorAll(&#x27;input[type=&quot;radio&quot;][name]&#x27;).forEach(function (el) {
+        el.name = el.name + &quot;-dark&quot;;
+      });
+      target.appendChild(copy);
     });
   });
 
