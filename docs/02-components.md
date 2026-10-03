@@ -91,7 +91,13 @@
 ## 详细规格在哪
 
 组件清单只回答「有哪些组件、什么优先级」。**每个组件的尺寸、变体、状态、交互、动效、无障碍与验收清单**
-统一写在 [`06-component-specs.md`](06-component-specs.md)，那份文档是开发的依据与验收的标准；
-本文不再重复规格，避免两处不一致。
+统一写在 [`specs/`](specs/README.md)，那份文档是开发的依据与验收的标准；本文不再重复规格，避免两处不一致。
+
+| 文件 | 范围 |
+| --- | --- |
+| [`specs/README.md`](specs/README.md) | 规格模板、编写规则、组件索引 |
+| [`specs/01-basic.md`](specs/01-basic.md) | 01–20 基础组件 |
+| [`specs/02-advanced.md`](specs/02-advanced.md) | 21–36 高级组件 |
+| `specs/03-patterns.md` | 37–43 场景组件（待写） |
 
 可视化画廊：[`design/gallery/wisdom-components.html`](../design/gallery/wisdom-components.html)

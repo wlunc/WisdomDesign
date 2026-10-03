@@ -48,9 +48,14 @@ WisdomDesign/                  容器目录，本身不是 git 仓库
 wisdomdesign/
 ├── docs/
 │   ├── 01-foundation.md        设计原则与基础（色彩/字体/间距/形状/材质/动效/无障碍）
-│   ├── 02-components.md        组件清单与关键组件规格
+│   ├── 02-components.md        组件清单与优先级
 │   ├── 03-platform-mapping.md  令牌到 SwiftUI / Compose 的落地映射
-│   └── 04-architecture.md      工程架构：三仓库划分、组件分层、命名、分发
+│   ├── 04-architecture.md      工程架构：三仓库划分、组件分层、命名、分发
+│   ├── 05-preview-and-theme.md 预览体系与主题
+│   └── specs/                  组件详细规格（开发依据与验收标准）
+│       ├── README.md           模板、编写规则、组件索引
+│       ├── 01-basic.md         01–20 基础组件
+│       └── 02-advanced.md      21–36 高级组件
 ├── tokens/
 │   └── wisdom.tokens.json      设计令牌唯一真源（DTCG 格式）
 ├── tools/
