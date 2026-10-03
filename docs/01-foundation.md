@@ -131,13 +131,19 @@ iOS 26 的 Liquid Glass 由六个特征构成，这是整个系统的视觉骨�
 
 渐变分两类，不能互换：
 
-| 类别 | 令牌 | 值 | 约束 |
-| --- | --- | --- | --- |
-| 背景渐变 | `gradient.surface` | `#B0D5DF → #7EC4CF` | 只配 `#123F5C` 深字 |
-| 组件渐变（浅） | `gradient.fill-light` | `#8FCFDD → #63BAD2` | 配 `#0E3A55` 深字 5.4–6.9:1 |
-| 组件渐变（深） | `gradient.fill-dark` | `#1677B3 → #2A5CAA` | 白字 4.9–6.7:1 |
-| 小面积标记 | `gradient.mid` | `#4FB0C8 → #1685A9` | 勾选、开关、圆点 |
-| 重组件 | `gradient.deep` | `#065279 → #1E3B7A` | 按下态，白字 8.4–10.7:1 |
+渐变按**是否随外观变化**分两处存放，和颜色的组织方式一致：
+
+| 类别 | 令牌 | 浅色外观 | 深色外观 | 约束 |
+| --- | --- | --- | --- | --- |
+| 背景渐变 | `semantic.*.gradient.surface` | `#B0D5DF → #7EC4CF` | `#123449 → #0F4055` | 只配 `text.on-soft` 深字 |
+| 组件渐变 | `semantic.*.gradient.fill` | `#8FCFDD → #63BAD2` | `#1677B3 → #2A5CAA` | 浅色配深字 5.4–6.9:1；深色配白字 4.9–6.7:1 |
+| 小面积标记 | `gradient.mid` | 两端相同 | `#4FB0C8 → #1685A9` | 勾选、开关、圆点 |
+| 危险操作 | `gradient.destructive` | 两端相同 | `#B8564D → #A94A42` | 删除按钮、左滑删除底 |
+| 暖色点缀 | `gradient.sunrise` | 两端相同 | `#FFE7C2 → #FFD2C4` | 仅插画与空状态 |
+
+规则：**需要随深浅色变化的渐变放 `semantic.light/dark.gradient`，两端相同的放顶层 `gradient`**。
+两端渲染方式也不同——SwiftUI 的 stop 用浅深成对的动态色，一条令牌就够；
+Compose 不做自动解析，所以主题提供 `WDGradients` 的浅深两套实例。
 
 **页面色晕**：不用纯色铺底。用 2–3 个大半径径向渐变叠在 canvas 上，
 色相取湖水蓝 / 天青 / 群青，透明度 18–66%。这套写法在浅色和深色下都成立：

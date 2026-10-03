@@ -112,6 +112,39 @@ function banner(tool, comment) {
   ];
 }
 
+/**
+ * 汇总渐变定义。
+ * semantic.light/dark.gradient 下的随外观取值；顶层 gradient 下的两端共用。
+ * 返回顺序：随外观的先出（surface / fill 用得最多），再出共用的。
+ */
+function collectGradients(t) {
+  const out = [];
+  const light = t.semantic?.light?.gradient ?? {};
+  const dark = t.semantic?.dark?.gradient ?? {};
+  for (const [name, token] of Object.entries(light)) {
+    if (name.startsWith("$")) continue;
+    const l = parseLinearGradient(token.$value);
+    const d = parseLinearGradient(dark[name].$value);
+    if (l.stops.length !== d.stops.length) {
+      throw new Error(`渐变 ${name} 的浅深两端 stop 数量不一致`);
+    }
+    out.push({ name, angle: l.angle, light: l.stops, dark: d.stops });
+  }
+  for (const [name, token] of Object.entries(t.gradient)) {
+    if (name.startsWith("$")) continue;
+    const g = parseLinearGradient(token.$value);
+    out.push({ name, angle: g.angle, light: g.stops, dark: g.stops });
+  }
+  return out;
+}
+
+/** 同一位置两端色值相同就用单值颜色，不同就用成对颜色 */
+function swiftStopColor(lightHex, darkHex) {
+  return lightHex.toUpperCase() === darkHex.toUpperCase()
+    ? swiftColorSingle(lightHex)
+    : swiftColorPair(lightHex, darkHex);
+}
+
 // ---------------------------------------------------------------- Swift
 
 function buildSwift(t) {
@@ -120,7 +153,7 @@ function buildSwift(t) {
   // 语义色
   const semanticKeys = [];
   for (const group of Object.keys(t.semantic.light)) {
-    if (group.startsWith("$")) continue;
+    if (group.startsWith("$") || group === "gradient") continue;
     const keys = Object.keys(t.semantic.light[group]).filter((k) => !k.startsWith("$"));
     keys.forEach((k) => {
       const light = t.semantic.light[group][k].$value;
@@ -161,17 +194,18 @@ function buildSwift(t) {
   L.push("}");
   L.push("");
 
-  // 渐变
-  L.push("/// 渐变。用 stops 描述，避免把角度写死在不同平台各不相同。");
+  // 渐变：SwiftUI 侧合并成一条「深浅成对」的渐变色，随外观自动解析
+  L.push("/// 渐变。stop 本身是浅深成对的动态色，所以一条令牌即可覆盖两种外观。");
   L.push("public enum WDGradient {");
-  for (const [name, token] of Object.entries(t.gradient)) {
-    if (name.startsWith("$")) continue;
-    const g = parseLinearGradient(token.$value);
-    L.push(`    public static let ${camel("", name)} = WDGradientSpec(`);
+  for (const g of collectGradients(t)) {
+    L.push(`    public static let ${camel("", g.name)} = WDGradientSpec(`);
     L.push(`        angleDegrees: ${g.angle},`);
     L.push(`        stops: [`);
-    g.stops.forEach((s, i) => {
-      L.push(`            (color: ${swiftColorSingle(s.hex)}, location: ${(s.pos / 100).toFixed(2)})${i === g.stops.length - 1 ? "" : ","}`);
+    g.light.forEach((s, i) => {
+      const darkStop = g.dark[i];
+      L.push(
+        `            (color: ${swiftStopColor(s.hex, darkStop.hex)}, location: ${(s.pos / 100).toFixed(2)})${i === g.light.length - 1 ? "" : ","}`
+      );
     });
     L.push(`        ]`);
     L.push(`    )`);
@@ -272,7 +306,7 @@ function buildSwift(t) {
 function buildKotlin(t) {
   const names = [];
   for (const group of Object.keys(t.semantic.light)) {
-    if (group.startsWith("$")) continue;
+    if (group.startsWith("$") || group === "gradient") continue;
     Object.keys(t.semantic.light[group])
       .filter((k) => !k.startsWith("$"))
           .forEach((k) => names.push(camel(group, k)));
@@ -301,7 +335,7 @@ function buildKotlin(t) {
   for (const theme of ["light", "dark"]) {
     L.push(`internal val wd${upperFirst(theme)}Colors: WDColors = WDColors(`);
     for (const group of Object.keys(t.semantic[theme])) {
-      if (group.startsWith("$")) continue;
+      if (group.startsWith("$") || group === "gradient") continue;
       for (const [k, v] of Object.entries(t.semantic[theme][group])) {
         if (k.startsWith("$")) continue;
         L.push(`    ${camel(group, k)} = ${kotlinColor(v.$value)},`);
@@ -338,20 +372,33 @@ function buildKotlin(t) {
   L.push("}");
   L.push("");
 
-  L.push("/** 渐变。用 stops 描述，避免把角度写死在不同平台各不相同。 */");
-  L.push("public data class WDGradientSpec(val angleDegrees: Float, val stops: List<Pair<Color, Float>>)");
+  L.push("/** 渐变。用 stops 描述，角度沿用 CSS 口径。 */");
+  L.push("@Immutable");
+  L.push("public class WDGradientSpec(");
+  L.push("    public val angleDegrees: Float,");
+  L.push("    public val stops: List<Pair<Color, Float>>,");
+  L.push(")");
   L.push("");
-  L.push("public object WDGradient {");
-  for (const [name, token] of Object.entries(t.gradient)) {
-    if (name.startsWith("$")) continue;
-    const g = parseLinearGradient(token.$value);
-    const stops = g.stops
-      .map((s) => `${kotlinColor(s.hex)} to ${(s.pos / 100).toFixed(2)}f`)
-      .join(", ");
-    L.push(`    public val ${camel("", name)}: WDGradientSpec = WDGradientSpec(${g.angle}f, listOf(${stops}))`);
+
+  const gradients = collectGradients(t);
+  L.push("/** 当前主题下的全部渐变。Compose 不做浅深自动解析，所以深浅各出一套。 */");
+  L.push("@Immutable");
+  L.push("public class WDGradients(");
+  gradients.forEach((g) => L.push(`    public val ${camel("", g.name)}: WDGradientSpec,`));
+  L.push(")");
+  L.push("");
+
+  for (const theme of ["light", "dark"]) {
+    L.push(`internal val wd${upperFirst(theme)}Gradients: WDGradients = WDGradients(`);
+    gradients.forEach((g) => {
+      const stops = g[theme]
+        .map((s) => `${kotlinColor(s.hex)} to ${(s.pos / 100).toFixed(2)}f`)
+        .join(", ");
+      L.push(`    ${camel("", g.name)} = WDGradientSpec(${g.angle}f, listOf(${stops})),`);
+    });
+    L.push(")");
+    L.push("");
   }
-  L.push("}");
-  L.push("");
 
   L.push("/** 间距，基准 4dp。 */");
   L.push("public object WDSpacing {");

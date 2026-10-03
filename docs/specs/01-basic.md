@@ -45,12 +45,12 @@
 
 | 变体 | 背景 | 文字 | 描边 | 阴影 | 用在哪 |
 | --- | --- | --- | --- | --- | --- |
-| `filled` | `gradient.fill-light`（深色外观 `gradient.fill-dark`） | `text.on-fill` | 无 | `elevation.brand` | 唯一主操作 |
+| `filled` | `gradient.fill`（浅深两端各自取值） | `text.on-fill` | 无 | `elevation.brand` | 唯一主操作 |
 | `tonal` | `gradient.surface` | `text.on-soft` | 无 | 无 | 次级操作 |
 | `glass` | `surface.glass-strong` | `text.primary` | `border.hairline` | `elevation.1` | 浮在图片或内容之上 |
 | `outline` | 透明 | `text.primary` | `border.hairline-strong` | 无 | 中性操作 |
 | `plain` | 透明 | `text.brand` | 无 | 无 | 行内操作、列表右侧 |
-| `destructive` | `gradient.deep` | 白 | 无 | `elevation.brand` | 删除、退出等不可逆操作 |
+| `destructive` | `gradient.destructive` | 白 | 无 | `elevation.brand` | 删除、退出等不可逆操作 |
 
 `filled` 的浅色端与深色端分别是 `derived.fill-light-1` / `derived.fill-light-2`，
 配 `derived.text-on-fill` 对比度 5.4–6.9:1。**不允许把亮色渐变配白字**。
@@ -1685,7 +1685,7 @@ Android 用 `Canvas` + `drawArc`，或用 `CircularProgressIndicator` 的 `progr
 
 | 阶段 | 规格 |
 | --- | --- |
-| 左滑 | 整行左移，右侧露出「删除」，宽 86，底 `gradient.deep`，白色图标 + 文字 |
+| 左滑 | 整行左移，右侧露出「删除」，宽 86，底 `gradient.destructive`，白色图标 + 文字 |
 | 松手 | 位移 < 阈值时吸附回 0，**不删除**；≥ 阈值时直接删除，不再要求二次确认 |
 | 删除后 | 底部弹撤销条，停留 5 秒，可一键恢复；超时后真正删除 |
 | 无障碍 | 提供"删除"的自定义操作，不要求用户必须会左滑 |

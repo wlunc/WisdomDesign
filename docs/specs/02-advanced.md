@@ -1573,7 +1573,7 @@ Android 用 `TopAppBar` 的 actions 或自定义 `Surface`。
 
 | 状态 | 视觉 | 动效 |
 | --- | --- | --- |
-| 默认 | `gradient.fill-light`（深色外观 `gradient.fill-dark`）+ `elevation.brand` | — |
+| 默认 | `gradient.fill`（浅深两端各自取值）+ `elevation.brand` | — |
 | 按下 | 缩放 0.95 | 100ms |
 | 滚动 | 向下滚动时缩小到 40 并降低不透明度；向上滚动恢复 | `motion.spring.gentle` |
 | 展开 | 图标旋转 45°，子操作逐个出现 | 240ms，错峰 40ms |

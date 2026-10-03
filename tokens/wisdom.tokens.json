@@ -45,13 +45,10 @@
 
   "gradient": {
     "$type": "gradient",
-    "surface":    { "$value": "linear-gradient(135deg,#B0D5DF 0%,#7EC4CF 100%)", "$description": "背景层。只配 #123F5C 深字" },
-    "fill-light": { "$value": "linear-gradient(135deg,#8FCFDD 0%,#63BAD2 100%)", "$description": "浅色版按钮 / 芯片。配 #0E3A55 深字 5.4–6.9:1" },
-    "fill-dark":  { "$value": "linear-gradient(135deg,#1677B3 0%,#2A5CAA 100%)", "$description": "深色版按钮。白字 4.9–6.7:1" },
-    "mid":        { "$value": "linear-gradient(135deg,#4FB0C8 0%,#1685A9 100%)", "$description": "小面积标记：勾选、开关、圆点" },
-    "deep":       { "$value": "linear-gradient(135deg,#065279 0%,#1E3B7A 100%)", "$description": "重组件、按下态。白字 8.4–10.7:1" },
-    "abyss":      { "$value": "linear-gradient(135deg,#0E3A56 0%,#0A1D2E 100%)", "$description": "深色模式页面底" },
-    "sunrise":    { "$value": "linear-gradient(135deg,#FFE7C2 0%,#FFD2C4 100%)", "$description": "暖色点缀，仅用于插画与空状态" }
+    "$description": "不随外观变化的渐变。需要随深浅色变化的渐变放在 semantic.light/dark.gradient 下。",
+    "mid":         { "$value": "linear-gradient(135deg,#4FB0C8 0%,#1685A9 100%)", "$description": "小面积标记：勾选、开关、圆点" },
+    "destructive": { "$value": "linear-gradient(135deg,#B8564D 0%,#A94A42 100%)", "$description": "危险操作填充：删除按钮、左滑删除底。白字 4.7–5.6:1" },
+    "sunrise":     { "$value": "linear-gradient(135deg,#FFE7C2 0%,#FFD2C4 100%)", "$description": "暖色点缀，仅用于插画与空状态" }
   },
 
   "semantic": {
@@ -97,6 +94,11 @@
         "info":    { "$value": "#E1F0F8" },
         "warning": { "$value": "#FFF4DC" },
         "danger":  { "$value": "#FBE7E4" }
+      },
+      "gradient": {
+        "$type": "gradient",
+        "surface": { "$value": "linear-gradient(135deg,#B0D5DF 0%,#7EC4CF 100%)", "$description": "背景层。只配 text.on-soft 深字" },
+        "fill":    { "$value": "linear-gradient(135deg,#8FCFDD 0%,#63BAD2 100%)", "$description": "按钮 / 芯片填充。配 text.on-fill 深字 5.4–6.9:1" }
       }
     },
 
@@ -142,6 +144,11 @@
         "info":    { "$value": "#0C2740" },
         "warning": { "$value": "#33260E" },
         "danger":  { "$value": "#3A211E" }
+      },
+      "gradient": {
+        "$type": "gradient",
+        "surface": { "$value": "linear-gradient(135deg,#123449 0%,#0F4055 100%)", "$description": "背景层。只配 text.on-soft 浅字" },
+        "fill":    { "$value": "linear-gradient(135deg,#1677B3 0%,#2A5CAA 100%)", "$description": "按钮 / 芯片填充。白字 4.9–6.7:1" }
       }
     }
   },
