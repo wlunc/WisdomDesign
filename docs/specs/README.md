@@ -35,8 +35,10 @@
 | [`02-advanced.md`](02-advanced.md) | 21–36 高级组件 | ✅ | [高级组件画廊](../../design/gallery/wisdom-advanced.html) |
 | [`03-patterns.md`](03-patterns.md) | 37 组件 + R1–R5 配方 | ✅ | [场景配方画廊](../../design/gallery/wisdom-patterns.html) |
 
-**第三层和上面两层写法不同**：场景模式里 6 个是「配方」（用已有组件拼出来的固定组合），只有 1 个是正式组件。
+**第三层和上面两层写法不同**：场景模式里 5 个是「配方」（用已有组件拼出来的固定组合），只有 1 个是正式组件（37 · AssigneePicker）。
 配方的验收方式是撞边界数据，不是逐条对像素。原因见 [`03-patterns.md`](03-patterns.md) 开头。
+
+组件口径的单一真源是 **37 个组件 + 5 个配方**，其它文档（含 `02-components.md`）引用此口径，不再各写一份。
 
 ## 组件索引
 
@@ -75,6 +77,11 @@
 | R3 | StreakRing | 连续完成环 |
 | R4 | ReminderChip | 提醒时间胶囊 |
 | R5 | FamilySpaceCard | 家庭空间入口卡 |
+
+## 高级组件索引（21–36）
+
+| 编号 | 组件 | 优先级 | 规格 |
+| --- | --- | --- | --- |
 | 21 | SegmentedControl | P0 | [02-advanced.md](02-advanced.md) |
 | 22 | Picker | P1 | [02-advanced.md](02-advanced.md) |
 | 23 | DatePicker | P1 | [02-advanced.md](02-advanced.md) |
