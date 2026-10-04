@@ -46,7 +46,7 @@
 | 变体 | 背景 | 文字 | 描边 | 阴影 | 用在哪 |
 | --- | --- | --- | --- | --- | --- |
 | `filled` | `gradient.fill`（浅深两端各自取值） | `text.on-fill` | 无 | `elevation.brand` | 唯一主操作 |
-| `tonal` | `gradient.surface` | `text.on-soft` | 无 | 无 | 次级操作 |
+| `tonal` | `surface.tint` | `text.on-soft` | 无 | 无 | 次级操作 |
 | `glass` | `surface.glass-strong` | `text.primary` | `border.hairline` | `elevation.1` | 浮在图片或内容之上 |
 | `outline` | 透明 | `text.primary` | `border.hairline-strong` | 无 | 中性操作 |
 | `plain` | 透明 | `text.brand` | 无 | 无 | 行内操作、列表右侧 |
@@ -159,7 +159,7 @@
 | 变体 | 背景 | 图标色 | 描边 | 用在哪 |
 | --- | --- | --- | --- | --- |
 | `filled` | `gradient.mid` | 白 | 无 | 强调动作 |
-| `tonal` | `gradient.surface` | `text.on-soft` | 无 | 次级动作 |
+| `tonal` | `surface.tint` | `text.on-soft` | 无 | 次级动作 |
 | `glass` | `surface.glass-strong` | `text.primary` | `border.hairline` | 浮在内容之上（导航栏） |
 | `outline` | 透明 | `text.primary` | `border.hairline-strong` | 中性动作 |
 | `plain` | 透明 | `text.brand` | 无 | 行内动作 |
@@ -953,7 +953,7 @@ Android 无对应控件，用 `Surface` + 两个 `IconButton` 实现。
 | --- | --- | --- | --- |
 | 展示 | `surface.card` | `text.secondary` | `border.hairline` |
 | 可选 · 未选 | `surface.card` | `text.secondary` | `border.hairline` |
-| 可选 · 已选 | `gradient.surface` | `text.on-soft` | `text.brand` 42% |
+| 可选 · 已选 | `surface.tint` | `text.on-soft` | `text.brand` 42% |
 | 可删除 | `surface.card` | `text.secondary` | `border.hairline` |
 | 带图标 | 同上，图标 15 | — | — |
 
@@ -1047,7 +1047,7 @@ Android 用 `FilterChip` / `InputChip` / `AssistChip` 三选一，不要都用�
 
 | 变体 | 背景 | 文字 | 用于 |
 | --- | --- | --- | --- |
-| `shared` | `gradient.surface` | `text.on-soft` | 共享状态 |
+| `shared` | `surface.tint` | `text.on-soft` | 共享状态 |
 | `schedule` | `gradient.mid` | 白 | 时间点 |
 | `pending` | `surface.glass-strong` | `text.brand` | 进行中 |
 | `success` | `status-soft.success` | `status.success` | 已完成 |

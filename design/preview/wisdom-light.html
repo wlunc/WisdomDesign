@@ -1359,8 +1359,8 @@ html&gt;body{padding:0}&lt;/style&gt;
   --wd-hairline2:light-dark(rgba(10,27,36,.16),rgba(255,255,255,.18));
   --wd-hairline-top:light-dark(rgba(255,255,255,.8),rgba(255,255,255,.16));
   --wd-field:light-dark(rgba(10,27,36,.05),rgba(255,255,255,.07));
-  --wd-glass:light-dark(rgba(255,255,255,.68),rgba(10,26,40,.55));
-  --wd-glass-strong:light-dark(rgba(255,255,255,.86),rgba(12,30,46,.78));
+  --wd-glass:light-dark(rgba(255,255,255,.702),rgba(12,32,44,.62));
+  --wd-glass-strong:light-dark(rgba(255,255,255,.859),rgba(12,32,44,.78));
   /* 状态：柔和的绿 / 蓝 / 黄 / 红，都不是高饱和 */
   --wd-success:light-dark(#2A7F5C,#7FD3B4);
   --wd-success-soft:light-dark(#E3F5EC,#0D2E24);
@@ -1378,9 +1378,9 @@ html&gt;body{padding:0}&lt;/style&gt;
   --wd-sh-brand:0 6px 16px light-dark(rgba(22,119,179,.18),rgba(0,0,0,.42));
   /* 场景底：半透明色晕叠在 light-dark 底色上，两套主题共用一份定义 */
   --wd-wash:
-    radial-gradient(90% 62% at 12% -6%,color-mix(in srgb,#B0D5DF 66%,transparent) 0%,transparent 62%),
-    radial-gradient(82% 58% at 92% 2%,color-mix(in srgb,#7EC4CF 46%,transparent) 0%,transparent 64%),
-    radial-gradient(120% 74% at 58% 104%,color-mix(in srgb,#4C8DAE 18%,transparent) 0%,transparent 68%);
+    radial-gradient(90% 62% at 12% -6%,color-mix(in srgb,#B0D5DF 23%,transparent) 0%,transparent 62%),
+    radial-gradient(82% 58% at 92% 2%,color-mix(in srgb,#7EC4CF 16%,transparent) 0%,transparent 64%),
+    radial-gradient(120% 74% at 58% 104%,color-mix(in srgb,#4C8DAE 6%,transparent) 0%,transparent 68%);
   --wd-frame:light-dark(#D8E8EE,#0E2438);
   --wd-r:24px;
   --wd-r-lg:calc(var(--wd-r) - 6px);
@@ -1420,7 +1420,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   background:var(--wd-canvas);border:1px solid var(--wd-hairline);border-radius:var(--wd-r);
   padding:18px;display:flex;flex-direction:column;gap:20px;color:var(--wd-text);
 }
-#wd-board .wd-canvas-sheet::before{content:&quot;&quot;;position:absolute;inset:0;background:var(--wd-wash);opacity:.55;pointer-events:none}
+#wd-board .wd-canvas-sheet::before{content:&quot;&quot;;position:absolute;inset:0;background:var(--wd-wash);pointer-events:none}
 #wd-board .wd-canvas-sheet &gt; *{position:relative}
 
 /* 色板 */

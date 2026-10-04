@@ -148,7 +148,7 @@
 
 | 内容 | 下限 | 我们的实际值 |
 | --- | --- | --- |
-| 正文（< 18.66pt 粗体 / < 24pt） | 4.5:1 | `text.primary` 13.6:1；`text.secondary` 6.1:1；`text.tertiary` 4.7:1 |
+| 正文（< 18.66pt 粗体 / < 24pt） | 4.5:1 | 浅色 canvas 上 `text.primary` 16.3:1；`text.secondary` 7.1:1；`text.tertiary` 6.0:1（色晕最暗处 5.5:1） |
 | 大字号（≥ 18.66pt 粗体） | 3:1 | `type.largeTitle` 等远超 |
 | 图形、图标、控件边界 | 3:1 | 填充与轨道 3:1 以上 |
 | 禁用态 | 不适用（可辨识即可） | 40% 不透明度 |
@@ -156,11 +156,23 @@
 
 ### 5.2 玻璃层上的文字
 
-玻璃层会随下方内容变色，所以：
+玻璃会随下方内容变色，所以**能放什么字由玻璃档位决定**。下表按最不利口径实算（浅色端取最暗内容、深色端取最亮内容），完整推导见 [`12-b22-glass.md`](12-b22-glass.md) §4：
 
-- 文字必须落在 `surface.glass-strong`（82%+）上，不用 `ultraThin`
-- 下方是照片或高饱和内容时，文字下垫一层 25% 不透明度的 `surface.card-solid`
-- 验收时**取最不利位置的背景色**测对比度，不是取平均
+| 玻璃档 | `text.primary` | `text.secondary` | `text.tertiary` |
+| --- | --- | --- | --- |
+| 浅色 `surface.glass`（70.2%） | 8.4:1 ✅ | **3.6:1 ❌** | **3.1:1 ❌** |
+| 浅色 `surface.glass-strong`（85.9%） | 12.7:1 ✅ | 5.5:1 ✅ | 4.7:1 ✅ |
+| 深色 `surface.glass`（62.0%） | **4.1:1 ❌** | 2.4:1 ❌ | 1.7:1 ❌ |
+| 深色 `surface.glass-strong`（78.0%） | 7.2:1 ✅ | **4.2:1 ❌** | **2.9:1 ❌** |
+
+规则：
+
+1. **浅色端** `surface.glass` **只放 `text.primary`**；`secondary` / `tertiary` 必须改用 `glass-strong`，否则不上玻璃。
+2. **深色端**任何字阶都**不上 `surface.glass`**；`glass-strong` **只放 `text.primary`**。
+3. **悬浮 Tab 栏用 `glass-strong`**；深色端的 Tab 栏改用不透明表面（`surface.card-solid` + 顶部高光 + 外圈细线），未选标签才能用 `text.secondary`。
+4. **语义色（`status.*`）不上玻璃** —— 只在软底或实底上使用。
+5. 下方是照片或高饱和内容时，文字下垫一层 25% 不透明度的 `surface.card-solid`。
+6. 验收时**取最不利位置的背景色**测对比度，不是取平均；玻璃一律取"最暗内容"或"最亮内容"的合成色。
 
 ---
 

@@ -51,6 +51,19 @@
     "sunrise":     { "$value": "linear-gradient(135deg,#FFE7C2 0%,#FFD2C4 100%)", "$description": "暖色点缀，仅用于插画与空状态" }
   },
 
+  "wash": {
+    "$type": "gradient",
+    "$description": "页面色晕。三条径向叠加，几何固定（90% 62% at 12% -6% / 82% 58% at 92% 2% / 120% 74% at 58% 104%），深浅两态只换颜色与 alpha。数值 = 生效 alpha（净 alpha），渲染层不得再乘 opacity。不要放进 gradient 组：生成器的 collectGradients() 只认 linear-gradient。",
+    "light": {
+      "$value": "radial-gradient(90% 62% at 12% -6%,rgba(176,213,223,.23),transparent 62%),radial-gradient(82% 58% at 92% 2%,rgba(126,196,207,.16),transparent 64%),radial-gradient(120% 74% at 58% 104%,rgba(76,141,174,.06),transparent 68%)",
+      "$description": "B23 读法 E。601×601 几何采样最暗点 #DFF0F3（L=0.8426），text.tertiary #4C616D = 5.53:1"
+    },
+    "dark": {
+      "$value": "radial-gradient(90% 62% at 12% -6%,rgba(18,52,73,.30),transparent 62%),radial-gradient(82% 58% at 92% 2%,rgba(15,64,85,.20),transparent 64%),radial-gradient(120% 74% at 58% 104%,rgba(22,119,179,.08),transparent 68%)",
+      "$description": "A2 定值。601×601 几何采样最亮点 #0E2F42（L=0.0249），text.tertiary #839EB0 = 5.00:1"
+    }
+  },
+
   "semantic": {
     "light": {
       "$type": "color",
@@ -62,13 +75,17 @@
         "card":         { "$value": "#FFFFFFF0", "$description": "96% 白，边缘干净，不再叠内高光与背景模糊" },
         "card-solid":   { "$value": "#FFFFFF" },
         "card-sunken":  { "$value": "#EDF6F9" },
+        "tint":         { "$value": "#D9E9F3", "$description": "组件填充三级阶梯的中档（tonal）。配方：品牌蓝 #1677B3 @16% 叠 surface.card，由 build.js 的 assertTintRecipe() 逐年复算" },
         "glass":        { "$value": "#FFFFFFB3", "$description": "仅导航栏 / Tab 栏 / 材质演示" },
         "glass-strong": { "$value": "#FFFFFFDB" }
       },
       "text": {
         "primary":   { "$value": "#0A1B24" },
         "secondary": { "$value": "#3E5764" },
-        "tertiary":  { "$value": "#5B7784" },
+        "tertiary":  { "$value": "#4C616D", "$description": "B10 修正：原 #5B7784 在 canvas 上只有 4.43、在色晕最暗点 3.83，改为本值后最不利 5.53" },
+        "on-light-primary":   { "$value": "#0A1B24", "$description": "深色端材质自适应到亮底时的字阶；浅色主题下与 text.primary 同值，仅为两端成对生成而存在" },
+        "on-light-secondary": { "$value": "#3E5764", "$description": "同上；浅色主题下与 text.secondary 同值" },
+        "on-light-tertiary":  { "$value": "#4C616D", "$description": "同上；浅色主题下与 text.tertiary 同值" },
         "on-soft":   { "$value": "#123F5C" },
         "on-fill":   { "$value": "#0E3A55" },
         "on-dark":   { "$value": "#FFFFFF" },
@@ -105,20 +122,24 @@
     "dark": {
       "$type": "color",
       "bg": {
-        "canvas":  { "$value": "#0A1B2A" },
-        "grouped": { "$value": "#0D2334" }
+        "canvas":  { "$value": "#0A1B26", "$description": "A2 换族：H 208.1° → 203.6°，与 su.900 同族（Δ色相 ≤3°）" },
+        "grouped": { "$value": "#0D2331", "$description": "A2 换族：H 206.2° → 203.3°" }
       },
       "surface": {
-        "card":         { "$value": "#14283AD1" },
-        "card-solid":   { "$value": "#0C2130" },
-        "card-sunken":  { "$value": "#0A1E2C" },
-        "glass":        { "$value": "#0A1A288C" },
-        "glass-strong": { "$value": "#0C1E2EC7" }
+        "card":         { "$value": "#132836D1", "$description": "A2 换族：H 208.4° → 204.0°" },
+        "card-solid":   { "$value": "#0C212D", "$description": "A2 换族：H 205.0° → 201.8°" },
+        "card-sunken":  { "$value": "#0A1E2A", "$description": "A2 换族：H 204.7° → 202.5°" },
+        "tint":         { "$value": "#123348", "$description": "组件填充三级阶梯的中档（tonal）。配方：品牌蓝 #1677B3 @16% 叠 surface.card，由 build.js 的 assertTintRecipe() 逐年复算" },
+        "glass":        { "$value": "#0C202C9E", "$description": "B22：= material.regular.fillDark。基色由 #0A1A28 收到 #0C202C（H 202.5°，与深色族同族），α 54.9% → 62.0%" },
+        "glass-strong": { "$value": "#0C202CC7", "$description": "B22：= material.thick.fillDark。基色由 #0C1E2E 收到 #0C202C" }
       },
       "text": {
         "primary":   { "$value": "#E6F1F6" },
         "secondary": { "$value": "#A4BCCB" },
         "tertiary":  { "$value": "#839EB0" },
+        "on-light-primary":   { "$value": "#0A1B24", "$description": "深色端材质自适应到亮底（B24）时使用；值引用浅色端 text.primary，由 contrast.js 断言两者相等" },
+        "on-light-secondary": { "$value": "#3E5764", "$description": "同上，引用浅色端 text.secondary" },
+        "on-light-tertiary":  { "$value": "#4C616D", "$description": "同上，引用浅色端 text.tertiary" },
         "on-soft":   { "$value": "#B0D5DF" },
         "on-fill":   { "$value": "#DCEEF4" },
         "on-dark":   { "$value": "#FFFFFF" },
@@ -251,10 +272,10 @@
 
   "material": {
     "$description": "玻璃 = 模糊 + 半透明填充 + 顶部高光 + 外圈细线。四条缺一不可。仅用于导航栏、Tab 栏、浮层、材质演示；卡片用近实底，避免圆角边缘出现重影。",
-    "ultraThin": { "$value": { "blur": "14", "fillLight": "#FFFFFF61", "fillDark": "#0C203857" } },
-    "thin":      { "$value": { "blur": "22", "fillLight": "#FFFFFF8A", "fillDark": "#0C20387A" } },
-    "regular":   { "$value": { "blur": "30", "fillLight": "#FFFFFFB3", "fillDark": "#0C20389E" } },
-    "thick":     { "$value": { "blur": "44", "fillLight": "#FFFFFFDB", "fillDark": "#0C2038C7" } },
+    "ultraThin": { "$value": { "blur": "14", "fillLight": "#FFFFFF61", "fillDark": "#0C202C57" } },
+    "thin":      { "$value": { "blur": "22", "fillLight": "#FFFFFF8A", "fillDark": "#0C202C7A" } },
+    "regular":   { "$value": { "blur": "30", "fillLight": "#FFFFFFB3", "fillDark": "#0C202C9E" } },
+    "thick":     { "$value": { "blur": "44", "fillLight": "#FFFFFFDB", "fillDark": "#0C202CC7" } },
     "tinted":    { "$value": { "blur": "30", "tint": "linear-gradient(135deg,#B0D5DF4D 0%,#7EC4CF3D 100%)" } },
     "sheen":     { "$value": { "gradient": "linear-gradient(100deg,transparent 18%,#FFFFFFA8 50%,transparent 82%)", "duration": "3800" } }
   },

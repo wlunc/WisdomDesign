@@ -164,6 +164,38 @@ Compose 不做自动解析，所以主题提供 `WDGradients` 的浅深两套实
   light-dark(#7EC4CF, #0F4055) 100%);
 ```
 
+### 3.7 组件填充的三级阶梯
+
+组件底的强弱**不靠色相旋转，靠明度阶梯**。三级必须单调、且互相留出空档，
+否则次级操作会被读成"没有底"或者"和主操作一样重"：
+
+| 级 | 令牌 | 浅色填充 | 浅色 L | 深色填充 | 深色 L | 用在哪 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 实 | `semantic.*.gradient.fill` | `#8FCFDD → #63BAD2` | 0.557 → 0.424 | `#1677B3 → #2A5CAA` | 0.166 → 0.111 | 主操作、选中 Tab、FAB |
+| 中 | `semantic.*.surface.tint` | `#D9E9F3` | **0.794** | `#123348` | **0.029** | 次级操作（tonal）、Chip 已选、Badge shared |
+| 无 | 透明 | — | （canvas 0.927 / 0.010） | — | — | 行内操作、列表右侧（plain） |
+
+**`surface.tint` 是算出来的，不是挑出来的。** 配方是唯一真源：
+
+```
+surface.tint = 品牌蓝 #1677B3 @ 16% 叠在 surface.card 上
+               （surface.card 自身先合成到 bg.canvas）
+```
+
+浅色 `#D9E9F3`、深色 `#123348` 都是这条配方算出来的结果。`build.js` 的
+`assertTintRecipe()` 逐年复算，对不上就构建失败。**要调浓淡只改百分比**，
+然后重跑生成器。
+
+两条约束：
+
+1. **tint 上的文字用 `text.on-soft`**（浅色 8.93:1 / 深色 8.47:1）。
+   **不要用 `text.brand`** —— 品牌蓝在浅色 tint 上只有 3.90:1，它是强调色 / 描边色，不是这层上的字色。
+2. **tint 不做背景层。** 它只在卡片或浮层里当组件底；直接铺在 canvas 上会与 `filled` 抢层级。
+
+> 历史：`tonal` 原先直接复用 `semantic.*.gradient.surface`（背景层令牌）当组件底，
+> 实测两档在 L 0.484–0.557 区间重叠，被读成"没有底"。改用 tint 后 `gradient.surface`
+> 只剩「图标底座 / 背景层」一个消费者，回到它的定义。
+
 
 ## 4. 字体系统
 
@@ -199,6 +231,23 @@ Compose 不做自动解析，所以主题提供 `WDGradients` 的浅深两套实
 - 数值（金额、计数、时长）使用**等宽数字**（iOS `.monospacedDigit()` / Compose `FontFeatureSetting("tnum")`）。
 - 全端尊重系统字号缩放：iOS Dynamic Type 至少支持到 AX3 不截断；Android 支持 `fontScale` 到 1.3。
 - 使用 `caption2` 以下字号时，必须保证文字本身不是唯一信息载体。
+
+#### 三级色的用法映射
+
+三级文字色只差 1.18 倍对比度（`secondary` 7.10:1 vs `tertiary` 6.04:1），
+**层级不能只靠颜色区分**。按"这条信息是不是必需"分工：
+
+| 语义 | 色 | 字阶 | 例 |
+| --- | --- | --- | --- |
+| 主 | `text.primary` | headline 17 及以上 | 页面标题、列表主文案 |
+| 次 | `text.secondary` | body 17 / callout 16 / subheadline 15 | 副标题、说明、表单标签 |
+| 三级 | `text.tertiary` | footnote 13 / caption1 12 | 时间戳、计数、非交互元信息 |
+
+两条约束：
+
+1. **`text.tertiary` 只用于非必需信息。** 用户不看它也不影响完成任务。
+2. **占位符承载了"该填什么"的必要信息时，用 `text.secondary`。** 13 与 12 只差 1pt、颜色也接近，
+   层级要靠"是否必需"分工，而不是再压一档颜色。
 
 ## 5. 间距与布局
 
@@ -281,9 +330,12 @@ Compose 没有等价 API，用 `RoundedCornerShape` 并把数值 **+2** 补偿�
 | `material.tinted` | 30 + 品牌染色 | 品牌色 24–30% 叠加 | Hero 卡、选中态容器 |
 | `material.sheen` | — | 白色高光扫过，3800ms | 强调卡片的动态高光 |
 
-透明度的用法：**玻璃只用在浮层**。导航栏 62%、Tab 栏 62%、浮层 82%；
+透明度的用法：**玻璃只用在浮层**。两档语义值：导航栏 / Tab 栏 / 工具条用 `surface.glass`（浅色 70.2% / 深色 62.0%），浮层 / Sheet 头 / Toast 用 `surface.glass-strong`（浅色 85.9% / 深色 78.0%）。
+两档的值必须等于 `material.regular` / `material.thick` 的填充，`build.js` 有守卫（B22，见 [`12-b22-glass.md`](12-b22-glass.md)）；
 卡片、列表行、提示条、输入框用近实底（92–96% 白）+ 单条 hairline，
 不要在同一层同时叠半透明、描边、内高光和背景模糊。
+
+**玻璃上只放什么字，由档位决定**：浅色端 `glass` 只放 `text.primary`，`secondary` / `tertiary` 必须用 `glass-strong`；深色端任何字阶都不上 `glass`，`glass-strong` 只放 `text.primary`。完整矩阵见 [`06-accessibility.md §5.2`](06-accessibility.md)。
 
 一个合格的玻璃层包含四件事，缺一件就会显得廉价：
 

@@ -469,8 +469,65 @@ function buildKotlin(t) {
 
 // ---------------------------------------------------------------- main
 
+/**
+ * B22 守卫：semantic 层的玻璃两档必须与 material 配方层逐位相同。
+ * 玻璃一旦出现第二个数值来源，深浅两端就会各自漂移（见 docs/12-b22-glass.md）。
+ * 要改玻璃，只改 material 配方层；要换配对，先在文档里重裁。
+ */
+function assertGlassPairing(t) {
+  const surface = (theme, key) => t.semantic[theme].surface[key].$value;
+  const pairs = [
+    ["semantic.light.surface.glass", surface("light", "glass"), "material.regular.fillLight", t.material.regular.$value.fillLight],
+    ["semantic.dark.surface.glass", surface("dark", "glass"), "material.regular.fillDark", t.material.regular.$value.fillDark],
+    ["semantic.light.surface.glass-strong", surface("light", "glass-strong"), "material.thick.fillLight", t.material.thick.$value.fillLight],
+    ["semantic.dark.surface.glass-strong", surface("dark", "glass-strong"), "material.thick.fillDark", t.material.thick.$value.fillDark],
+  ];
+  for (const [aName, a, bName, b] of pairs) {
+    if (String(a).toUpperCase() !== String(b).toUpperCase()) {
+      throw new Error(
+        `B22 玻璃配对不一致：${aName} = ${a}，但 ${bName} = ${b}。\n` +
+          `玻璃的数值真源是 material 配方层，semantic 层不得自持一套值（docs/12-b22-glass.md §3）。`,
+      );
+    }
+  }
+}
+
+/**
+ * tint 守卫：`surface.tint` 必须等于「品牌蓝 16% 叠在 surface.card 上」
+ * （surface.card 自身先合成到 bg.canvas）。配方是唯一真源，hex 是算出来的结果。
+ * 要调浓淡只改 TINT_PERCENT，然后重跑生成器（见 docs/13-tint.md）。
+ */
+function assertTintRecipe(t) {
+  const BRAND = "#1677B3";
+  const TINT_PERCENT = 0.16;
+  const toHex = (rgb) => "#" + rgb.map((v) => v.toString(16).toUpperCase().padStart(2, "0")).join("");
+
+  for (const theme of ["light", "dark"]) {
+    const card = parseHex(t.semantic[theme].surface.card.$value);
+    const canvas = parseHex(t.semantic[theme].bg.canvas.$value);
+    // 中间量保持浮点，避免两次取整把结果推偏 1/255
+    const cardAlpha = card.a / 255;
+    const cardRgb = [card.r, card.g, card.b].map(
+      (v, i) => v * cardAlpha + [canvas.r, canvas.g, canvas.b][i] * (1 - cardAlpha),
+    );
+    const brand = parseHex(BRAND);
+    const expected = toHex(
+      [brand.r, brand.g, brand.b].map((v, i) => Math.round(v * TINT_PERCENT + cardRgb[i] * (1 - TINT_PERCENT))),
+    );
+    const actual = String(t.semantic[theme].surface.tint.$value).toUpperCase().slice(0, 7);
+    if (expected !== actual) {
+      throw new Error(
+        `tint 配方不成立：semantic.${theme}.surface.tint = ${actual}，\n` +
+          `但按「品牌蓝 ${TINT_PERCENT * 100}% 叠 surface.card」应为 ${expected}（docs/13-tint.md §2）。`,
+      );
+    }
+  }
+}
+
 function main() {
   const tokens = JSON.parse(fs.readFileSync(TOKENS, "utf8"));
+  assertGlassPairing(tokens);
+  assertTintRecipe(tokens);
   const targets = [
     [SWIFT_OUT, buildSwift(tokens)],
     [KOTLIN_OUT, buildKotlin(tokens)],
