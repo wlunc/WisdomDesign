@@ -47,6 +47,7 @@ WisdomDesign/                  容器目录，本身不是 git 仓库
 ```
 wisdomdesign/
 ├── docs/
+│   ├── 01-review-summary.md    **v1.0 评审总览与开工决策（权威文档，先读这份）**
 │   ├── 01-foundation.md        设计原则与基础（色彩/字体/间距/形状/材质/动效/无障碍）
 │   ├── 02-components.md        组件清单与优先级
 │   ├── 03-platform-mapping.md  令牌到 SwiftUI / Compose 的落地映射
@@ -56,17 +57,6 @@ wisdomdesign/
 │   ├── 07-content.md           内容与文案规范
 │   ├── 08-icons.md             图标规范与双端语义对照
 │   ├── 09-layout.md            布局与响应式规范
-│   ├── 10-discussion.md        v1.0 设计评审讨论纪要（设计师 / 架构师 / 研发Leader）
-│   ├── 11-conclusions.md       v1.0 设计评审结论（决议清单与开放项）
-│   ├── 12-review-architect.md  第二轮评审 · 架构师复核意见
-│   ├── 12-review-architect-peer.md  第二轮评审 · 架构师意见的独立交叉复核
-│   ├── 13-review-designer.md   第二轮评审 · 设计师复核意见
-│   ├── 13-review-designer-peer.md   第二轮评审 · 设计师意见的独立交叉复核
-│   ├── 14-review-techlead-round2.md 第二轮评审 · 研发Leader 复核意见
-│   ├── 15-review-evidence.md   第二轮评审 · 代码级证据核验报告
-│   ├── 16-discussion-round2.md 第二轮设计评审讨论纪要（三方 + 交叉复核）
-│   ├── 17-conclusions-round2.md 第二轮设计评审结论（B22–B27 与开工条件）
-│   ├── 18-summary.md           **评审总览与开工决策（单文档入口，先读这份）**
 │   └── specs/                  组件详细规格（开发依据与验收标准）
 │       ├── README.md           模板、编写规则、组件索引
 │       ├── 01-basic.md         01–20 基础组件
