@@ -1,0 +1,344 @@
+{
+  "$description": "图标语义名契约（44 条）：跨端同名 id + 每端实现符号 + RTL 镜像标记。真源 = 设计仓 docs/08-icons.md §4。",
+  "$version": "1.0.0",
+  "groups": [
+    {
+      "id": "navigation",
+      "label": "导航",
+      "icons": [
+        {
+          "id": "home",
+          "semantic": "首页",
+          "ios": "house.fill",
+          "android": "home",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "calendar",
+          "semantic": "日历",
+          "ios": "calendar",
+          "android": "calendar_month",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "members",
+          "semantic": "家庭 / 成员",
+          "ios": "person.2.fill",
+          "android": "group",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "profile",
+          "semantic": "我的",
+          "ios": "person.fill",
+          "android": "person",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "back",
+          "semantic": "返回",
+          "ios": "chevron.left",
+          "android": "arrow_back",
+          "mirrorsInRTL": true
+        },
+        {
+          "id": "close",
+          "semantic": "关闭",
+          "ios": "xmark",
+          "android": "close",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "more",
+          "semantic": "更多",
+          "ios": "ellipsis",
+          "android": "more_horiz",
+          "mirrorsInRTL": false
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "label": "操作",
+      "icons": [
+        {
+          "id": "add",
+          "semantic": "新增",
+          "ios": "plus",
+          "android": "add",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "edit",
+          "semantic": "编辑",
+          "ios": "pencil",
+          "android": "edit",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "delete",
+          "semantic": "删除",
+          "ios": "trash",
+          "android": "delete",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "share",
+          "semantic": "分享",
+          "ios": "square.and.arrow.up",
+          "android": "share",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "search",
+          "semantic": "搜索",
+          "ios": "magnifyingglass",
+          "android": "search",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "filter",
+          "semantic": "筛选",
+          "ios": "line.3.horizontal.decrease",
+          "android": "filter_list",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "sort",
+          "semantic": "排序",
+          "ios": "arrow.up.arrow.down",
+          "android": "swap_vert",
+          "mirrorsInRTL": true
+        },
+        {
+          "id": "duplicate",
+          "semantic": "复制",
+          "ios": "doc.on.doc",
+          "android": "content_copy",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "undo",
+          "semantic": "撤销",
+          "ios": "arrow.uturn.backward",
+          "android": "undo",
+          "mirrorsInRTL": true
+        },
+        {
+          "id": "redo",
+          "semantic": "重做",
+          "ios": "arrow.uturn.forward",
+          "android": "redo",
+          "mirrorsInRTL": true
+        },
+        {
+          "id": "disclose",
+          "semantic": "进入下一级",
+          "ios": "chevron.right",
+          "android": "chevron_right",
+          "mirrorsInRTL": true
+        },
+        {
+          "id": "expand",
+          "semantic": "展开",
+          "ios": "chevron.down",
+          "android": "expand_more",
+          "mirrorsInRTL": false
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "label": "状态",
+      "icons": [
+        {
+          "id": "done",
+          "semantic": "已完成",
+          "ios": "checkmark.circle.fill",
+          "android": "check_circle",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "todo",
+          "semantic": "未完成",
+          "ios": "circle",
+          "android": "radio_button_unchecked",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "overdue",
+          "semantic": "已逾期",
+          "ios": "exclamationmark.circle.fill",
+          "android": "error",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "reminder",
+          "semantic": "提醒",
+          "ios": "bell.fill",
+          "android": "notifications",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "doNotDisturb",
+          "semantic": "免打扰",
+          "ios": "bell.slash.fill",
+          "android": "notifications_off",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "inProgress",
+          "semantic": "进行中",
+          "ios": "clock",
+          "android": "schedule",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "synced",
+          "semantic": "已同步",
+          "ios": "arrow.triangle.2.circlepath",
+          "android": "sync",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "offline",
+          "semantic": "离线",
+          "ios": "wifi.slash",
+          "android": "wifi_off",
+          "mirrorsInRTL": false
+        }
+      ]
+    },
+    {
+      "id": "form",
+      "label": "表单",
+      "icons": [
+        {
+          "id": "clear",
+          "semantic": "清除",
+          "ios": "xmark.circle.fill",
+          "android": "cancel",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "showPassword",
+          "semantic": "显示密码",
+          "ios": "eye",
+          "android": "visibility",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "hidePassword",
+          "semantic": "隐藏密码",
+          "ios": "eye.slash",
+          "android": "visibility_off",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "date",
+          "semantic": "日期",
+          "ios": "calendar",
+          "android": "calendar_month",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "time",
+          "semantic": "时间",
+          "ios": "clock",
+          "android": "schedule",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "unassigned",
+          "semantic": "未指派",
+          "ios": "person.crop.circle.badge.xmark",
+          "android": "person_off",
+          "mirrorsInRTL": false
+        }
+      ]
+    },
+    {
+      "id": "category",
+      "label": "内容分类",
+      "icons": [
+        {
+          "id": "task",
+          "semantic": "任务",
+          "ios": "list.bullet",
+          "android": "checklist",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "chore",
+          "semantic": "家务",
+          "ios": "sparkles",
+          "android": "auto_awesome",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "shopping",
+          "semantic": "采购",
+          "ios": "basket",
+          "android": "shopping_basket",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "meal",
+          "semantic": "餐饮",
+          "ios": "fork.knife",
+          "android": "restaurant",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "travel",
+          "semantic": "出行",
+          "ios": "car.fill",
+          "android": "directions_car",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "health",
+          "semantic": "健康",
+          "ios": "heart.fill",
+          "android": "favorite",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "study",
+          "semantic": "学习",
+          "ios": "book.fill",
+          "android": "menu_book",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "pet",
+          "semantic": "宠物",
+          "ios": "pawprint.fill",
+          "android": "pets",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "plant",
+          "semantic": "植物",
+          "ios": "leaf.fill",
+          "android": "eco",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "bill",
+          "semantic": "账单",
+          "ios": "creditcard.fill",
+          "android": "credit_card",
+          "mirrorsInRTL": false
+        },
+        {
+          "id": "photo",
+          "semantic": "照片",
+          "ios": "photo",
+          "android": "photo",
+          "mirrorsInRTL": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "source": "contracts/icons.json",
+  "version": "1.0.0",
+  "sha256": "aab3bb93f508307db68b4e43f1441a4517ce36bb3f8d74fb1f8cd2b917baf2de",
+  "sha12": "aab3bb93f508",
+  "artifacts": [
+    {
+      "path": "iOS/Sources/WisdomUI/Foundation/generated/WDIconName.swift",
+      "sha256": "8a917309b24e9c091f16a956bdbb941677dc5e14f0e2515f7d502a57aa17143b"
+    },
+    {
+      "path": "android/wisdom-ui/src/main/kotlin/io/github/wlunc/wisdom/foundation/generated/WDIconName.kt",
+      "sha256": "8ca2295fda5b5c2653e3f1bfba35c128f8199c45bab26836256fd6f67636f5bc"
+    }
+  ]
+}

@@ -1237,6 +1237,115 @@ function manifestContent(ctx, allFiles) {
   )}\n`;
 }
 
+// ───────────────────────── 契约层：图标（contracts/icons.json） ─────────────────────────
+// 与令牌层同构：读源 → 渲染两端产物 → 写/校验 + 独立 manifest（不复用令牌 manifest：
+// 它的 version/sha12 语义 = 令牌版本，混用会让溯源链假成立）。
+const CONTRACTS_ICONS = path.join(ROOT, "contracts/icons.json");
+const CONTRACTS_MANIFEST_OUT = path.join(ROOT, "dist/contracts.manifest.json");
+const ICON_COUNT = 44;
+
+function readContractFile(file) {
+  const raw = fs.readFileSync(file);
+  const json = JSON.parse(raw.toString("utf8"));
+  const sha256 = crypto.createHash("sha256").update(raw).digest("hex");
+  return { json, sha256, sha12: sha256.slice(0, 12) };
+}
+
+function iconEntries(json) {
+  const entries = [];
+  for (const group of json.groups || []) {
+    for (const icon of group.icons || []) entries.push(Object.assign({ group: group.id }, icon));
+  }
+  return entries;
+}
+
+function assertIcons(json) {
+  const entries = iconEntries(json);
+  if (entries.length !== ICON_COUNT) fail("contracts/icons.json 必须 " + ICON_COUNT + " 条，实际 " + entries.length);
+  const seen = new Set();
+  for (const e of entries) {
+    for (const key of ["id", "semantic", "ios", "android"]) {
+      if (!e[key]) fail("contracts/icons.json 条目缺字段 " + key + "：" + JSON.stringify(e));
+    }
+    if (typeof e.mirrorsInRTL !== "boolean") fail("contracts/icons.json 缺 mirrorsInRTL：" + e.id);
+    if (seen.has(e.id)) fail("contracts/icons.json id 重复：" + e.id);
+    seen.add(e.id);
+  }
+  return entries;
+}
+
+function contractBanner(version, sha12) {
+  return "// 本文件由 " + GENERATOR + " 生成，请勿手改。" + "\n"
+    + "// 修改请编辑 wisdomdesign/contracts/icons.json 后重新生成。" + "\n"
+    + "// contracts v" + version + " · sha256:" + sha12 + "\n";
+}
+
+function buildSwiftIconName(json, ctx) {
+  const entries = iconEntries(json);
+  const lines = [contractBanner(ctx.version, ctx.sha12), "import Foundation", ""];
+  lines.push("/// 图标语义名（" + entries.length + " 条；契约真源 = contracts/icons.json）。");
+  lines.push("///");
+  lines.push("/// 本文件由设计仓生成器写入（R12）；**不要手改**。");
+  lines.push("public enum WDIconName: String, CaseIterable, Sendable, Hashable {");
+  for (const e of entries) lines.push("  case " + e.id + " = \"" + e.id + "\"");
+  lines.push("");
+  lines.push("  /// 本端实现符号（SF Symbols）；换符号属契约变更。");
+  lines.push("  public var symbolName: String {");
+  lines.push("    switch self {");
+  for (const e of entries) lines.push("    case ." + e.id + ": return \"" + e.ios + "\"");
+  lines.push("    }");
+  lines.push("  }");
+  lines.push("");
+  lines.push("  /// 是否随书写方向镜像（**契约断言用**；渲染由 SF Symbols 自带机制负责）。");
+  lines.push("  public var mirrorsInRTL: Bool { Self.mirrorsInRTLNames.contains(self) }");
+  lines.push("");
+  const mirrors = entries.filter((e) => e.mirrorsInRTL).map((e) => "." + e.id);
+  lines.push("  /// 需要镜像的语义名集合（契约列）。");
+  lines.push("  public static let mirrorsInRTLNames: Set<WDIconName> = [" + mirrors.join(", ") + "]");
+  lines.push("}");
+  lines.push("");
+  return lines.join("\n");
+}
+
+function pascalCase(id) { return id.charAt(0).toUpperCase() + id.slice(1); }
+
+function buildKotlinIconName(json, ctx) {
+  const entries = iconEntries(json);
+  const lines = [contractBanner(ctx.version, ctx.sha12), "package " + ANDROID_PACKAGE, ""];
+  lines.push("/** 图标语义名（" + entries.length + " 条；契约真源 = contracts/icons.json）。 */");
+  lines.push("public enum class WDIconName(");
+  lines.push("    public val id: String,");
+  lines.push("    public val materialName: String,");
+  lines.push("    public val mirrorsInRTL: Boolean,");
+  lines.push(") {");
+  const rows = entries.map((e) => "    " + pascalCase(e.id) + "(\"" + e.id + "\", \"" + e.android + "\", " + e.mirrorsInRTL + ")");
+  lines.push(rows.join(",\n") + ";");
+  lines.push("}");
+  lines.push("");
+  return lines.join("\n");
+}
+
+function contractTargets(json, ctx) {
+  return [
+    ["ios", path.join(IOS_GENERATED, "WDIconName.swift"), buildSwiftIconName(json, ctx)],
+    ["android", path.join(ANDROID_GENERATED, "WDIconName.kt"), buildKotlinIconName(json, ctx)],
+  ];
+}
+
+function contractManifestContent(ctx, allFiles) {
+  const artifacts = allFiles.map(([, file, content]) => ({
+    path: path.relative(OUT_ROOT, file).split(path.sep).join("/"),
+    sha256: crypto.createHash("sha256").update(content).digest("hex"),
+  }));
+  return JSON.stringify({
+    source: "contracts/icons.json",
+    version: ctx.version,
+    sha256: ctx.sha256,
+    sha12: ctx.sha12,
+    artifacts,
+  }, null, 2) + "\n";
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -1320,6 +1429,45 @@ function main() {
       console.log(`→ ${rel}（设计仓自有产物，目录自动创建）`);
     }
   }
+
+  // ── 契约层：图标（与令牌层同构；独立 manifest） ──
+  if (!fs.existsSync(CONTRACTS_ICONS)) {
+    fail("契约图标数据缺失：contracts/icons.json（M2 起必需；真源 = 设计仓 08-icons.md §4）");
+  }
+  const contracts = readContractFile(CONTRACTS_ICONS);
+  const icons = assertIcons(contracts.json);
+  const iconCtx = {
+    version: contracts.json.$version,
+    sha256: contracts.sha256,
+    sha12: contracts.sha12,
+    count: icons.length,
+  };
+  const contractAll = contractTargets(contracts.json, iconCtx);
+  for (const [, file, content] of contractAll.filter(([p]) => platforms.includes(p))) {
+    const rel = path.relative(OUT_ROOT, file).split(path.sep).join("/");
+    const current = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+    if (options.check) {
+      if (current !== content) drifted += 1;
+      report(rel, current === content);
+    } else {
+      fs.writeFileSync(file, content);
+      console.log("→ " + rel);
+    }
+  }
+  if (options.emitManifest) {
+    const content = contractManifestContent(iconCtx, contractAll);
+    const rel = path.relative(OUT_ROOT, CONTRACTS_MANIFEST_OUT).split(path.sep).join("/");
+    const current = fs.existsSync(CONTRACTS_MANIFEST_OUT) ? fs.readFileSync(CONTRACTS_MANIFEST_OUT, "utf8") : null;
+    if (options.check) {
+      if (current !== content) drifted += 1;
+      report(rel, current === content);
+    } else {
+      fs.mkdirSync(path.dirname(CONTRACTS_MANIFEST_OUT), { recursive: true });
+      fs.writeFileSync(CONTRACTS_MANIFEST_OUT, content);
+      console.log("→ " + rel + "（设计仓自有产物，目录自动创建）");
+    }
+  }
+  console.log("contracts v" + iconCtx.version + " · sha256:" + iconCtx.sha12 + " · 图标=" + iconCtx.count + " · platforms=[" + platforms.join(", ") + "]");
 
   console.log(
     `tokens v${ctx.version} · sha256:${sha12} · schemes=[${selected.map((s) => s.name).join(", ")}] · 槽位=${ctx.slotCount} · platforms=[${platforms.join(", ")}]`,
