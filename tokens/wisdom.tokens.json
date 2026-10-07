@@ -1,5 +1,12 @@
 {
-  "$description": "Wisdom Design System · 设计令牌唯一真源（DTCG 格式）。v1.0 定稿：温和蓝，浅色版为主。原始层不直接用于界面，界面只用 semantic 层。",
+  "$description": "Wisdom Design System · 设计令牌唯一真源（DTCG 格式）。v1.0 定稿：温和蓝，浅色版为主。原始层不直接用于界面，界面只用 semantic 层。本文件是 M0-1 令牌 schema 的一次性冻结变更集（21 行清单的 (a) 部分 + schemes 维度 + U12 = 32 槽位），冻结窗口只开一次：此后新增/改键名 = 二次 breaking，必须走变更集流程。",
+  "$version": "1.0.0",
+
+  "schemes": {
+    "$description": "主题方案维度（M0-1 同批冻结，用户决策 #8 层一）。键 = scheme 名（小写 slug），值为该方案元数据；语义色值真源 = semantic.<同名>，两者键集合必须一致（生成器按 --schemes 逐套输出，并在 --check 里断言相等）。appearance 决定浅/深解析（深色变体 = 新 scheme 名 + appearance: dark）。新增品牌 = 追加一条 scheme + 在 semantic 下增同名一组，不改已有键。运行时只换「已生成」的 scheme（不重启进程、不进高频路径）；不支持运行时任意 token.json / 服务端下发 / 逐槽位任意覆盖。",
+    "light": { "$value": { "appearance": "light", "semantic": "semantic.light", "isDefault": true } },
+    "dark":  { "$value": { "appearance": "dark",  "semantic": "semantic.dark",  "isDefault": false } }
+  },
 
   "color": {
     "$type": "color",
@@ -65,6 +72,7 @@
   },
 
   "semantic": {
+    "$description": "语义色。U12 槽位 = semantic.<scheme> 的叶子路径，共 32 个（M0-1 新增 text.disabled）；每个 scheme 一套、浅深成对，生成器 --check 断言计数 == 32 且两端一致。",
     "light": {
       "$type": "color",
       "bg": {
@@ -83,6 +91,7 @@
         "primary":   { "$value": "#0A1B24" },
         "secondary": { "$value": "#3E5764" },
         "tertiary":  { "$value": "#4C616D", "$description": "B10 修正：原 #5B7784 在 canvas 上只有 4.43、在色晕最暗点 3.83，改为本值后最不利 5.53" },
+        "disabled":  { "$value": "#6A7B85", "$description": "禁用态文字色槽（IOS-06 / 用户决策 #3 ⇒ U12 = 32 槽位）。默认执行项（D-13 色值待设计给值，先冻结、不缩表）：净色、不与 40% 叠加；实测最不利背景 surface.tint #D9E9F3 = 3.53:1、canvas 4.09:1，均 ≥ 3:1（非豁免下限）；被否决的「40% 不透明度」方案同底实测 2.49:1。比 text.tertiary 更淡一档、仍可辨识" },
         "on-light-primary":   { "$value": "#0A1B24", "$description": "深色端材质自适应到亮底时的字阶；浅色主题下与 text.primary 同值，仅为两端成对生成而存在" },
         "on-light-secondary": { "$value": "#3E5764", "$description": "同上；浅色主题下与 text.secondary 同值" },
         "on-light-tertiary":  { "$value": "#4C616D", "$description": "同上；浅色主题下与 text.tertiary 同值" },
@@ -137,6 +146,7 @@
         "primary":   { "$value": "#E6F1F6" },
         "secondary": { "$value": "#A4BCCB" },
         "tertiary":  { "$value": "#839EB0" },
+        "disabled":  { "$value": "#6E8798", "$description": "禁用态文字色槽（IOS-06 / 用户决策 #3 ⇒ U12 = 32 槽位）。默认执行项（D-13 色值待设计给值，先冻结、不缩表）：净色、不与 40% 叠加；实测最不利背景 surface.tint #123348 = 3.50:1、canvas 4.66:1，均 ≥ 3:1；比 text.tertiary（#839EB0）更暗一档、仍可辨识" },
         "on-light-primary":   { "$value": "#0A1B24", "$description": "深色端材质自适应到亮底（B24）时使用；值引用浅色端 text.primary，由 contrast.js 断言两者相等" },
         "on-light-secondary": { "$value": "#3E5764", "$description": "同上，引用浅色端 text.secondary" },
         "on-light-tertiary":  { "$value": "#4C616D", "$description": "同上，引用浅色端 text.tertiary" },
@@ -176,21 +186,22 @@
 
   "typography": {
     "$type": "typography",
+    "$description": "字阶。M0-1：letterSpacing 逐条显式给出（只有 overline 非 0，其余 0），单位 = pt/sp 等价、不随字号缩放（契约注释项，不建键）；生成物 WDTextStyle 第 4 参 = letterSpacing。",
     "family": {
       "sans":    { "$value": "SF Pro Text / Roboto Flex" },
       "rounded": { "$value": "SF Pro Rounded / MiSans" }
     },
-    "largeTitle":  { "$value": { "fontSize": "34", "lineHeight": "41", "fontWeight": 700 } },
-    "title1":      { "$value": { "fontSize": "28", "lineHeight": "34", "fontWeight": 700 } },
-    "title2":      { "$value": { "fontSize": "22", "lineHeight": "28", "fontWeight": 600 } },
-    "title3":      { "$value": { "fontSize": "20", "lineHeight": "25", "fontWeight": 600 } },
-    "headline":    { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 600 } },
-    "body":        { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 400 } },
-    "callout":     { "$value": { "fontSize": "16", "lineHeight": "21", "fontWeight": 400 } },
-    "subheadline": { "$value": { "fontSize": "15", "lineHeight": "20", "fontWeight": 400 } },
-    "footnote":    { "$value": { "fontSize": "13", "lineHeight": "18", "fontWeight": 400 } },
-    "caption1":    { "$value": { "fontSize": "12", "lineHeight": "16", "fontWeight": 400 } },
-    "caption2":    { "$value": { "fontSize": "11", "lineHeight": "13", "fontWeight": 500 } },
+    "largeTitle":  { "$value": { "fontSize": "34", "lineHeight": "41", "fontWeight": 700, "letterSpacing": "0" } },
+    "title1":      { "$value": { "fontSize": "28", "lineHeight": "34", "fontWeight": 700, "letterSpacing": "0" } },
+    "title2":      { "$value": { "fontSize": "22", "lineHeight": "28", "fontWeight": 600, "letterSpacing": "0" } },
+    "title3":      { "$value": { "fontSize": "20", "lineHeight": "25", "fontWeight": 600, "letterSpacing": "0" } },
+    "headline":    { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 600, "letterSpacing": "0" } },
+    "body":        { "$value": { "fontSize": "17", "lineHeight": "22", "fontWeight": 400, "letterSpacing": "0" } },
+    "callout":     { "$value": { "fontSize": "16", "lineHeight": "21", "fontWeight": 400, "letterSpacing": "0" } },
+    "subheadline": { "$value": { "fontSize": "15", "lineHeight": "20", "fontWeight": 400, "letterSpacing": "0" } },
+    "footnote":    { "$value": { "fontSize": "13", "lineHeight": "18", "fontWeight": 400, "letterSpacing": "0" } },
+    "caption1":    { "$value": { "fontSize": "12", "lineHeight": "16", "fontWeight": 400, "letterSpacing": "0" } },
+    "caption2":    { "$value": { "fontSize": "11", "lineHeight": "13", "fontWeight": 500, "letterSpacing": "0" } },
     "overline":    { "$value": { "fontSize": "12", "lineHeight": "16", "fontWeight": 500, "letterSpacing": "0.6" } }
   },
 
@@ -223,13 +234,26 @@
 
   "size": {
     "$type": "dimension",
+    "$description": "M0-1 冻结：触控双键（ios 44 / android 48，一次性改名、不留过渡键 size.touch-target-min）；行高单值键 row-height.{comfortable,compact} = 60/44（两端同值 = 可见内容；Android 布局盒 48 = 44 + 上下各 2dp 透明内边距，由 Modifier.wdTouchTarget() 实现，不另立令牌键）。",
     "control": {
       "sm": { "$value": "32" },
       "md": { "$value": "44" },
       "lg": { "$value": "52" }
     },
-    "touch-target-min": { "$value": "44" },
-    "checkbox":         { "$value": "26" },
+    "touch-target-min-ios":     { "$value": "44", "$description": "U8 双键；iOS 只生成本端常量 WDSize.touchTargetMin，不得用作视觉尺寸" },
+    "touch-target-min-android": { "$value": "48", "$description": "U8 双键；Android 只生成本端常量（热区 = 行布局盒 48）" },
+    "row-height": {
+      "$description": "案 B（用户裁决 D1）：可见内容两端同值；契约 WDListRow.height = max(密度下限, 槽位派生)；行距差异登记 F51（Android 布局盒 48 / iOS 44）",
+      "comfortable": { "$value": "60" },
+      "compact":     { "$value": "44" }
+    },
+    "card-padding": {
+      "comfortable": { "$value": "16" },
+      "compact":     { "$value": "12" }
+    },
+    "field-height":    { "$value": "46", "$description": "WDTextField 默认档盒高；所有变体/状态 = 46 ± 1dp（状态不得改变高度）" },
+    "field-min-width": { "$value": "190" },
+    "checkbox":        { "$value": "26" },
     "icon": {
       "sm": { "$value": "16" },
       "md": { "$value": "20" },
@@ -244,6 +268,21 @@
       "xl":  { "$value": "56" },
       "xxl": { "$value": "72" }
     },
+    "sheet": {
+      "$description": "弹层几何（M0-1）：detent 是屏高比例（number），其余为尺寸",
+      "detent": {
+        "$type": "number",
+        "half":  { "$value": 0.5 },
+        "large": { "$value": 0.92 }
+      },
+      "max-width":     { "$value": "480" },
+      "corner-radius": { "$value": "32" },
+      "handle": {
+        "width":  { "$value": "36" },
+        "height": { "$value": "5" }
+      },
+      "handle-top-offset": { "$value": "8", "$description": "iOS 用系统把手、几何不可定制，本组为 Android 出口 + F27 登记的同值项" }
+    },
     "tabbar-height":   { "$value": "56" },
     "navbar-compact":  { "$value": "44" },
     "navbar-standard": { "$value": "56" }
@@ -251,7 +290,7 @@
 
   "elevation": {
     "$type": "shadow",
-    "$description": "带品牌色的柔和阴影，不用纯黑。深色模式退化为黑阴影。",
+    "$description": "带品牌色的柔和阴影，不用纯黑。深色模式退化为黑阴影。M0-1 出口键（数值不变，仅明确出口）：生成物 WDElevation 档位 = 0/1/2/3/brand → iOS e0/e1/e2/e3/brand、Android level0/level1/level2/level3/brand（同名档位、两端命名差异已登记 DIR-1）；Android 为近似映射（映射表 5 行，登记 F43），iOS 双层 shadow 为精确映射；禁止为多层阴影引入离屏层。",
     "0": { "$value": { "layers": [] } },
     "1": { "$value": { "layers": [
       { "x": "0", "y": "1",  "blur": "2",  "color": "#0A3C640A" },
@@ -283,28 +322,45 @@
   "motion": {
     "duration": {
       "$type": "duration",
+      "$description": "时长，单位 ms。reduced = 减弱动态（Reduce Motion）档的统一时长。",
       "instant": { "$value": "100" },
       "fast":    { "$value": "160" },
       "base":    { "$value": "240" },
       "slow":    { "$value": "340" },
-      "slower":  { "$value": "500" }
+      "slower":  { "$value": "500" },
+      "reduced": { "$value": "150", "$description": "Reduce Motion 档统一时长（iOS CR-10-5 / M0-1 清单第 12 行）；默认执行项 = 150（备选 160 未采用，待设计裁决 D-5/DF-14）" }
     },
     "spring": {
-      "gentle": { "$value": { "response": 0.40, "dampingFraction": 0.85, "stiffness": 380 } },
-      "snappy": { "$value": { "response": 0.28, "dampingFraction": 0.82, "stiffness": 900 } },
-      "bouncy": { "$value": { "response": 0.42, "dampingFraction": 0.68, "stiffness": 300 } }
+      "$description": "canonical = response(秒) + dampingRatio(ζ)。D6：键名 dampingFraction → dampingRatio；**不再存 stiffness**（由 μ = 1.0 派生：stiffness = μ·(2π/response)² ⇒ gentle 246.74 / snappy 503.55 / bouncy 223.80；文档 `12 §3.1.3` 的 503.65 / 223.72 是旧舍入值，以公式为准、±0.5 容差内；两端产物自行推导，逐令牌锁 μ 时只改配置）。禁用 massFactor。",
+      "gentle": { "$value": { "response": 0.40, "dampingRatio": 0.85 } },
+      "snappy": { "$value": { "response": 0.28, "dampingRatio": 0.82 } },
+      "bouncy": { "$value": { "response": 0.42, "dampingRatio": 0.68 } }
     },
     "component": {
-      "press-scale":      { "$value": 0.97 },
-      "checkbox-press":   { "$value": 0.90 },
-      "checkbox-draw":    { "$value": "260" },
-      "checkbox-glow":    { "$value": "400" },
-      "switch-knob":      { "$value": "300" },
-      "switch-track":     { "$value": "260" },
-      "progress-easeout": { "$value": "3200" },
-      "toast-in":         { "$value": "320" },
-      "list-stagger":     { "$value": "20" },
-      "skeleton-shimmer": { "$value": "2200" }
+      "$description": "组件私有描画/节奏参数。12 键 = WDComponent 出口全集（AR-61）：归属规则 = 交互动效时长 → WDMotion，组件私有节奏 → WDComponent，禁止互相搬运。M0-1 新增 press-overlay-alpha / layout-break-font-scale 两键；其余 10 键值不变、仅补出口。",
+      "press-scale":         { "$value": 0.97 },
+      "press-overlay-alpha": { "$value": 0.06, "$description": "按下叠加层 alpha（AR-47）：drawRect(fill.pressed × 本值)，深浅同值；禁 ColorMatrix / renderEffect / graphicsLayer.alpha 三条" },
+      "checkbox-press":      { "$value": 0.90 },
+      "checkbox-draw":       { "$value": "260" },
+      "checkbox-glow":       { "$value": "400" },
+      "switch-knob":         { "$value": "300" },
+      "switch-track":        { "$value": "260" },
+      "progress-easeout":    { "$value": "3200" },
+      "toast-in":            { "$value": "320" },
+      "list-stagger":        { "$value": "20" },
+      "skeleton-shimmer":    { "$value": "2200" },
+      "layout-break-font-scale": { "$value": 1.3, "$description": "横排→竖排降级阈值（L4 / AR-53）：读取 LocalDensity.current.fontScale，禁写死 1.3f、禁读 Configuration.fontScale" }
     }
+  },
+
+  "state": {
+    "$description": "交互状态视觉值（U6 状态优先级：disabled > loading > pressed > focused > hover > default）。F45：两端实现机制可不同（iOS 状态视觉值 + Android press-overlay 叠加），必须一致的是状态优先级与可辨识性。brightness/alpha 为百分数；ring-width 单位 pt/sp 等价。",
+    "hover":    { "brightness": { "$type": "number", "$value": 98, "$description": "仅指针设备，亮度 98%" } },
+    "pressed":  { "brightness": { "$type": "number", "$value": 96, "$description": "亮度 96%（配合 motion.component.press-scale）" } },
+    "focus": {
+      "ring-width": { "$type": "dimension", "$value": "3", "$description": "外扩 3pt 光环" },
+      "ring-alpha": { "$type": "number", "$value": 32, "$description": "text.brand 32% 透明；对相邻色 ≥ 3:1" }
+    },
+    "disabled": { "alpha": { "$type": "number", "$value": 40, "$description": "元素级整体不透明度 40%；文字专用槽见 semantic.<scheme>.text.disabled（该槽不豁免对比度，不与本值叠加）" } }
   }
 }
