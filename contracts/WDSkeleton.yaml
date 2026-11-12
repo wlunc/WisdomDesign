@@ -13,12 +13,17 @@ params:
     ios: lineCount
     type: Int
     default: 3
+  - name: accessibilityLabel
+    ios: accessibilityLabel
+    type: "Text?"
+    default: null
 
 slots: 无
 
 default:
   variant: .text
   lineCount: 3
+  accessibilityLabel: null
 
 enums:
   WDSkeletonVariant: [text, list, card]
