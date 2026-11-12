@@ -1,0 +1,297 @@
+{
+  "version": 1,
+  "source": "iOS/AGENTS.md §12.3 / iOS/docs/SPEC.md §1.4.1",
+  "thresholds": {
+    "body": 4.5,
+    "large": 3.0,
+    "graphics": 3.0,
+    "focusRing": 3.0
+  },
+  "schemes": {
+    "light": {
+      "canvas": "#F1F8FA",
+      "rows": [
+        {
+          "foreground": "textPrimary",
+          "background": "bgCanvas",
+          "ratio": 16.36,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textSecondary",
+          "background": "bgCanvas",
+          "ratio": 7.1,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textTertiary",
+          "background": "bgCanvas",
+          "ratio": 6.04,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "surfaceCardSolid",
+          "ratio": 17.57,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textSecondary",
+          "background": "surfaceCardSolid",
+          "ratio": 7.63,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "surfaceTint",
+          "ratio": 14.14,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textOnSoft",
+          "background": "surfaceTint",
+          "ratio": 8.94,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftInfo",
+          "ratio": 15.08,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusInfo",
+          "background": "statusSoftInfo",
+          "ratio": 4.17,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftWarning",
+          "ratio": 16.09,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusWarning",
+          "background": "statusSoftWarning",
+          "ratio": 4.58,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftDanger",
+          "ratio": 14.77,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusDanger",
+          "background": "statusSoftDanger",
+          "ratio": 3.94,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftSuccess",
+          "ratio": 15.51,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusSuccess",
+          "background": "statusSoftSuccess",
+          "ratio": 4.32,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textBrand",
+          "background": "bgCanvas",
+          "ratio": 4.52,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "text.brand / status.info (progress fill)",
+          "background": "surface.tint",
+          "ratio": 3.91,
+          "threshold": "graphics",
+          "status": "pass"
+        }
+      ]
+    },
+    "dark": {
+      "canvas": "#0A1B26",
+      "rows": [
+        {
+          "foreground": "textPrimary",
+          "background": "bgCanvas",
+          "ratio": 15.26,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textSecondary",
+          "background": "bgCanvas",
+          "ratio": 8.88,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textTertiary",
+          "background": "bgCanvas",
+          "ratio": 6.25,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "surfaceCardSolid",
+          "ratio": 14.38,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textSecondary",
+          "background": "surfaceCardSolid",
+          "ratio": 8.37,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "surfaceTint",
+          "ratio": 11.47,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textOnSoft",
+          "background": "surfaceTint",
+          "ratio": 8.43,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftInfo",
+          "ratio": 13.25,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusInfo",
+          "background": "statusSoftInfo",
+          "ratio": 8.14,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftWarning",
+          "ratio": 12.83,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusWarning",
+          "background": "statusSoftWarning",
+          "ratio": 9.18,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftDanger",
+          "ratio": 12.91,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusDanger",
+          "background": "statusSoftDanger",
+          "ratio": 7.5,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textPrimary",
+          "background": "statusSoftSuccess",
+          "ratio": 12.75,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "statusSuccess",
+          "background": "statusSoftSuccess",
+          "ratio": 8.29,
+          "threshold": "graphics",
+          "status": "pass"
+        },
+        {
+          "foreground": "textBrand",
+          "background": "bgCanvas",
+          "ratio": 8.92,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "text.brand / status.info (progress fill)",
+          "background": "surface.tint",
+          "ratio": 6.71,
+          "threshold": "graphics",
+          "status": "pass"
+        }
+      ]
+    }
+  },
+  "glass": {
+    "note": "Known failing pairs are not allowed by WDGlass.resolve (AGENTS §12.3); listed here as the audit ledger.",
+    "light": [
+      {
+        "pair": "text.secondary on surface.glass",
+        "ratio": 3.6,
+        "threshold": "body",
+        "allowed": false
+      },
+      {
+        "pair": "text.tertiary on surface.glass",
+        "ratio": 3.1,
+        "threshold": "body",
+        "allowed": false
+      }
+    ],
+    "dark": [
+      {
+        "pair": "text.primary on surface.glass",
+        "ratio": 4.1,
+        "threshold": "body",
+        "allowed": false
+      },
+      {
+        "pair": "text.secondary on surface.glass-strong",
+        "ratio": 4.2,
+        "threshold": "body",
+        "allowed": false
+      },
+      {
+        "pair": "text.tertiary on surface.glass-strong",
+        "ratio": 2.9,
+        "threshold": "body",
+        "allowed": false
+      }
+    ]
+  }
+}
