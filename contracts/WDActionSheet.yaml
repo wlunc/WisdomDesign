@@ -4,6 +4,7 @@
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDActionSheet
+# 值类型 WDActionSheetItem：id / label / role / icon（WDIconName?，设计 27 §4 的「带图标」变体，20pt）
 params:
   - name: presented        # 受控值（C-15 canonical）
     ios: isPresented
