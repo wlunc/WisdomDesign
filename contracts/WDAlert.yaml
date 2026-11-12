@@ -1,0 +1,37 @@
+# WDAlert — iOS 侧契约条目（M4）
+# 副本来源：iOS/docs/M4-SIGNATURE-FREEZE.md §2.1
+# 回填：2026-11-12（M4 批前冻结；按 docs/M4-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDAlert
+params:
+  - name: presented        # 受控值（C-15 canonical）
+    ios: isPresented
+    type: "Binding<Bool>"
+  - name: title
+    ios: title
+    type: Text
+  - name: message
+    ios: message
+    type: "Text?"
+    default: null
+  - name: actions
+    ios: actions
+    type: "[WDAlertAction]"
+  - name: onDismiss
+    ios: onDismiss
+    type: "(() -> Void)?"
+    default: null
+  - name: content          # 带输入变体的第二个重载
+    ios: content
+    type: "() -> Content"
+    # 仅第二个重载提供；无默认（overload）
+
+slots: [title, message, actions]
+
+default:
+  message: null
+  onDismiss: null
+
+enums:
+  WDAlertAction.Role: [default, cancel, destructive]

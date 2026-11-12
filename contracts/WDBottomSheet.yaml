@@ -1,0 +1,57 @@
+# WDBottomSheet — iOS 侧契约条目（M4）
+# 副本来源：iOS/docs/SPEC.md §2.5 + iOS/docs/M4-SIGNATURE-FREEZE.md §2.1
+# 回填：2026-11-12（M4 批前冻结；按 docs/M4-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDBottomSheet
+params:
+  - name: presented        # 受控值（C-15 canonical）
+    ios: isPresented
+    type: "Binding<Bool>"
+  - name: detents
+    ios: detents
+    type: WDBottomSheetDetents
+    default: .all
+  - name: initialDetent
+    ios: initialDetent
+    type: WDBottomSheetDetent
+    default: .half
+  - name: interactiveDismissDisabled
+    ios: interactiveDismissDisabled
+    type: Bool
+    default: false
+  - name: title
+    ios: title
+    type: "Text?"
+    default: null
+  - name: closeButtonAccessibilityLabel
+    ios: closeButtonAccessibilityLabel
+    type: Text
+  - name: onCloseButtonTap
+    ios: onCloseButtonTap
+    type: "(() -> Void)?"
+    default: null
+  - name: onDismiss
+    ios: onDismiss
+    type: "(() -> Void)?"
+    default: null
+  - name: content
+    ios: content
+    type: "() -> Content"
+  - name: footer
+    ios: footer
+    type: "() -> Footer"
+
+slots: [title, content, footer]
+
+default:
+  detents: .all
+  initialDetent: .half
+  interactiveDismissDisabled: false
+  title: null
+  onCloseButtonTap: null
+  onDismiss: null
+
+enums:
+  WDBottomSheetDetent: [half, large]
+  WDBottomSheetDetents: [all, "fixed(WDBottomSheetDetent)"]
