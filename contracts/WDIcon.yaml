@@ -1,0 +1,22 @@
+# WDIcon — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-⑧
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDIcon
+params:
+  - name: icon
+    ios: icon
+    type: WDIconName
+  - name: size
+    ios: size
+    type: WDIconSize
+    default: .md
+
+slots: [icon]
+
+default:
+  size: .md
+
+enums:
+  WDIconSize: [sm, md, lg, xl]

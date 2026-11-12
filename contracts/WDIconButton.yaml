@@ -1,0 +1,39 @@
+# WDIconButton — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-①
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDIconButton
+params:
+  - name: icon
+    ios: icon
+    type: WDIconName
+  - name: accessibilityLabel   # SPEC:869：无默认值（F-08）
+    ios: accessibilityLabel
+    type: Text
+  - name: variant
+    ios: variant
+    type: WDIconButtonVariant
+    default: .plain
+  - name: size
+    ios: size
+    type: WDButtonSize
+    default: .md
+  - name: loading          # 受控值（C-15 canonical）
+    ios: isLoading
+    type: Bool
+    default: false
+  - name: action
+    ios: action
+    type: "@escaping () -> Void"
+
+slots: [icon]
+
+default:
+  variant: .plain
+  size: .md
+  isLoading: false
+
+enums:
+  WDIconButtonVariant: [plain]
+  WDButtonSize: [sm, md, lg]

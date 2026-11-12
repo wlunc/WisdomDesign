@@ -1,0 +1,37 @@
+# WDListSection — iOS 侧契约条目（M3）
+# 副本来源：../iOS/docs/M3-SIGNATURE-FREEZE.md §2–§3
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDListSection
+# 行上下文：WDListSectionRowContext(isSelected:isLast:)；标题动作：WDListSectionAction(label:action:)。
+params:
+  - name: items            # 值数组（见 ../iOS/docs/M3-SIGNATURE-FREEZE.md §3 的 Q1）
+    ios: items
+    type: "[Item]"
+  - name: selection        # 受控值（C-15 canonical）
+    ios: selection
+    type: "Set<Item.ID>"
+    default: "[]"
+  - name: header
+    ios: header
+    type: Text
+  - name: headerAction
+    ios: headerAction
+    type: "WDListSectionAction?"
+    default: null
+  - name: row
+    ios: row
+    type: "@escaping (Item, WDListSectionRowContext) -> Row"
+  - name: footer
+    ios: footer
+    type: "() -> Footer"
+
+slots: [header, items, footer]
+
+default:
+  selection: "[]"
+  headerAction: null
+  footer: "EmptyView（Footer == EmptyView 的重载）"
+
+enums: {}

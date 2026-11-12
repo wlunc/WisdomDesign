@@ -1,0 +1,21 @@
+# WDCheckbox — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-③
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDCheckbox
+# 受控值：契约名 checked；iOS 形参名 isChecked（C-15 唯一改名）。
+# Android 侧保持 checked（android/docs/SPEC.md §2.10 R3A-01 已记载）；书面复核由 android-lead 另行确认。
+params:
+  - name: checked          # 受控值（C-15 canonical）
+    ios: isChecked
+    type: "Binding<Bool>"
+  - name: label
+    ios: label
+    type: Text
+
+slots: [label]
+
+default: {}   # 两参必填（无默认）
+
+enums: {}

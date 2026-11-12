@@ -1,0 +1,55 @@
+# WDTextField — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §1.1
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDTextField
+params:
+  - name: text             # 受控值（C-15 canonical）
+    ios: text
+    type: "Binding<String>"
+  - name: label            # SPEC:869：无默认值（F-08）
+    ios: label
+    type: Text
+  - name: appearance
+    ios: appearance
+    type: WDTextFieldAppearance
+    default: .init()
+  - name: isEditable
+    ios: isEditable
+    type: Bool
+    default: true
+  - name: onSubmit
+    ios: onSubmit
+    type: "(() -> Void)?"
+    default: null
+  - name: onEditingChanged
+    ios: onEditingChanged
+    type: "((Bool) -> Void)?"
+    default: null
+
+slots: [label, prefix, accessory, helper]
+
+default:
+  appearance: .init()
+  isEditable: true
+  onSubmit: null
+  onEditingChanged: null
+  appearance.variant: .inset
+  appearance.placeholder: null
+  appearance.prefix: .none
+  appearance.accessory: .none
+  appearance.helper: .none
+  appearance.isSecure: false
+  appearance.submitLabel: .done
+
+enums:
+  WDTextFieldVariant: [inset, outline, glass]
+  WDTextFieldPrefix: [none, "icon(WDIconName)", "text(Text)"]
+  WDTextFieldAccessory:
+    - none
+    - "unit(Text)"
+    - "clear(accessibilityLabel:)"
+    - "reveal(hiddenAccessibilityLabel:shownAccessibilityLabel:)"
+    - "count(current:limit:)"
+  WDTextFieldHelper: [none, "hint(Text)", "error(Text)"]

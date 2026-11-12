@@ -1,0 +1,51 @@
+# WDButton — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §1.1 + §5.1
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDButton
+params:
+  - name: label            # 槽位；便利构造另有 _ text: LocalizedStringKey / verbatim text: String
+    ios: label
+    type: "() -> Label"
+  - name: variant
+    ios: variant
+    type: WDButtonVariant
+    default: .filled
+  - name: size
+    ios: size
+    type: WDButtonSize
+    default: .md
+  - name: loading         # 受控值（C-15 canonical）
+    ios: isLoading
+    type: Bool
+    default: false
+  - name: loadingAccessibilityText
+    ios: loadingAccessibilityText
+    type: "Text?"
+    default: null
+  - name: leadingIcon
+    ios: leadingIcon
+    type: "WDIconName?"
+    default: null
+  - name: trailingIcon
+    ios: trailingIcon
+    type: "WDIconName?"
+    default: null
+  - name: action
+    ios: action
+    type: "@escaping () -> Void"
+
+slots: [label, leadingIcon, trailingIcon]
+
+default:
+  variant: .filled
+  size: .md
+  isLoading: false
+  loadingAccessibilityText: null
+  leadingIcon: null
+  trailingIcon: null
+
+enums:
+  WDButtonVariant: [filled, tonal, glass, outline, plain, destructive]
+  WDButtonSize: [sm, md, lg]

@@ -1,0 +1,54 @@
+# WDListRow — iOS 侧契约条目（M2）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §1.1
+# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDListRow
+params:
+  - name: title
+    ios: title
+    type: Text
+  - name: subtitle
+    ios: subtitle
+    type: "Text?"
+    default: null
+  - name: leading
+    ios: leading
+    type: WDListRowLeading
+    default: .none
+  - name: trailing
+    ios: trailing
+    type: WDListRowTrailing
+    default: .none
+  - name: selected         # 受控值（C-15 canonical；iOS 形参名是 C-15 的例外）
+    ios: isSelected
+    type: Bool
+    default: false
+  - name: swipeAction
+    ios: swipeAction
+    type: WDListRowSwipeAction
+    default: .none
+  - name: showsSeparator
+    ios: showsSeparator
+    type: Bool
+    default: true
+  - name: action
+    ios: action
+    type: "(() -> Void)?"
+    default: null
+
+slots: [title, subtitle, leading, trailing]
+
+default:
+  subtitle: null
+  leading: .none
+  trailing: .none
+  isSelected: false
+  swipeAction: .none
+  showsSeparator: true
+  action: null
+
+enums:
+  WDListRowLeading: [none, "icon(WDIconName)", "avatar(WDAvatarValue)", checkbox, selectionIndicator]
+  WDListRowTrailing: [none, "value(Text)", "badge(WDBadgeValue)", "avatar(WDAvatarValue)", disclosure]
+  WDListRowSwipeAction: [none, "delete(title:onDelete:)"]
