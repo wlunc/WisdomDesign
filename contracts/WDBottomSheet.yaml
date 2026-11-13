@@ -4,6 +4,8 @@
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDBottomSheet
+# iOS 呈现：窗口级自绘贴边面板（系统 .sheet 在 iOS 26 对 partial detent 浮动约 16pt，无法贴边）；
+# 自绘层保留 detents/拖拽/滚动/键盘/焦点归还。
 params:
   - name: presented        # 受控值（C-15 canonical）
     ios: isPresented
