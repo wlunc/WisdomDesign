@@ -1,0 +1,35 @@
+# WDSlider — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.1
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 本轮载体 = 原生 Slider（Q1）；签名与载体解耦，自绘替换不改公开面。
+
+component: WDSlider
+params:
+  - name: value
+    ios: value
+    type: "Binding<Double>"
+  - name: label
+    ios: label
+    type: "Text"
+  - name: bounds
+    ios: in
+    type: "ClosedRange<Double>"
+    default: 0...1
+  - name: step
+    ios: step
+    type: "Double?"
+    default: null
+  - name: onEditingChanged
+    ios: onEditingChanged
+    type: "((Bool) -> Void)?"
+    default: null
+
+slots: [label]
+
+default:
+  bounds: 0...1
+  step: null
+  onEditingChanged: null
+
+enums: {}

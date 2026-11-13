@@ -1,0 +1,44 @@
+# WDNavigationBar — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# leading = backAccessibilityLabel + onBack；trailing = actions（≤2，debug 断言）。
+
+component: WDNavigationBar
+params:
+  - name: title
+    ios: title
+    type: "Text"
+  - name: mode
+    ios: mode
+    type: "WDNavigationBarMode"
+    default: .standard
+  - name: style
+    ios: style
+    type: "WDNavigationBarStyle"
+    default: .transparent
+  - name: backAccessibilityLabel
+    ios: backAccessibilityLabel
+    type: "Text?"
+    default: null
+  - name: onBack
+    ios: onBack
+    type: "(() -> Void)?"
+    default: null
+  - name: actions
+    ios: actions
+    type: "[WDNavigationBarAction]"
+    default: []
+
+slots: [title, leading, trailing]
+
+default:
+  mode: .standard
+  style: .transparent
+  backAccessibilityLabel: null
+  onBack: null
+  actions: []
+
+enums:
+  WDNavigationBarMode: [inline, standard, largeTitle]
+  WDNavigationBarStyle: [transparent, glass]

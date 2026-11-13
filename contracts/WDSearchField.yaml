@@ -1,0 +1,43 @@
+# WDSearchField — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.1
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 槽位 label = 取消按钮标签（cancelLabel）；无取消变体用无 cancelLabel 的 init。
+
+component: WDSearchField
+params:
+  - name: text
+    ios: text
+    type: "Binding<String>"
+  - name: placeholder
+    ios: placeholder
+    type: "Text"
+  - name: leadingIcon
+    ios: leadingIcon
+    type: "WDIconName"
+    default: .search
+  - name: clearAccessibilityLabel
+    ios: clearAccessibilityLabel
+    type: "Text"
+  - name: cancelLabel
+    ios: cancelLabel
+    type: "Text?"
+    default: null
+  - name: onCancel
+    ios: onCancel
+    type: "(() -> Void)?"
+    default: null
+  - name: onSubmit
+    ios: onSubmit
+    type: "(() -> Void)?"
+    default: null
+
+slots: [placeholder, leadingIcon, label]
+
+default:
+  leadingIcon: .search
+  cancelLabel: null
+  onCancel: null
+  onSubmit: null
+
+enums: {}

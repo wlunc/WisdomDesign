@@ -1,16 +1,21 @@
-# WDBadge — iOS 侧契约条目（M2）
-# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-④ + §5.2
-# 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# WDBadge — iOS 侧契约条目（M2）；M5 增量（计数/圆点，Q7 = B）
+# 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-④ + §5.2；增量 = ../iOS/docs/M5-SIGNATURE-FREEZE.md §2.3
+# 回填：2026-11-12（M2）；2026-11-13（M5 增量：WDBadgeValue 新增 init(count:) / .dot，WDBadge 新增 init(value:)）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# M5 增量只增不改：既有 init(label:) 与状态胶囊（24 高）不变；count 形态（20 高 / 最小宽 20）与 dot（7×7）是值形态。
 
 component: WDBadge
 params:
   - name: label
     ios: label
     type: Text
+  - name: value            # M5 增量：WDBadgeValue（label / count / dot 三种值形态）
+    ios: value
+    type: WDBadgeValue
+    default: null
 
 slots: [label]
 
-default: {}   # label 必填（「4 汉字」是实现约束，不进签名）
+default: {}   # 既有 init(label:) 必填；value 为增量重载（默认 null）
 
 enums: {}

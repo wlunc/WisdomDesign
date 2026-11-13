@@ -1,0 +1,42 @@
+# WDFAB — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 槽位 label = accessibilityLabel（读屏标签，必填）；actions 非空 = 可展开（≤4）。
+
+component: WDFAB
+params:
+  - name: icon
+    ios: icon
+    type: "WDIconName"
+  - name: accessibilityLabel
+    ios: accessibilityLabel
+    type: "Text"
+  - name: size
+    ios: size
+    type: "WDFABSize"
+    default: .standard
+  - name: shape
+    ios: shape
+    type: "WDFABShape"
+    default: .roundedSquare
+  - name: actions
+    ios: actions
+    type: "[WDFABAction]"
+    default: []
+  - name: action
+    ios: action
+    type: "(() -> Void)?"
+    default: null
+
+slots: [icon, label]
+
+default:
+  size: .standard
+  shape: .roundedSquare
+  actions: []
+  action: null
+
+enums:
+  WDFABSize: [small, standard, large]
+  WDFABShape: [roundedSquare, circle]

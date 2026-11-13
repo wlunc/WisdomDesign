@@ -1,0 +1,25 @@
+# WDSegmentedControl — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+
+component: WDSegmentedControl
+params:
+  - name: items
+    ios: items
+    type: "[WDSegmentedControlItem]"
+  - name: selection
+    ios: selection
+    type: "Binding<String>"
+  - name: style
+    ios: style
+    type: "WDSegmentedControlStyle"
+    default: .solid
+
+slots: [items]
+
+default:
+  style: .solid
+
+enums:
+  WDSegmentedControlStyle: [glass, solid]

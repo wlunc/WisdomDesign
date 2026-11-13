@@ -1,0 +1,41 @@
+# WDDatePicker — iOS 侧契约条目（M5）
+# 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
+# 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# .date = 自建月历；.time = 系统滚轮；.dateAndTime = 自建月历 + 系统时间滚轮（Q2）；quickOptions 仅 .date 渲染。
+
+component: WDDatePicker
+params:
+  - name: date
+    ios: date
+    type: "Binding<Date?>"
+  - name: label
+    ios: label
+    type: "Text"
+  - name: mode
+    ios: mode
+    type: "WDDatePickerMode"
+    default: .date
+  - name: placeholder
+    ios: placeholder
+    type: "Text?"
+    default: null
+  - name: bounds
+    ios: in
+    type: "ClosedRange<Date>?"
+    default: null
+  - name: quickOptions
+    ios: quickOptions
+    type: "[WDDatePickerQuickOption]"
+    default: []
+
+slots: [label]
+
+default:
+  mode: .date
+  bounds: null
+  placeholder: null
+  quickOptions: []
+
+enums:
+  WDDatePickerMode: [date, time, dateAndTime]
