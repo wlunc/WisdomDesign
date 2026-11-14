@@ -46,7 +46,7 @@
 | 变体 | 背景 | 文字 | 描边 | 阴影 | 用在哪 |
 | --- | --- | --- | --- | --- | --- |
 | `filled` | `gradient.fill`（浅深两端各自取值） | `text.on-fill` | 无 | `elevation.brand` | 唯一主操作 |
-| `tonal` | `surface.tint` | `text.on-soft` | 无 | 无 | 次级操作 |
+| `tonal` | `gradient.surface`（画廊 01；浅深两端各自取值） | `text.on-soft` | 无 | 顶部 1px 内高光（`border.glass-top`） | 次级操作 |
 | `glass` | `surface.glass-strong` | `text.primary` | `border.hairline` | `elevation.1` | 浮在图片或内容之上 |
 | `outline` | 透明 | `text.primary` | `border.hairline-strong` | 无 | 中性操作 |
 | `plain` | 透明 | `text.brand` | 无 | 无 | 行内操作、列表右侧 |
@@ -54,6 +54,12 @@
 
 `filled` 的浅色端与深色端分别是 `derived.fill-light-1` / `derived.fill-light-2`，
 配 `derived.text-on-fill` 对比度 5.4–6.9:1。**不允许把亮色渐变配白字**。
+
+> **2026-11-14 用户裁决（按画廊 01）**：`tonal` 底由 `surface.tint` 改回
+> `gradient.surface`（浅 `#B0D5DF → #7EC4CF` / 深 `#123449 → #0F4055`），文字仍
+> `text.on-soft`（最不利端 5.65:1 / 7.12:1，≥ 4.5）；`filled` / `tonal` 都补 1px 顶部内高光
+> （`border.glass-top`）。这是 **Button 单点例外**；Chip 已选 / Badge shared 仍走
+> `surface.tint`（见 `docs/01-foundation.md` §3.7）。**Android 侧同批对齐。**
 
 ### 5. 状态
 

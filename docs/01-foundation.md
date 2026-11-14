@@ -172,7 +172,7 @@ Compose 不做自动解析，所以主题提供 `WDGradients` 的浅深两套实
 | 级 | 令牌 | 浅色填充 | 浅色 L | 深色填充 | 深色 L | 用在哪 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 实 | `semantic.*.gradient.fill` | `#8FCFDD → #63BAD2` | 0.557 → 0.424 | `#1677B3 → #2A5CAA` | 0.166 → 0.111 | 主操作、选中 Tab、FAB |
-| 中 | `semantic.*.surface.tint` | `#D9E9F3` | **0.794** | `#123348` | **0.029** | 次级操作（tonal）、Chip 已选、Badge shared |
+| 中 | `semantic.*.surface.tint` | `#D9E9F3` | **0.794** | `#123348` | **0.029** | Chip 已选、Badge shared（Button `tonal` 例外，见下） |
 | 无 | 透明 | — | （canvas 0.927 / 0.010） | — | — | 行内操作、列表右侧（plain） |
 
 **`surface.tint` 是算出来的，不是挑出来的。** 配方是唯一真源：
@@ -195,6 +195,11 @@ surface.tint = 品牌蓝 #1677B3 @ 16% 叠在 surface.card 上
 > 历史：`tonal` 原先直接复用 `semantic.*.gradient.surface`（背景层令牌）当组件底，
 > 实测两档在 L 0.484–0.557 区间重叠，被读成"没有底"。改用 tint 后 `gradient.surface`
 > 只剩「图标底座 / 背景层」一个消费者，回到它的定义。
+>
+> **2026-11-14 修订（用户裁决，按画廊 01）**：`WDButton.tonal` **单点例外**，底改回
+> `gradient.surface` 并补 1px 顶部内高光（`border.glass-top`）；Chip 已选 / Badge shared
+> 仍走 `surface.tint`。代价是 Button tonal 与 filled 的明度空档收窄，层级改由胶囊形状、
+> `text.on-soft` 与顶部高光承担；这是设计侧已知取舍，**Android 侧同批对齐**。
 
 
 ## 4. 字体系统

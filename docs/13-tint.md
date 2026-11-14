@@ -127,4 +127,15 @@ Badge 的 `pending` 变体不达标。`specs/01-basic.md:1051` 写的是 `surfac
 
 ---
 
+## 8. 2026-11-14 修订（用户裁决）
+
+`WDButton.tonal` **单点例外**：按画廊 01 改回 `gradient.surface` 渐变底 + 1px 顶部内高光
+（`border.glass-top`），文字仍 `text.on-soft`（最不利端 5.65:1 / 7.12:1）。
+**Chip 已选 / Badge shared 仍走 `surface.tint`**；§2 的 tint 配方与 `assertTintRecipe()` 不变。
+已知取舍 = Button tonal 与 filled 的明度空档收窄（historic §3.7 的原始反对意见仍成立），
+层级改由胶囊形状、文字色与顶部高光承担。落盘：`docs/specs/01-basic.md` §4、
+`docs/01-foundation.md` §3.7、`contracts/WDButton.yaml`、`design/preview/wisdom-light.html`。
+
+---
+
 ← 返回：[评审总览与开工决策](10-review-summary.md) ｜ [A2 深色 canvas](11-a2-dark-canvas.md) ｜ [B22 玻璃](12-b22-glass.md) ｜ [设计基础](01-foundation.md)
