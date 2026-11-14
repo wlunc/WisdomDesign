@@ -1,13 +1,21 @@
-# WDProgressBar — iOS 侧契约条目（M4）
+# WDProgressBar — iOS 侧契约条目（M4；M6 修正 2026-11-14）
 # 副本来源：iOS/docs/M4-SIGNATURE-FREEZE.md §2.3
 # 回填：2026-11-12（M4 批前冻结；按 docs/M4-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 2026-11-14 补齐设计 15（用户指出缺口）：新增分段 init（segments/completed），并实现
+#   不确定态 1s 延迟 / 禁用整体 45% / 完成 300ms / 首次出现 3200ms / progressbar 无障碍语义。
 
 component: WDProgressBar
 params:
-  - name: value            # 受控值（C-15 canonical）
+  - name: value            # 确定态受控值（C-15 canonical）
     ios: value
     type: Double
+  - name: segments         # 分段 init（与 value 互斥；设计 15 §4）
+    ios: segments
+    type: Int
+  - name: completed        # 分段 init：已完成项数（钳制到 0...segments）
+    ios: completed
+    type: Int
   - name: label
     ios: label
     type: "Text?"
