@@ -251,7 +251,7 @@
         {
           "id": "unassigned",
           "semantic": "未指派",
-          "ios": "person.crop.circle.badge.xmark",
+          "ios": "person.fill.xmark",
           "android": "person_off",
           "mirrorsInRTL": false
         }

@@ -117,7 +117,7 @@
 | 隐藏密码 | `eye.slash` | `visibility_off` |
 | 日期 | `calendar` | `calendar_month` |
 | 时间 | `clock` | `schedule` |
-| 未指派 | `person.crop.circle.badge.xmark` | `person_off` |
+| 未指派 | `person.fill.xmark` | `person_off` |
 
 ### 内容分类
 
