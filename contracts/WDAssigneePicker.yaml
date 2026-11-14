@@ -1,0 +1,51 @@
+# WDAssigneePicker — iOS 侧契约条目（M6）
+# 副本来源：../iOS/docs/M6-SIGNATURE-FREEZE.md §2.1 / §3
+# 回填：2026-11-14（M6 批前冻结；按 docs/M6-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 两个 init 编译期分离：单选 selection: Binding<String?>（默认，yaml 依此登记）；
+# 多选重载 selection: Binding<Set<String>>（同一参数名；无「未指派」项）。
+# 「未指派」= 内置虚拟项（unassigned 非 nil 时首位；点它把 selection 置 nil）。
+
+component: WDAssigneePicker
+params:
+  - name: selection
+    ios: selection
+    type: "Binding<String?>"   # 多选重载 = Binding<Set<String>>
+  - name: label
+    ios: label
+    type: "Text"
+  - name: items
+    ios: items
+    type: "[WDAssigneePickerItem]"
+  - name: unassigned
+    ios: unassigned
+    type: "WDAssigneePickerUnassigned?"
+    default: null
+  - name: size
+    ios: size
+    type: "WDAssigneePickerSize"
+    default: .standard
+  - name: positionText
+    ios: positionText
+    type: "((Int, Int) -> Text)?"
+    default: null
+  - name: onOverflowTap
+    ios: onOverflowTap
+    type: "(() -> Void)?"
+    default: null
+  - name: overflowAccessibilityLabel
+    ios: overflowAccessibilityLabel
+    type: "Text?"
+    default: null
+
+slots: [items, label]
+
+default:
+  unassigned: null
+  size: .standard
+  positionText: null
+  onOverflowTap: null
+  overflowAccessibilityLabel: null
+
+enums:
+  WDAssigneePickerSize: [standard, compact]
