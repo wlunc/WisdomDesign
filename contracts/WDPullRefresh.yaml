@@ -1,8 +1,10 @@
 # WDPullRefresh — iOS 侧契约条目（M5）
 # 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
 # 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 同步：2026-11-14（用户裁决覆盖 O-7/F50：iOS 18+ **自绘 24pt 品牌环**；iOS 17 回退系统 `.refreshable`；
+#       行为不变 = 到阈值触发一次 + 进行中不重复 + 到阈值一次触觉；三态文案/播报不进库（L-B）。）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
-# 载体 = 系统 .refreshable（O-7/F50）；label 提供时挂「刷新」自定义无障碍操作。
+# 载体 = iOS 18+ 自绘环 / iOS 17 `.refreshable`；label 提供时挂「刷新」自定义无障碍操作。
 
 component: WDPullRefresh
 params:

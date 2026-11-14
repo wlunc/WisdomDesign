@@ -1,8 +1,10 @@
 # WDPicker — iOS 侧契约条目（M5）
 # 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
 # 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
+# 同步：2026-11-14（用户裁决「完全按照设计稿」：菜单改**窗口级自绘浮层**；新增 **.inline 内联**形态
+#       —— 枚举 +1 case = 源级 breaking（F-20）。Android 侧 case 名同步见 android/docs/SPEC.md §2.10-#22。）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
-# 菜单 = 系统 Menu；滚轮 = 系统 Picker(.wheel) 底部弹出（Q2）。
+# 菜单 = 自绘浮层（44 行 / 14 圆角 / 翻转 / 滚到当前项）；滚轮 = 系统 Picker(.wheel) 底部弹出；内联 = 平铺。
 
 component: WDPicker
 params:
@@ -31,4 +33,4 @@ default:
   style: .menu
 
 enums:
-  WDPickerStyle: [menu, wheel]
+  WDPickerStyle: [menu, wheel, inline]

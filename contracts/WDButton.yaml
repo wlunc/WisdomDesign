@@ -1,6 +1,9 @@
 # WDButton — iOS 侧契约条目（M2）
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §1.1 + §5.1
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 同步：2026-11-14（用户裁决：`tonal` 底按画廊 01 用 `gradient.surface`（浅 #B0D5DF→#7EC4CF /
+#       深 #123449→#0F4055），`filled` / `tonal` 补 1px 顶部内高光（`border.glass-top`）；
+#       文字仍 `text.on-soft`。Chip 已选 / Badge shared 仍走 `surface.tint`，见 docs/01-foundation §3.7。）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDButton

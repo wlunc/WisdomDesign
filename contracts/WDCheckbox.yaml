@@ -1,6 +1,9 @@
 # WDCheckbox — iOS 侧契约条目（M2）
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-③
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# 同步：2026-11-14（用户裁决：补**半选显示态**——additive 参数 `indeterminate`（iOS `isIndeterminate`），
+#       不改受控值类型 ⇒ iOS 源码兼容；Android 侧"新增带默认值的参数 = 二进制不兼容"（§1.5.4-F），
+#       须走重载或 major。视觉 = 同已选底 + 12×2.4 白横杠；点半选 → 全选。）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDCheckbox
@@ -13,9 +16,14 @@ params:
   - name: label
     ios: label
     type: Text
+  - name: indeterminate       # 半选显示态（additive；不改受控值类型）
+    ios: isIndeterminate
+    type: Bool
+    default: false
 
 slots: [label]
 
-default: {}   # 两参必填（无默认）
+default:
+  indeterminate: false
 
 enums: {}

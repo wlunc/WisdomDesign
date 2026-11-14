@@ -61,6 +61,20 @@
           "status": "pass"
         },
         {
+          "foreground": "textOnSoft",
+          "background": "gradient.surface.start",
+          "ratio": 7.1,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textOnSoft",
+          "background": "gradient.surface.end",
+          "ratio": 5.65,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
           "foreground": "textPrimary",
           "background": "statusSoftInfo",
           "ratio": 15.08,
@@ -181,6 +195,20 @@
           "foreground": "textOnSoft",
           "background": "surfaceTint",
           "ratio": 8.43,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textOnSoft",
+          "background": "gradient.surface.start",
+          "ratio": 8.33,
+          "threshold": "body",
+          "status": "pass"
+        },
+        {
+          "foreground": "textOnSoft",
+          "background": "gradient.surface.end",
+          "ratio": 7.12,
           "threshold": "body",
           "status": "pass"
         },
