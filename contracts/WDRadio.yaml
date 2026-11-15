@@ -1,8 +1,9 @@
 # WDRadio — iOS 侧契约条目（M5）
 # 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.1
 # 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
-# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 说明：contracts/README.md 已落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 # ID = String；WDRadioOption(id:label:detail:)。
+# B7 增量：2026-11-15（iOS/docs/B7-SIGNATURE-FREEZE.md）—— 新增 WDRadioSize 与 init(selection:label:size:options:)。
 
 component: WDRadio
 params:
@@ -15,9 +16,15 @@ params:
   - name: options
     ios: options
     type: "[WDRadioOption]"
+  - name: size                # B7 增量：标准外圆 26 / 紧凑 22；仅新 init 必填
+    ios: size
+    type: WDRadioSize
+    default: .standard
 
 slots: [label, options]
 
-default: {}
+default:
+  size: .standard
 
-enums: {}
+enums:
+  WDRadioSize: [standard, compact]

@@ -3,6 +3,7 @@
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 # 增量：2026-11-15（B3，../iOS/docs/B3-CONTRACT-CHANGE-REQUEST.md）：WDCardStyle 追加 sunken；签名/默认值/槽位不变。
+# B7 增量：2026-11-15（iOS/docs/B7-SIGNATURE-FREEZE.md）—— 新增可点卡 init(style:action:content:)；默认 action = null。
 
 component: WDCard
 params:
@@ -13,11 +14,16 @@ params:
   - name: content
     ios: content
     type: "() -> Content"
+  - name: action             # B7 增量：可点卡动作；仅新 init 必填
+    ios: action
+    type: "@escaping () -> Void"
+    default: null
 
 slots: [content]
 
 default:
   style: .elevated
+  action: null
 
 enums:
   WDCardStyle: [elevated, outlined, glass, sunken]   # 2026-11-15 B3 追加 sunken（源级 breaking）

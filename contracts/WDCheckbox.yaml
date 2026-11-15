@@ -4,7 +4,8 @@
 # 同步：2026-11-14（用户裁决：补**半选显示态**——additive 参数 `indeterminate`（iOS `isIndeterminate`），
 #       不改受控值类型 ⇒ iOS 源码兼容；Android 侧"新增带默认值的参数 = 二进制不兼容"（§1.5.4-F），
 #       须走重载或 major。视觉 = 同已选底 + 12×2.4 白横杠；点半选 → 全选。）
-# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 说明：contracts/README.md 已落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# B7 增量：2026-11-15（iOS/docs/B7-SIGNATURE-FREEZE.md）—— 新增 WDCheckboxSize 与 init(isChecked:label:size:isIndeterminate:)。
 
 component: WDCheckbox
 # 受控值：契约名 checked；iOS 形参名 isChecked（C-15 唯一改名）。
@@ -20,10 +21,16 @@ params:
     ios: isIndeterminate
     type: Bool
     default: false
+  - name: size                # B7 增量：标准 26 / 紧凑 22；仅新 init 必填
+    ios: size
+    type: WDCheckboxSize
+    default: .standard
 
 slots: [label]
 
 default:
   indeterminate: false
+  size: .standard
 
-enums: {}
+enums:
+  WDCheckboxSize: [standard, compact]

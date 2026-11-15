@@ -82,15 +82,15 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 
 ## 4. 组件注册表（37）
 
-共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **183** 条，槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
+共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **186** 条，槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
 
 | 批次 | 组件 | 契约文件 | `params` 数 | 槽位 | 枚举数 |
 | --- | --- | --- | --- | --- | --- |
 | M2 | `WDAvatar` | [`WDAvatar.yaml`](WDAvatar.yaml) | 4 | `icon`、`label` | 1 |
 | M2 | `WDBadge` | [`WDBadge.yaml`](WDBadge.yaml) | 3 | `label` | 1 |
 | M2 | `WDButton` | [`WDButton.yaml`](WDButton.yaml) | 8 | `label`、`leadingIcon`、`trailingIcon` | 2 |
-| M2 | `WDCard` | [`WDCard.yaml`](WDCard.yaml) | 2 | `content` | 1 |
-| M2 | `WDCheckbox` | [`WDCheckbox.yaml`](WDCheckbox.yaml) | 3 | `label` | 0 |
+| M2 | `WDCard` | [`WDCard.yaml`](WDCard.yaml) | 3 | `content` | 1 |
+| M2 | `WDCheckbox` | [`WDCheckbox.yaml`](WDCheckbox.yaml) | 4 | `label` | 1 |
 | M2 | `WDDivider` | [`WDDivider.yaml`](WDDivider.yaml) | 1 | **无** | 1 |
 | M2 | `WDIcon` | [`WDIcon.yaml`](WDIcon.yaml) | 2 | `icon` | 1 |
 | M2 | `WDIconButton` | [`WDIconButton.yaml`](WDIconButton.yaml) | 6 | `icon` | 2 |
@@ -115,7 +115,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | M5 | `WDNavigationBar` | [`WDNavigationBar.yaml`](WDNavigationBar.yaml) | 6 | `title`、`leading`、`trailing` | 2 |
 | M5 | `WDPicker` | [`WDPicker.yaml`](WDPicker.yaml) | 5 | `label`、`options` | 1 |
 | M5 | `WDPullRefresh` | [`WDPullRefresh.yaml`](WDPullRefresh.yaml) | 3 | `label` | 0 |
-| M5 | `WDRadio` | [`WDRadio.yaml`](WDRadio.yaml) | 3 | `label`、`options` | 0 |
+| M5 | `WDRadio` | [`WDRadio.yaml`](WDRadio.yaml) | 4 | `label`、`options` | 1 |
 | M5 | `WDSearchField` | [`WDSearchField.yaml`](WDSearchField.yaml) | 7 | `placeholder`、`leadingIcon`、`label` | 0 |
 | M5 | `WDSegmentedControl` | [`WDSegmentedControl.yaml`](WDSegmentedControl.yaml) | 3 | `items` | 1 |
 | M5 | `WDSlider` | [`WDSlider.yaml`](WDSlider.yaml) | 5 | `label` | 0 |
@@ -127,9 +127,9 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 > 类型名清单即上表 37 条；呈现家族另含 `WDBottomSheetDetent` / `WDBottomSheetDetents`（见 §5 枚举表）。**不得出现 `WDSheet*`**——`WDBottomSheet` / `WDActionSheet` 是唯一名。
 > `params` 数是重载并集，不等于任一 `init` 的参数个数。
 
-## 5. 枚举注册表（36）
+## 5. 枚举注册表（38）
 
-由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-15）。共 **36 个唯一枚举名 / 37 次定义 / 116 条 case 行**（`WDButtonSize` 定义两次，去重后 113 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
+由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-15）。共 **38 个唯一枚举名 / 39 次定义 / 120 条 case 行**（`WDButtonSize` 定义两次，去重后 117 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
 
 | 枚举名 | 全量 case | 所属组件 |
 | --- | --- | --- |
@@ -145,6 +145,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | `WDButtonSize` | `sm`、`md`、`lg` | `WDButton`、`WDIconButton`（**复用类型**） |
 | `WDButtonVariant` | `filled`、`tonal`、`glass`、`outline`、`plain`、`destructive` | `WDButton` |
 | `WDCardStyle` | `elevated`、`outlined`、`glass`、`sunken` | `WDCard` |
+| `WDCheckboxSize` | `standard`、`compact` | `WDCheckbox` |
 | `WDChipSize` | `standard`、`compact` | `WDChip` |
 | `WDDatePickerMode` | `date`、`time`、`dateAndTime` | `WDDatePicker` |
 | `WDDividerStyle` | `full`、`inset` | `WDDivider` |
@@ -160,6 +161,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | `WDNavigationBarStyle` | `transparent`、`glass` | `WDNavigationBar` |
 | `WDPickerStyle` | `menu`、`wheel`、`inline` | `WDPicker` |
 | `WDProgressRingSize` | `standard`、`compact` | `WDProgressRing` |
+| `WDRadioSize` | `standard`、`compact` | `WDRadio` |
 | `WDSegmentedControlStyle` | `glass`、`solid` | `WDSegmentedControl` |
 | `WDSkeletonVariant` | `text`、`list`、`card` | `WDSkeleton` |
 | `WDStepperSize` | `standard`、`compact` | `WDStepper` |
@@ -242,7 +244,7 @@ B1–B6 已落库记录（六份 B 文档均在 `iOS/docs/`，状态"已落库"�
 ```text
 文件数: 37
 组件数: 37
-枚举数: 36
+枚举数: 38
 枚举定义处数: 37
 共享枚举数: 1（WDButtonSize）
 检查通过：全部字段校验成功。
@@ -269,7 +271,7 @@ abort "组件名重复" unless names.uniq.size == 37
 puts "OK: #{names.size} components"
 ```
 
-- 手工核计数：组件 **37**、唯一枚举 **36**、槽位名 **21**。
+- 手工核计数：组件 **37**、唯一枚举 **38**、槽位名 **21**。
 
 ### 8.1 已知偏差与读取注意（2026-11-15 审计）
 
