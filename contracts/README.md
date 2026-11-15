@@ -82,7 +82,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 
 ## 4. 组件注册表（37）
 
-共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **186** 条，槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
+共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **188** 条，槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
 
 | 批次 | 组件 | 契约文件 | `params` 数 | 槽位 | 枚举数 |
 | --- | --- | --- | --- | --- | --- |
@@ -90,10 +90,10 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | M2 | `WDBadge` | [`WDBadge.yaml`](WDBadge.yaml) | 3 | `label` | 1 |
 | M2 | `WDButton` | [`WDButton.yaml`](WDButton.yaml) | 8 | `label`、`leadingIcon`、`trailingIcon` | 2 |
 | M2 | `WDCard` | [`WDCard.yaml`](WDCard.yaml) | 3 | `content` | 1 |
-| M2 | `WDCheckbox` | [`WDCheckbox.yaml`](WDCheckbox.yaml) | 4 | `label` | 1 |
+| M2 | `WDCheckbox` | [`WDCheckbox.yaml`](WDCheckbox.yaml) | 5 | `label` | 1 |
 | M2 | `WDDivider` | [`WDDivider.yaml`](WDDivider.yaml) | 1 | **无** | 1 |
 | M2 | `WDIcon` | [`WDIcon.yaml`](WDIcon.yaml) | 2 | `icon` | 1 |
-| M2 | `WDIconButton` | [`WDIconButton.yaml`](WDIconButton.yaml) | 6 | `icon` | 2 |
+| M2 | `WDIconButton` | [`WDIconButton.yaml`](WDIconButton.yaml) | 7 | `icon` | 3 |
 | M2 | `WDListRow` | [`WDListRow.yaml`](WDListRow.yaml) | 8 | `title`、`subtitle`、`leading`、`trailing` | 3 |
 | M2 | `WDSwitch` | [`WDSwitch.yaml`](WDSwitch.yaml) | 4 | `label` | 1 |
 | M2 | `WDTextField` | [`WDTextField.yaml`](WDTextField.yaml) | 6 | `label`、`prefix`、`accessory`、`helper` | 4 |
@@ -129,7 +129,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 
 ## 5. 枚举注册表（38）
 
-由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-15）。共 **38 个唯一枚举名 / 39 次定义 / 120 条 case 行**（`WDButtonSize` 定义两次，去重后 117 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
+由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-15）。共 **39 个唯一枚举名 / 40 次定义 / 122 条 case 行**（`WDButtonSize` 定义两次，去重后 119 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
 
 | 枚举名 | 全量 case | 所属组件 |
 | --- | --- | --- |
@@ -152,6 +152,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | `WDFABShape` | `roundedSquare`、`circle` | `WDFAB` |
 | `WDFABSize` | `small`、`standard`、`large` | `WDFAB` |
 | `WDFormRowLayout` | `horizontal`、`vertical` | `WDFormRow` |
+| `WDIconButtonShape` | `circle`、`roundedSquare` | `WDIconButton` |
 | `WDIconButtonVariant` | `plain`、`filled`、`tonal`、`glass`、`outline` | `WDIconButton` |
 | `WDIconSize` | `sm`、`md`、`lg`、`xl` | `WDIcon` |
 | `WDListRowLeading` | `none`、`icon(WDIconName)`、`avatar(WDAvatarValue)`、`checkbox`、`selectionIndicator` | `WDListRow` |
@@ -244,7 +245,7 @@ B1–B6 已落库记录（六份 B 文档均在 `iOS/docs/`，状态"已落库"�
 ```text
 文件数: 37
 组件数: 37
-枚举数: 38
+枚举数: 39
 枚举定义处数: 37
 共享枚举数: 1（WDButtonSize）
 检查通过：全部字段校验成功。
@@ -271,7 +272,7 @@ abort "组件名重复" unless names.uniq.size == 37
 puts "OK: #{names.size} components"
 ```
 
-- 手工核计数：组件 **37**、唯一枚举 **38**、槽位名 **21**。
+- 手工核计数：组件 **37**、唯一枚举 **39**、槽位名 **21**。
 
 ### 8.1 已知偏差与读取注意（2026-11-15 审计）
 

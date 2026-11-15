@@ -6,6 +6,7 @@
 #       须走重载或 major。视觉 = 同已选底 + 12×2.4 白横杠；点半选 → 全选。）
 # 说明：contracts/README.md 已落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 # B7 增量：2026-11-15（iOS/docs/B7-SIGNATURE-FREEZE.md）—— 新增 WDCheckboxSize 与 init(isChecked:label:size:isIndeterminate:)。
+# B8 增量：2026-11-15（iOS/docs/B8-SIGNATURE-FREEZE.md）—— 新增无标签重载（accessibilityLabel 必填）。
 
 component: WDCheckbox
 # 受控值：契约名 checked；iOS 形参名 isChecked（C-15 唯一改名）。
@@ -25,12 +26,17 @@ params:
     ios: size
     type: WDCheckboxSize
     default: .standard
+  - name: accessibilityLabel  # B8 增量：无标签重载必填（无可见 label 时的读屏标签）
+    ios: accessibilityLabel
+    type: Text
+    default: null
 
 slots: [label]
 
 default:
   indeterminate: false
   size: .standard
+  accessibilityLabel: null
 
 enums:
   WDCheckboxSize: [standard, compact]

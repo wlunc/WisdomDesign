@@ -3,6 +3,7 @@
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 # 增量：2026-11-15（B4，../iOS/docs/B4-CONTRACT-CHANGE-REQUEST.md）：WDIconButtonVariant 追加 filled / tonal / glass / outline（plain 保留首位）；参数与默认值不变。
+# B8 增量：2026-11-15（iOS/docs/B8-SIGNATURE-FREEZE.md）—— 新增 WDIconButtonShape 与 shape 参数（仅新 init 必填，默认 .circle）。
 
 component: WDIconButton
 params:
@@ -27,6 +28,10 @@ params:
   - name: action
     ios: action
     type: "@escaping () -> Void"
+  - name: shape              # B8 增量：circle / roundedSquare；仅新 init 必填
+    ios: shape
+    type: WDIconButtonShape
+    default: .circle
 
 slots: [icon]
 
@@ -34,7 +39,9 @@ default:
   variant: .plain
   size: .md
   isLoading: false
+  shape: .circle
 
 enums:
   WDIconButtonVariant: [plain, filled, tonal, glass, outline]   # 2026-11-15 B4 追加四个 case（源级 breaking）
+  WDIconButtonShape: [circle, roundedSquare]
   WDButtonSize: [sm, md, lg]
