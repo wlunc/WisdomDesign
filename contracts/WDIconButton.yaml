@@ -2,6 +2,7 @@
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-①
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 增量：2026-11-15（B4，../iOS/docs/B4-CONTRACT-CHANGE-REQUEST.md）：WDIconButtonVariant 追加 filled / tonal / glass / outline（plain 保留首位）；参数与默认值不变。
 
 component: WDIconButton
 params:
@@ -35,5 +36,5 @@ default:
   isLoading: false
 
 enums:
-  WDIconButtonVariant: [plain]
+  WDIconButtonVariant: [plain, filled, tonal, glass, outline]   # 2026-11-15 B4 追加四个 case（源级 breaking）
   WDButtonSize: [sm, md, lg]

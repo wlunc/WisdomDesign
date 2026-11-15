@@ -1,6 +1,7 @@
 # WDAvatar — iOS 侧契约条目（M2）
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-⑤ + §5.2
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
+# B2 增量：2026-11-15（来源 = ../iOS/docs/B2-CONTRACT-CHANGE-REQUEST.md + Sources/WisdomUI/Components/Primitives/WDAvatar/WDAvatar.swift 公开签名）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDAvatar
@@ -9,9 +10,27 @@ params:
   - name: value
     ios: value
     type: WDAvatarValue
+  - name: size             # B2 增量（2026-11-15）：五档直径；仅新重载 init(value:size:isOnline:isDisabled:) 必填
+    ios: size
+    type: WDAvatarSize
+    default: .md       # 既有 init(value:) 的语义默认
+  - name: isOnline         # B2 增量（2026-11-15）：在线点；默认 false
+    ios: isOnline
+    type: Bool
+    default: false
+  - name: isDisabled       # B2 增量（2026-11-15）：停用态（50% + 去饱和）；默认 false
+    ios: isDisabled
+    type: Bool
+    default: false
 
 slots: [icon, label]
 
-default: {}   # value 必填（直径锁死，无 size 参数）
+# B2 增量（2026-11-15）：既有 init(value:) 等价于 size = .md、isOnline = false、isDisabled = false
+default:
+  size: .md
+  isOnline: false
+  isDisabled: false
 
-enums: {}
+enums:
+  # B2 增量（2026-11-15）：五档（WDAvatarSize.swift 全量 case；只增不改）
+  WDAvatarSize: [xs, sm, md, lg, xl]

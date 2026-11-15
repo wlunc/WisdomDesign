@@ -2,6 +2,7 @@
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-⑦（SPEC §2.11 权威签名）
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 增量：2026-11-15（B3，../iOS/docs/B3-CONTRACT-CHANGE-REQUEST.md）：WDCardStyle 追加 sunken；签名/默认值/槽位不变。
 
 component: WDCard
 params:
@@ -19,4 +20,4 @@ default:
   style: .elevated
 
 enums:
-  WDCardStyle: [elevated, outlined, glass]
+  WDCardStyle: [elevated, outlined, glass, sunken]   # 2026-11-15 B3 追加 sunken（源级 breaking）

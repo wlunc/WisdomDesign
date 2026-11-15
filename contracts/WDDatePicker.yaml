@@ -3,6 +3,7 @@
 # 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
 # .date = 自建月历；.time = 系统滚轮；.dateAndTime = 自建月历 + 系统时间滚轮（Q2）；quickOptions 仅 .date 渲染。
+# 增量：2026-11-15 B6（iOS/docs/B6-CONTRACT-CHANGE-REQUEST.md §增量）—— 追加 range / showsClearButton / clearAccessibilityLabel；enums 不变（WDDatePickerMode 仍 date / time / dateAndTime）。
 
 component: WDDatePicker
 params:
@@ -28,6 +29,18 @@ params:
     ios: quickOptions
     type: "[WDDatePickerQuickOption]"
     default: []
+  - name: range            # B6 增量（2026-11-15）；与 date 互斥，仅范围重载
+    ios: range
+    type: "Binding<ClosedRange<Date>?>"
+    default: null
+  - name: showsClearButton # B6 增量（2026-11-15）；是否显示清除按钮
+    ios: showsClearButton
+    type: "Bool"
+    default: false
+  - name: clearAccessibilityLabel # B6 增量（2026-11-15）；清除按钮读屏标签（库内零文案）
+    ios: clearAccessibilityLabel
+    type: "Text?"
+    default: null
 
 slots: [label]
 
@@ -36,6 +49,9 @@ default:
   bounds: null
   placeholder: null
   quickOptions: []
+  range: null
+  showsClearButton: false
+  clearAccessibilityLabel: null
 
 enums:
   WDDatePickerMode: [date, time, dateAndTime]

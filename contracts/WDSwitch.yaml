@@ -2,6 +2,7 @@
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-②
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 增量：2026-11-15 B5（iOS/docs/B5-CONTRACT-CHANGE-REQUEST.md §增量）—— 追加 description / size 两个参数与 WDSwitchSize 枚举；既有 init(isOn:label:) 保留（等价于 size = .standard、description = nil）。
 
 component: WDSwitch
 params:
@@ -11,9 +12,20 @@ params:
   - name: label
     ios: label
     type: Text
+  - name: description      # B5 增量（2026-11-15）；标签下方一行描述，可空
+    ios: description
+    type: "Text?"
+    default: null
+  - name: size             # B5 增量（2026-11-15）；尺寸档
+    ios: size
+    type: "WDSwitchSize"
+    default: .standard
 
 slots: [label]
 
-default: {}   # 两参必填（无默认）
+default:
+  description: null
+  size: .standard
 
-enums: {}
+enums:
+  WDSwitchSize: [standard, compact]
