@@ -6,6 +6,8 @@
 > **未纳入判定**：C-15（`iOS/docs/DEV-PLAN.md` §5.3，`:473`–`:520`）、槽位表（Android §2.4 `:937`–`:971` / iOS §2.10 副表 `:903`–`:925`）、历史冻结记录（`M2-SIGNATURE-FREEZE.md`、`B1–B6-SIGNATURE-FREEZE.md`、`M2-EXIT-REPORT.md`、`CHANGELOG.md`、`api/WisdomUI.api.json`）。
 > **设计真源**：契约 YAML 为唯一真源；`contracts/README.md` 已于 2026-11-15 随本轮落库；两端 §2.10 是**只读副本**，先改真源再同步副本。
 > **证据时点**：2026-11-15，行号 = 当前工作区文件实测行号；引用一律"文件:行号 + 可 grep 锚点串"。
+>
+> **执行结果（2026-11-15）**：§2 的 14 处“必须改”已落地——iOS 提交 `ad27228`、Android 提交 `08d56d3`（仅文档，未动两仓历史冻结记录/C-15/槽位/签名）；#23 的 B6 Android 形态仍【待 android-lead 确认】，未写成已冻结/已实现。
 
 ---
 
