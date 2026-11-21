@@ -2,15 +2,19 @@
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-⑤ + §5.2
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
 # B2 增量：2026-11-15（来源 = ../iOS/docs/B2-CONTRACT-CHANGE-REQUEST.md + Sources/WisdomUI/Components/Primitives/WDAvatar/WDAvatar.swift 公开签名）
-# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# A-11 增量：2026-11-21（来源 = docs/14-member-tones-media-tooltip.md §1）：新增成员四色 tone 与照片形态。
+#   兼容性：tone 带默认值 null（不传 = 维持 surface.tint，与既有快照逐像素一致）⇒ 源码兼容，但破符号快照连续性（需显式基线更新）。
+#   WDAvatarValue 新增第三个构造 init(image:)：值类型的重载，源码兼容。
+#   WDMemberTone 由令牌生成器产出（Foundation/generated/WDTokens.swift），本契约只登记 case，不另定义。
+# 说明：M0-5 的 contracts/README.md 尚未落库时按三键登记（params / slots / default）+ 枚举全量 case。
 
 component: WDAvatar
-# 值类型 WDAvatarValue：init(icon: WDIconName) / init(label: Text)（§5.2 已确认）
+# 值类型 WDAvatarValue：init(icon: WDIconName) / init(label: Text) / init(image:)（A-11 增补第三个）
 params:
   - name: value
     ios: value
     type: WDAvatarValue
-  - name: size             # B2 增量（2026-11-15）：五档直径；仅新重载 init(value:size:isOnline:isDisabled:) 必填
+  - name: size             # B2 增量（2026-11-15）：五档直径；仅新重载 init(value:size:isOnline:isDisabled:tone:) 必填
     ios: size
     type: WDAvatarSize
     default: .md       # 既有 init(value:) 的语义默认
@@ -22,15 +26,24 @@ params:
     ios: isDisabled
     type: Bool
     default: false
+  - name: tone             # A-11 增量（2026-11-21）：成员四色档；默认 null = surface.tint（既有观感不变）
+    ios: tone
+    type: WDMemberTone?
+    default: null
 
 slots: [icon, label]
 
 # B2 增量（2026-11-15）：既有 init(value:) 等价于 size = .md、isOnline = false、isDisabled = false
+# A-11 增量（2026-11-21）：tone = null 时回落 surface.tint
 default:
   size: .md
   isOnline: false
   isDisabled: false
+  tone: null
 
 enums:
   # B2 增量（2026-11-15）：五档（WDAvatarSize.swift 全量 case；只增不改）
   WDAvatarSize: [xs, sm, md, lg, xl]
+  # A-11 增量（2026-11-21）：成员四色（令牌生成物的 WDMemberTone；rawValue = "tone-1"…"tone-4"）
+  #   分配 = FNV1a32(memberID) mod 4（docs/14-member-tones-media-tooltip.md §1.3），库提供 WDMemberTone.assign(memberID:)
+  WDMemberTone: [tone1, tone2, tone3, tone4]

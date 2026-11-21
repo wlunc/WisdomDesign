@@ -1,9 +1,12 @@
 # WDCard — iOS 侧契约条目（M2）
 # 副本来源：../iOS/docs/M2-SIGNATURE-FREEZE.md §5.1-⑦（SPEC §2.11 权威签名）
 # 回填：2026-11-12（M3 出口前；按 docs/CONTRACTS-CONFIRMATION-REQUEST.md §5.3 誊录，不改签名/默认值/槽位/枚举）
-# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 说明：M0-5 的 contracts/README.md 尚未落库时按三键登记（params / slots / default）+ 枚举全量 case。
 # 增量：2026-11-15（B3，../iOS/docs/B3-CONTRACT-CHANGE-REQUEST.md）：WDCardStyle 追加 sunken；签名/默认值/槽位不变。
 # B7 增量：2026-11-15（iOS/docs/B7-SIGNATURE-FREEZE.md）—— 新增可点卡 init(style:action:content:)；默认 action = null。
+# A-13 增量：2026-11-21（来源 = docs/14-member-tones-media-tooltip.md §2）：WDCardStyle 追加 media + media 参数。
+#   兼容性：新增枚举 case = 源级 breaking（穷尽 switch），按 F-20 走 minor + Breaking 段 + 迁移片段。
+#   media 带默认值 null（仅 media 重载必填）；WDCardStyle.media 与 media == null 的组合 = 空图占位（surface.card-sunken 灰底）。
 
 component: WDCard
 params:
@@ -18,12 +21,17 @@ params:
     ios: action
     type: "@escaping () -> Void"
     default: null
+  - name: media              # A-13 增量（2026-11-21）：顶部图片；仅 init(style:media:content:) 必填
+    ios: media
+    type: WDCardMedia?
+    default: null
 
 slots: [content]
 
 default:
   style: .elevated
   action: null
+  media: null
 
 enums:
-  WDCardStyle: [elevated, outlined, glass, sunken]   # 2026-11-15 B3 追加 sunken（源级 breaking）
+  WDCardStyle: [elevated, outlined, glass, sunken, media]   # 2026-11-15 B3 追加 sunken；2026-11-21 A-13 追加 media（源级 breaking）

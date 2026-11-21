@@ -1,27 +1,27 @@
 {
-  "version": "1.0.0",
-  "sha256": "e552bb87e27055c82073d7b28546608bf9eb7b7ec6ebb84d2cddafcbbd1e9f3b",
-  "sha12": "e552bb87e270",
+  "version": "1.1.0",
+  "sha256": "953044a85a8ea93894a6d76d22b8c632466e3a9c830219ba682769d43e7f6f24",
+  "sha12": "953044a85a8e",
   "artifacts": [
     {
       "path": "iOS/Sources/WisdomUI/Foundation/generated/WDTokens.swift",
-      "sha256": "903b452a67d30d0dc0918f9ad1db9a11211807c9a730d1105c744a53b8439884"
+      "sha256": "d11543f0d9c41f04064fc5178fdcbe1bccaf217fb4bd80f8c8127efd5add45a1"
     },
     {
       "path": "iOS/Sources/WisdomUI/Foundation/generated/WDTokensVersion.swift",
-      "sha256": "129b5d0939779192c1a9454f9b7904dd289eaecc20647b88423f7a644b9ae500"
+      "sha256": "4cc94c17ee104df1ff936cca8b7d67b7a8c9d06c60485e82f7e09be5d4127c4e"
     },
     {
       "path": "iOS/Sources/WisdomUI/Foundation/generated/WDColorSlots.swift",
-      "sha256": "592ef954dbf912745a68cb8d70a1f521c4790505f81c361587cb3a038322ddf5"
+      "sha256": "32d9995948f214ad52e14fbc3642f6509f0dc036c52564a7d825e75d0f28315a"
     },
     {
       "path": "android/wisdom-ui/src/main/kotlin/io/github/wlunc/wisdom/foundation/generated/WDTokens.kt",
-      "sha256": "2908670979d5010f88312f6563591d787b5704611d32826257af3dd1b9a3d38d"
+      "sha256": "662b840393ec6b855d86a4b32a5dfab03000e5524de41f30feb1139e56ec15a1"
     },
     {
       "path": "android/wisdom-ui/src/main/kotlin/io/github/wlunc/wisdom/foundation/generated/WDTokensVersion.kt",
-      "sha256": "fa89b83c12900238aa1a6b53c2791ab2f0326f5d30e54c957fca3c533331958a"
+      "sha256": "cd44b91bdf322bc22addb500426c855b8e14c5c600dfe82835adc3141a08d177"
     }
   ]
 }

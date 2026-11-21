@@ -1716,10 +1716,12 @@ html&gt;body{padding:0}&lt;/style&gt;
 
 /* Avatar */
 #wd-gallery .wd-av{border-radius:50%;display:inline-grid;place-items:center;font-weight:600;flex:none;box-sizing:border-box;border:2px solid light-dark(rgba(255,255,255,.9),rgba(8,26,44,.9))}
-#wd-gallery .wd-av.a1{background:linear-gradient(135deg,#C9E4EB,#B0D5DF);color:#123F5C}
-#wd-gallery .wd-av.a2{background:linear-gradient(135deg,#A3D6E0,#7EC4CF);color:#123F5C}
-#wd-gallery .wd-av.a3{background:linear-gradient(135deg,#1B7FA8,#1677B3);color:#fff}
-#wd-gallery .wd-av.a4{background:linear-gradient(135deg,#1677B3,#065279);color:#fff}
+/* A-11（2026-11-21）：四档 = 一条单调递减的明度阶梯，平色（不用渐变），首字色按档配对。
+   令牌真源 = tokens/wisdom.tokens.json member.{light,dark}.tone-1…4；推导见 docs/14-member-tones-media-tooltip.md §1。 */
+#wd-gallery .wd-av.a1{background:light-dark(#B0D5DF,#97CBD8);color:light-dark(#0A1B24,#0A1B24)}
+#wd-gallery .wd-av.a2{background:light-dark(#7EC4CF,#6BBBC7);color:light-dark(#0A1B24,#0A1B24)}
+#wd-gallery .wd-av.a3{background:light-dark(#1A7BA3,#4193B4);color:light-dark(#fff,#0A1B24)}
+#wd-gallery .wd-av.a4{background:light-dark(#065279,#356997);color:#fff}
 #wd-gallery .wd-av.xs{width:20px;height:20px;font-size:9px}
 #wd-gallery .wd-av.sm{width:28px;height:28px;font-size:11px}
 #wd-gallery .wd-av.md{width:32px;height:32px;font-size:12px}
@@ -1749,9 +1751,11 @@ html&gt;body{padding:0}&lt;/style&gt;
 #wd-gallery .wd-card.glass{background:var(--g-glass-strong);backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),var(--g-sh1)}
 #wd-gallery .wd-card.outline{background:transparent;box-shadow:none}
 #wd-gallery .wd-card.sunken{background:var(--g-sunken);box-shadow:none}
+/* A-13（2026-11-21）：图片带通栏（左右上贴边）、16:9、最小高 96、上圆角 = 卡片圆角、下边不圆。
+   文字区仍走 16 内边距。推导见 docs/14-member-tones-media-tooltip.md §2。 */
 #wd-gallery .wd-card.media{padding:0;overflow:hidden}
-#wd-gallery .wd-card.media .thumb{height:76px;background:var(--g-surface)}
-#wd-gallery .wd-card.media .bd{padding:12px 14px}
+#wd-gallery .wd-card.media .thumb{aspect-ratio:16/9;min-height:96px;background:var(--g-surface);border-radius:var(--g-r) var(--g-r) 0 0}
+#wd-gallery .wd-card.media .bd{padding:14px}
 #wd-gallery .wd-card-title{font-size:16px;font-weight:600}
 #wd-gallery .wd-card-sub{font-size:13px;color:var(--g-text2);margin-top:2px}
 #wd-gallery .wd-card-body{margin-top:8px;font-size:14px;color:var(--g-text2)}
@@ -2156,7 +2160,7 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;!-- 12 Avatar --&gt;
 &lt;section class=&quot;spec&quot;&gt;
   &lt;div class=&quot;spec-head&quot;&gt;&lt;span class=&quot;spec-id&quot;&gt;12&lt;/span&gt;&lt;h2 class=&quot;spec-name&quot;&gt;Avatar&lt;/h2&gt;&lt;span class=&quot;spec-tier&quot;&gt;P0&lt;/span&gt;&lt;/div&gt;
-  &lt;p class=&quot;spec-desc text-small&quot;&gt;成员身份。四档配色覆盖一个家庭的全部成员。&lt;/p&gt;
+  &lt;p class=&quot;spec-desc text-small&quot;&gt;成员身份。四档配色是明度阶梯，按成员 ID 固定分配，覆盖一个家庭的全部成员。&lt;/p&gt;
   &lt;div class=&quot;pair&quot;&gt;
     &lt;div class=&quot;cell wd-light&quot; data-label=&quot;浅色&quot;&gt;
       &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;尺寸&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
@@ -2174,7 +2178,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;/div&gt;
     &lt;div class=&quot;cell wd-dark&quot; data-label=&quot;深色&quot; data-clone&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;点击&lt;/em&gt; → 打开成员资料&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;无头像&lt;/em&gt; → 取名字首字，颜色按成员固定&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;点击&lt;/em&gt; → 打开成员资料&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;无头像&lt;/em&gt; → 取名字首字，颜色按成员 ID 固定（FNV-1a mod 4）&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;四档&lt;/em&gt; → 明度阶梯，首字色按档配对，每档 ≥ 4.5:1&lt;/span&gt;&lt;/div&gt;
 &lt;/section&gt;
 
 &lt;!-- 13 AvatarStack --&gt;
@@ -2263,12 +2267,12 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;wd-card sunken&quot; style=&quot;flex:1;min-width:130px&quot;&gt;&lt;div class=&quot;wd-card-title&quot;&gt;sunken&lt;/div&gt;&lt;div class=&quot;wd-card-body&quot;&gt;卡内嵌块、次级信息&lt;/div&gt;&lt;/div&gt;
       &lt;/div&gt;&lt;/div&gt;
       &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;图文&lt;/span&gt;&lt;div class=&quot;wd-items&quot; style=&quot;align-items:stretch&quot;&gt;
-        &lt;div class=&quot;wd-card media&quot; style=&quot;flex:1&quot;&gt;&lt;div class=&quot;thumb&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bd&quot;&gt;&lt;div class=&quot;wd-card-title&quot;&gt;media&lt;/div&gt;&lt;div class=&quot;wd-card-sub&quot;&gt;图片圆角 = 外圆角 − 内边距&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;wd-card media&quot; style=&quot;flex:1&quot;&gt;&lt;div class=&quot;thumb&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bd&quot;&gt;&lt;div class=&quot;wd-card-title&quot;&gt;media&lt;/div&gt;&lt;div class=&quot;wd-card-sub&quot;&gt;图片通栏 16:9，上圆角 = 卡片圆角，下边不圆&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
       &lt;/div&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;cell wd-dark&quot; data-label=&quot;深色&quot; data-clone&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;整卡可点&lt;/em&gt; → 按下时整卡降到 96% 亮度，不用给卡片加箭头&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;嵌套&lt;/em&gt; → 内层圆角必须比外层小一个内边距&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;整卡可点&lt;/em&gt; → 按下时整卡降到 96% 亮度，不用给卡片加箭头&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;嵌套&lt;/em&gt; → 内层圆角必须比外层小一个内边距&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;media&lt;/em&gt; → 图片带通栏、16:9、最小高 96；文字区仍 16&lt;/span&gt;&lt;/div&gt;
 &lt;/section&gt;
 
 &lt;!-- 18 ListRow --&gt;

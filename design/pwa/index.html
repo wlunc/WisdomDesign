@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wisdom Design · 设计稿随身看</title>
+<meta name="description" content="Wisdom Design System 的移动端预览：基础组件、高级组件、场景配方与设计基础。可离线、可安装。">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#f1f8fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a1b2a" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="application-name" content="Wisdom Design">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Wisdom">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="./assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./assets/app.css">
+<script src="./assets/app.js" defer></script>
+</head>
+<body class="hub">
+<header class="app-bar">
+  <div class="app-bar__inner shell">
+    <a class="brand" href="./" aria-label="Wisdom Design 首页">
+      <img class="brand__mark" src="./assets/icon.svg" width="34" height="34" alt="">
+      <span class="brand__text">
+        <b>Wisdom Design</b>
+        <small>设计系统 · v1.0</small>
+      </span>
+    </a>
+    <div class="app-bar__actions">
+      <button class="icon-btn" type="button" id="install-button" aria-label="安装到桌面" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m7.5 9.5 4.5 4.5 4.5-4.5"/><path d="M5 20h14"/></svg>
+      </button>
+      <span class="status-pill" aria-live="polite">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">在线</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<main class="shell" id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="hero__kicker">Wisdom Design System · v1.0</p>
+    <h1 id="hero-title">设计稿，随身看</h1>
+    <p class="hero__lead">组件变体与状态、场景配方、双端屏幕，一处翻开。可安装到桌面，断网也能看。</p>
+    <div class="hero__stats">
+      <span class="hero-stat"><b id="stat-galleries">4</b> 份画廊</span>
+      <span class="hero-stat"><b id="stat-specs">42</b> 个组件与配方</span>
+      <span class="hero-stat"><span class="hero-stat__dot" id="offline-dot"></span><span id="offline-text">在线查看</span></span>
+    </div>
+  </section>
+
+  <section aria-labelledby="galleries-title">
+    <div class="section-head">
+      <h2 class="section-title" id="galleries-title">画廊</h2>
+      <span class="section-note" id="gallery-note">4 份 · 42 个条目</span>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </section>
+
+  <section class="index" id="index" aria-labelledby="index-title">
+    <div class="section-head">
+      <h2 class="section-title" id="index-title">组件索引</h2>
+      <span class="section-note" id="spec-count">42 个条目</span>
+    </div>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+      <input type="search" id="spec-search" placeholder="搜索组件，如 Button / 按钮" aria-label="搜索组件" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+      <button class="search__clear" type="button" id="search-clear" aria-label="清空搜索" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12"/><path d="m18 6-12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="chips" id="filters" role="group" aria-label="按画廊筛选"></div>
+    <div class="result-line" id="result-line" aria-live="polite">正在载入索引…</div>
+    <div class="spec-list" id="spec-list"></div>
+    <button class="btn btn--ghost spec-more" type="button" id="show-all" hidden>查看全部</button>
+
+    <div class="load-error" id="load-error" hidden>
+      索引没有载入。请确认文件完整，或刷新重试。
+      <button class="btn btn--ghost btn--small" type="button" id="retry-button" style="margin-top: 10px">重新载入</button>
+    </div>
+  </section>
+
+  <section class="install-card" id="install-card" aria-labelledby="install-title" hidden>
+    <div class="install-card__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="m7.5 9.5 4.5 4.5 4.5-4.5"/><path d="M5 20h14"/></svg>
+    </div>
+    <div class="install-card__body">
+      <div class="install-card__title" id="install-title">安装到手机桌面</div>
+      <p class="install-card__text" id="install-text">安装后从桌面直接打开，断网也能查看设计稿。</p>
+      <div class="install-card__actions">
+        <button class="btn btn--primary" type="button" id="install-action" hidden>安装</button>
+        <button class="btn btn--ghost" type="button" id="install-dismiss">知道了</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__line">
+      <span class="status-dot is-muted" id="footer-dot"></span>
+      <span id="footer-status">正在检查离线缓存…</span>
+    </div>
+    <div class="footer__line">Wisdom Design System · 温和蓝 v1.0 · <span id="build-version">build —</span></div>
+    <div class="footer__line"><a href="https://github.com/wlunc/WisdomDesign" target="_blank" rel="noreferrer">设计仓库</a> · 令牌是唯一真源</div>
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript>
+  <div class="shell"><div class="load-error">这个页面需要 JavaScript 才能列出组件索引。你仍可以直接打开 docs/ 下的画廊。</div></div>
+</noscript>
+</body>
+</html>

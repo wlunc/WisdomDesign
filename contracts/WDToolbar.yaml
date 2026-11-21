@@ -1,8 +1,12 @@
 # WDToolbar — iOS 侧契约条目（M5）
 # 副本来源：../iOS/docs/M5-SIGNATURE-FREEZE.md §2.2
 # 回填：2026-11-13（M5 批前冻结；按 docs/M5-SIGNATURE-FREEZE.md 誊录，不改签名/默认值/槽位/枚举）
-# 说明：M0-5 的 contracts/README.md 尚未落库；本文件按三键登记（params / slots / default）+ 枚举全量 case。
+# 说明：M0-5 的 contracts/README.md 尚未落库时按三键登记（params / slots / default）+ 枚举全量 case。
 # items > 7 时 overflowAccessibilityLabel 必填（debug 断言）。
+# A-14 增量：2026-11-21（来源 = docs/14-member-tones-media-tooltip.md §3）：长按提示。
+#   兼容性：showsTooltips 带默认值 true？？—— 否：默认 false（保持既有"长按无响应"，见设计 02 §8「默认不响应」）。
+#   启用时：500ms 阈值 / 28 高气泡 / 8pt 间距 / 8 圆角；达到阈值即取消点击（抬手不执行 action）。
+#   文案来源 = WDToolbarItem.accessibilityLabel（同源，不另加字段）。
 
 component: WDToolbar
 params:
@@ -16,10 +20,15 @@ params:
     ios: overflowAccessibilityLabel
     type: "Text?"
     default: null
+  - name: showsTooltips      # A-14 增量（2026-11-21）：长按显示文字提示；默认 false（与既有行为一致）
+    ios: showsTooltips
+    type: Bool
+    default: false
 
 slots: [items]
 
 default:
   overflowAccessibilityLabel: null
+  showsTooltips: false
 
 enums: {}

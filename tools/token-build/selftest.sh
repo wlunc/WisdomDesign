@@ -28,7 +28,8 @@ fresh() {
   local dir="$1" ios="${2:-1}" android="${3:-1}"
   rm -rf "$dir"
   mkdir -p "$dir/wisdomdesign"
-  cp -R "$DESIGN_ROOT/tokens" "$DESIGN_ROOT/tools" "$dir/wisdomdesign/"
+  # contracts/ 也要复制：M2 起生成器要求 contracts/icons.json（`assertIcons`），离开它所有写入用例都会红
+  cp -R "$DESIGN_ROOT/tokens" "$DESIGN_ROOT/tools" "$DESIGN_ROOT/contracts" "$dir/wisdomdesign/"
   [ "$ios" = "1" ] && mkdir -p "$dir/iOS/Sources/WisdomUI/Foundation/generated"
   [ "$android" = "1" ] && mkdir -p "$dir/android/wisdom-ui/src/main/kotlin/io/github/wlunc/wisdom/foundation/generated"
   return 0
@@ -154,6 +155,10 @@ guard "弹簧键集合" "键集合必须恰为 {response, dampingRatio}" 't["mot
 guard "对比度" "对比度断言失败" 't["semantic"]["light"]["text"]["disabled"]["$value"] = "#B9D2DC"'
 guard "WDComponent12键" "WDComponent 出口必须恰为 12 键" 'del t["motion"]["component"]["toast-in"]'
 guard "schemes悬空" "schemes 与 semantic 的键集合不一致" 't["schemes"]["ocean"] = {"$value": {"appearance": "dark", "semantic": "semantic.ocean", "isDefault": False}}'
+# A-11（2026-11-21）：成员四色的三条不变量
+guard "成员色对比度" "成员色首字对比度不足" 't["member"]["light"]["tone-3"]["ink"]["$value"] = "#0A1B24"'
+guard "成员色不可分" "成员四色不可分" 't["member"]["light"]["tone-2"]["fill"]["$value"] = "#B0D5DF"'
+guard "成员色键集合" "成员四色键集合必须是" 'del t["member"]["dark"]["tone-4"]'
 
 # ---- 14 未知参数
 D="$SANDBOX/cli"; fresh "$D"

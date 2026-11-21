@@ -1,6 +1,6 @@
 {
   "$description": "Wisdom Design System · 设计令牌唯一真源（DTCG 格式）。v1.0 定稿：温和蓝，浅色版为主。原始层不直接用于界面，界面只用 semantic 层。本文件是 M0-1 令牌 schema 的一次性冻结变更集（21 行清单的 (a) 部分 + schemes 维度 + U12 = 32 槽位），冻结窗口只开一次：此后新增/改键名 = 二次 breaking，必须走变更集流程。",
-  "$version": "1.0.0",
+  "$version": "1.1.0",
 
   "schemes": {
     "$description": "主题方案维度（M0-1 同批冻结，用户决策 #8 层一）。键 = scheme 名（小写 slug），值为该方案元数据；语义色值真源 = semantic.<同名>，两者键集合必须一致（生成器按 --schemes 逐套输出，并在 --check 里断言相等）。appearance 决定浅/深解析（深色变体 = 新 scheme 名 + appearance: dark）。新增品牌 = 追加一条 scheme + 在 semantic 下增同名一组，不改已有键。运行时只换「已生成」的 scheme（不重启进程、不进高频路径）；不支持运行时任意 token.json / 服务端下发 / 逐槽位任意覆盖。",
@@ -68,6 +68,26 @@
     "dark": {
       "$value": "radial-gradient(90% 62% at 12% -6%,rgba(18,52,73,.30),transparent 62%),radial-gradient(82% 58% at 92% 2%,rgba(15,64,85,.20),transparent 64%),radial-gradient(120% 74% at 58% 104%,rgba(22,119,179,.08),transparent 68%)",
       "$description": "A2 定值。601×601 几何采样最亮点 #0E2F42（L=0.0249），text.tertiary #839EB0 = 5.00:1"
+    }
+  },
+
+  "member": {
+    "$description": "成员头像四色（A-11 设计交付 2026-11-21）。刻意不放进 semantic.*：U12 槽位计数冻结在 32，成员色是组件私有调色板（与 material / gradient 同处理）。每套 scheme 四个 tone，每个 tone = fill + ink 一对；生成器 assertMemberTones() 逐 scheme 断言 ① 恰 4 个 tone ② 相对亮度严格单调递减（视觉可分）③ ink 在 fill 上 ≥ 4.5:1。分配规则 = 按成员 ID 做 FNV-1a 后再 mod 4（见 docs/14-member-tones-media-tooltip.md §1），不按出现顺序。",
+    "light": {
+      "$type": "color",
+      "$description": "浅色外观：tone-1 / tone-2 用深字（#0A1B24），tone-3 / tone-4 用白字。tone-1 与 tone-2 取自定稿色卡 lake / mist，tone-4 = navy。",
+      "tone-1": { "fill": { "$value": "#B0D5DF" }, "ink": { "$value": "#0A1B24" }, "$description": "湖水蓝。ink 11.24:1" },
+      "tone-2": { "fill": { "$value": "#7EC4CF" }, "ink": { "$value": "#0A1B24" }, "$description": "天青。ink 8.94:1" },
+      "tone-3": { "fill": { "$value": "#1A7BA3" }, "ink": { "$value": "#FFFFFF" }, "$description": "石青。ink 4.77:1（白字下限）" },
+      "tone-4": { "fill": { "$value": "#065279" }, "ink": { "$value": "#FFFFFF" }, "$description": "靛蓝。ink 8.43:1" }
+    },
+    "dark": {
+      "$type": "color",
+      "$description": "深色外观：tone-1～tone-3 用深字（#0A1B24），tone-4 用白字。整体抬亮是为了在深底上仍与 bg.canvas 拉开 ≥ 3:1。",
+      "tone-1": { "fill": { "$value": "#97CBD8" }, "ink": { "$value": "#0A1B24" }, "$description": "ink 9.91:1；对深 canvas 9.89:1" },
+      "tone-2": { "fill": { "$value": "#6BBBC7" }, "ink": { "$value": "#0A1B24" }, "$description": "ink 8.00:1；对深 canvas 7.98:1" },
+      "tone-3": { "fill": { "$value": "#4193B4" }, "ink": { "$value": "#0A1B24" }, "$description": "ink 5.07:1；对深 canvas 5.06:1" },
+      "tone-4": { "fill": { "$value": "#356997" }, "ink": { "$value": "#FFFFFF" }, "$description": "ink 5.80:1；对深 canvas 3.02:1" }
     }
   },
 
@@ -266,7 +286,30 @@
       "md":  { "$value": "32" },
       "lg":  { "$value": "40" },
       "xl":  { "$value": "56" },
-      "xxl": { "$value": "72" }
+      "xxl": { "$value": "72" },
+      "ring": {
+        "$value": "2",
+        "$description": "A-11（2026-11-21）：照片形态与在线点共用的描边宽。描边色 = 宿主底色（surface.card-solid），使圆形照片与背景分开；不再新增色槽（U12 仍为 32）。"
+      }
+    },
+    "card-media": {
+      "$description": "A-13（2026-11-21）：WDCard.media 的图片带几何。图片通栏（左右与上边贴卡片边缘）、不叠内边距；文字区仍走 space.5（16）。",
+      "aspect-ratio": {
+        "$type": "number",
+        "$value": 1.78,
+        "$description": "图片带宽高比 = 16:9（1.7778 取 1.78）。卡片宽 343 时高 ≈ 193；刻意不取 4:3（高 257 会把一张卡撑满半屏）。"
+      },
+      "min-height": {
+        "$value": "96",
+        "$description": "图片带最小高：卡片很窄（如 iPad 分屏两列）时宽高比会算出过矮的带子，低于此值按此值渲染、图片居中裁切。"
+      }
+    },
+    "tooltip": {
+      "$description": "A-14（2026-11-21）：长按文字提示（WDToolbar 图标按钮）。提示是补充信息，不是控件的替代标签。",
+      "height":   { "$value": "28", "$description": "单行气泡高 = 6 + 16（caption1 行盒）+ 6" },
+      "max-width": { "$value": "200", "$description": "上限 200；文案上限 6 汉字（07-content §4 按钮档），放不下说明该用可见标签而不是提示" },
+      "offset":   { "$value": "8", "$description": "气泡底边与按钮热区上边的间距 = space.3" },
+      "press-duration": { "$type": "duration", "$value": "500", "$description": "长按判定阈值 500ms（与系统 LongPressGesture 默认一致）；未到阈值抬手 = 普通点击，触发 action" }
     },
     "sheet": {
       "$description": "弹层几何（M0-1）：detent 是屏高比例（number），其余为尺寸",

@@ -57,6 +57,7 @@ wisdomdesign/
 │   ├── 07-content.md           内容与文案规范
 │   ├── 08-icons.md             图标规范与双端语义对照
 │   ├── 09-layout.md            布局与响应式规范
+│   ├── 10-pwa.md               手机预览 PWA（构建/部署/HTTPS 限制）
 │   └── specs/                  组件详细规格（开发依据与验收标准）
 │       ├── README.md           模板、编写规则、组件索引
 │       ├── 01-basic.md         01–20 基础组件
@@ -65,14 +66,33 @@ wisdomdesign/
 ├── tokens/
 │   └── wisdom.tokens.json      设计令牌唯一真源（DTCG 格式）
 ├── tools/
-│   └── token-build/build.js    令牌生成器，输出到两个平台仓库
+│   ├── token-build/build.js    令牌生成器，输出到两个平台仓库
+│   └── pwa/                    手机预览：构建 / 本地服务 / 图标
 └── design/
     ├── preview/
     │   └── wisdom-light.html   浅色版完整预览（自包含，可直接用浏览器打开）
-    └── gallery/
-        ├── wisdom-components.html  01–20 基础组件规格画廊
-        ├── wisdom-advanced.html    21–36 高级组件规格画廊
-        └── wisdom-patterns.html    37 + R1–R5 场景配方画廊
+    ├── gallery/
+    │   ├── wisdom-components.html  01–20 基础组件规格画廊
+    │   ├── wisdom-advanced.html    21–36 高级组件规格画廊
+    │   └── wisdom-patterns.html    37 + R1–R5 场景配方画廊
+    └── pwa/                    PWA 壳与生成产物（docs、sw、icons）
+```
+
+## 手机上查看（PWA）
+
+`design/pwa/` 是四份规格画廊的安装式 Web 版：画廊入口、42 个条目的索引与搜索、浅 / 深 / 并排查看、离线缓存。设计稿仍是 `design/preview` 与 `design/gallery`，PWA 目录里的 `docs/`、`data/index.json`、`sw.js` 都是构建产物。
+
+```bash
+node tools/pwa/build.js        # 从四份设计稿重新生成
+node tools/pwa/serve.js        # http://localhost:4173
+```
+
+手机和电脑连同一 Wi-Fi，打开终端打印的局域网地址即可。iOS Safari 可以「分享 → 添加到主屏幕」；完整离线缓存与安装提示需要 HTTPS（局域网 HTTP 下 Service Worker 不注册），部署方式见 [docs/10-pwa.md](docs/10-pwa.md)。
+
+构建校验：
+
+```bash
+node tools/pwa/build.js --check
 ```
 
 ## 生成令牌

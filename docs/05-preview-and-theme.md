@@ -3,13 +3,16 @@
 ## 1. 预览要解决的是"谁看得到"
 
 Xcode Preview 和 Android Studio Preview 都是开发者本机的东西，设计和产品看不到，也就谈不上人工审核。
-所以预览分三层，后两层共用同一批 PNG，不维护两套。
+所以预览分四层：前两层在开发机和 CI 里跑，后两层是给设计 / 产品直接看的静态产物。
 
 | 层 | 给谁 | 载体 | 产出 |
 | --- | --- | --- | --- |
 | IDE Preview | 开发者 | Xcode `#Preview` / Compose `@Preview` | 不落盘 |
 | 截图回归 | CI | swift-snapshot-testing / Compose Screenshot Testing | PNG 基线 |
 | 规格画廊 | 设计 · 产品 | 静态 HTML | 浏览器可直接审 |
+| 手机速览 | 设计 · 产品 | PWA | 主屏图标 + 搜索 + 离线 |
+
+> 2026-11 起，四份画廊另有 PWA 版本 `design/pwa/`：手机主屏打开、按组件搜索、浅 / 深 / 并排查看、离线缓存。构建、部署与 HTTPS 限制见 [10-pwa.md](10-pwa.md)。
 
 ## 2. 规格画廊
 

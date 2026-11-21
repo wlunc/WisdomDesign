@@ -138,4 +138,4 @@ Badge 的 `pending` 变体不达标。`specs/01-basic.md:1051` 写的是 `surfac
 
 ---
 
-← 返回：[评审总览与开工决策](10-review-summary.md) ｜ [A2 深色 canvas](11-a2-dark-canvas.md) ｜ [B22 玻璃](12-b22-glass.md) ｜ [设计基础](01-foundation.md)
+← 返回：[评审总览与开工决策](10-review-summary.md) ｜ [A2 深色 canvas](11-a2-dark-canvas.md) ｜ [B22 玻璃](12-b22-glass.md) ｜ [成员四色 / 媒体图 / 长按提示](14-member-tones-media-tooltip.md) ｜ [设计基础](01-foundation.md)

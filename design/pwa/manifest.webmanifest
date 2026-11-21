@@ -1,0 +1,97 @@
+{
+  "id": "./",
+  "name": "Wisdom Design",
+  "short_name": "Wisdom",
+  "description": "Wisdom Design System 的移动端预览：基础组件、高级组件、场景配方与设计基础。可离线、可安装。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#f1f8fa",
+  "theme_color": "#1677b3",
+  "categories": [
+    "design",
+    "productivity"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "基础组件",
+      "short_name": "基础",
+      "description": "01–20 基础组件的变体与状态",
+      "url": "./viewer.html?doc=components",
+      "icons": [
+        {
+          "src": "./assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "高级组件",
+      "short_name": "高级",
+      "description": "21–36 高级组件",
+      "url": "./viewer.html?doc=advanced",
+      "icons": [
+        {
+          "src": "./assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "场景配方",
+      "short_name": "场景",
+      "description": "37 与 R1–R5 场景配方",
+      "url": "./viewer.html?doc=patterns",
+      "icons": [
+        {
+          "src": "./assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "浅色版预览",
+      "short_name": "预览",
+      "description": "设计基础、色彩、动效与双端屏幕",
+      "url": "./viewer.html?doc=preview",
+      "icons": [
+        {
+          "src": "./assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

@@ -82,14 +82,14 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 
 ## 4. 组件注册表（37）
 
-共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **188** 条，槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
+共 **37** 个组件 / 37 个 YAML（1:1，文件名 = 组件名）；`params` 合计 **191** 条（B8 的 188 + A-11/A-13/A-14 的 3 条），槽位引用 69 处，无槽位组件 2 个（`WDDivider`、`WDSkeleton`）。排序 = 批次 + 字母。
 
 | 批次 | 组件 | 契约文件 | `params` 数 | 槽位 | 枚举数 |
 | --- | --- | --- | --- | --- | --- |
-| M2 | `WDAvatar` | [`WDAvatar.yaml`](WDAvatar.yaml) | 4 | `icon`、`label` | 1 |
+| M2 | `WDAvatar` | [`WDAvatar.yaml`](WDAvatar.yaml) | 5 | `icon`、`label` | 2 |
 | M2 | `WDBadge` | [`WDBadge.yaml`](WDBadge.yaml) | 3 | `label` | 1 |
 | M2 | `WDButton` | [`WDButton.yaml`](WDButton.yaml) | 8 | `label`、`leadingIcon`、`trailingIcon` | 2 |
-| M2 | `WDCard` | [`WDCard.yaml`](WDCard.yaml) | 3 | `content` | 1 |
+| M2 | `WDCard` | [`WDCard.yaml`](WDCard.yaml) | 4 | `content` | 1 |
 | M2 | `WDCheckbox` | [`WDCheckbox.yaml`](WDCheckbox.yaml) | 5 | `label` | 1 |
 | M2 | `WDDivider` | [`WDDivider.yaml`](WDDivider.yaml) | 1 | **无** | 1 |
 | M2 | `WDIcon` | [`WDIcon.yaml`](WDIcon.yaml) | 2 | `icon` | 1 |
@@ -121,7 +121,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | M5 | `WDSlider` | [`WDSlider.yaml`](WDSlider.yaml) | 5 | `label` | 0 |
 | M5 | `WDStepper` | [`WDStepper.yaml`](WDStepper.yaml) | 6 | `label` | 1 |
 | M5 | `WDTabBar` | [`WDTabBar.yaml`](WDTabBar.yaml) | 2 | `items` | 0 |
-| M5 | `WDToolbar` | [`WDToolbar.yaml`](WDToolbar.yaml) | 3 | `items` | 0 |
+| M5 | `WDToolbar` | [`WDToolbar.yaml`](WDToolbar.yaml) | 4 | `items` | 0 |
 | M6 | `WDAssigneePicker` | [`WDAssigneePicker.yaml`](WDAssigneePicker.yaml) | 8 | `items`、`label` | 1 |
 
 > 类型名清单即上表 37 条；呈现家族另含 `WDBottomSheetDetent` / `WDBottomSheetDetents`（见 §5 枚举表）。**不得出现 `WDSheet*`**——`WDBottomSheet` / `WDActionSheet` 是唯一名。
@@ -129,7 +129,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 
 ## 5. 枚举注册表（38）
 
-由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-15）。共 **39 个唯一枚举名 / 40 次定义 / 122 条 case 行**（`WDButtonSize` 定义两次，去重后 119 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
+由 Ruby `YAML.load_file` 读取全部 37 个 YAML 的 `enums` 段生成（2026-11-21 复跑）。共 **40 个唯一枚举名 / 41 次定义 / 127 条 case 行**（`WDButtonSize` 定义两次，去重后 124 条 case）。`enums` 段出现 37 次是因为 `WDButtonSize` 在 `WDButton.yaml` 与 `WDIconButton.yaml` 各登记一次，case 与顺序完全一致。
 
 | 枚举名 | 全量 case | 所属组件 |
 | --- | --- | --- |
@@ -137,6 +137,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | `WDAlertAction.Role` | `default`、`cancel`、`destructive` | `WDAlert` |
 | `WDAssigneePickerSize` | `standard`、`compact` | `WDAssigneePicker` |
 | `WDAvatarSize` | `xs`、`sm`、`md`、`lg`、`xl` | `WDAvatar` |
+| `WDMemberTone` | `tone1`、`tone2`、`tone3`、`tone4` | `WDAvatar`（生成物；A-11） |
 | `WDAvatarStackSize` | `sm`、`md` | `WDAvatarStack` |
 | `WDBadgeVariant` | `shared`、`schedule`、`pending`、`success`、`warning`、`danger` | `WDBadge` |
 | `WDBannerVariant` | `info`、`warning`、`danger` | `WDBanner` |
@@ -144,7 +145,7 @@ Swift 的多个 `init` 在编译期分离，而 YAML 只有一份 `params`，因
 | `WDBottomSheetDetents` | `all`、`fixed(WDBottomSheetDetent)` | `WDBottomSheet` |
 | `WDButtonSize` | `sm`、`md`、`lg` | `WDButton`、`WDIconButton`（**复用类型**） |
 | `WDButtonVariant` | `filled`、`tonal`、`glass`、`outline`、`plain`、`destructive` | `WDButton` |
-| `WDCardStyle` | `elevated`、`outlined`、`glass`、`sunken` | `WDCard` |
+| `WDCardStyle` | `elevated`、`outlined`、`glass`、`sunken`、`media` | `WDCard`（`media` = A-13 增量） |
 | `WDCheckboxSize` | `standard`、`compact` | `WDCheckbox` |
 | `WDChipSize` | `standard`、`compact` | `WDChip` |
 | `WDDatePickerMode` | `date`、`time`、`dateAndTime` | `WDDatePicker` |
@@ -295,6 +296,7 @@ puts "OK: #{names.size} components"
 | 2026-11-14 | M6 与局部增量 | `WDAssigneePicker`、`WDProgressBar`、`WDPicker` 等 | 各 YAML header；用户裁决 |
 | 2026-11-15 | **B1–B6 落库** | `WDBadge`、`WDAvatar`、`WDCard`/`WDDivider`、`WDIconButton`、`WDSwitch`、`WDDatePicker` | `iOS/docs/B1`–`B6` 六份 `*-CONTRACT-CHANGE-REQUEST.md`（均已落库） |
 | 2026-11-15 | 本 README 落库（M0-5 补齐） | schema / 注册表 / 21 名 / 流程 / 校验 | 本文件 |
+| 2026-11-21 | **A-11 / A-13 / A-14 落库** | `WDAvatar`（tone + `WDMemberTone`）、`WDCard`（`WDCardStyle.media` + media 参数）、`WDToolbar`（showsTooltips） | 设计交付 = `docs/14-member-tones-media-tooltip.md`；令牌 = `tokens` v1.1.0 |
 
 ---
 

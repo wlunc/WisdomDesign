@@ -25,6 +25,7 @@
  *   ⑤ M0-1 冻结值断言（行高单值键 / 触控双键 / duration.reduced / WDComponent 12 键 / state.* / letterSpacing）
  *   ⑥ 对比度断言（最不利口径：正文 4.5:1、禁用态 3:1）
  *   ⑦ 玻璃配对（B22）与 tint 配方（13-tint）守卫（沿用）
+ *   ⑧ 成员四色（A-11）：每套 4 档、明度严格递减（相邻 ΔL ≥ 0.05）、首字 ≥ 4.5:1（14-member-tones-media-tooltip）
  *
  * 缺字段策略：**数值**缺字段/非法 → emit 0 并在 stderr 报警（不静默）；
  *   颜色是身份字段，缺/非法 → 直接失败（不置 0）。
@@ -431,6 +432,62 @@ function assertSlotCount(t, schemes) {
   return reference;
 }
 
+/**
+ * 成员四色守卫（A-11；docs/14-member-tones-media-tooltip.md §1）：
+ *   ① 每套 scheme 恰 4 个 tone（tone-1…tone-4），键集合跨 scheme 一致；
+ *   ② 每个 tone 有 fill + ink 两色；
+ *   ③ 相对亮度严格单调递减（相邻 ΔL ≥ 0.05，保证"四色可分"而不是四块同色）；
+ *   ④ ink 在 fill 上 ≥ 4.5:1（正文口径，最不利 = fill 自身）。
+ * 新增/改成员色时先红的是这里，不是下游成品。
+ */
+function assertMemberTones(t, schemes) {
+  const TONES = ["tone-1", "tone-2", "tone-3", "tone-4"];
+  const MIN_DELTA_L = 0.05;
+  const MIN_INK_CONTRAST = 4.5;
+  let reference = null;
+  for (const scheme of schemes) {
+    const group = t.member?.[scheme.name];
+    if (!group) fail(`成员四色缺失：member.${scheme.name}（A-11；每套 scheme 一套四色）`);
+    const keys = Object.keys(group).filter((k) => !k.startsWith("$"));
+    if (keys.join(",") !== TONES.join(",")) {
+      throw new Error(
+        `成员四色键集合必须是 [${TONES.join(", ")}]，member.${scheme.name} 实际 = [${keys.join(", ")}]`,
+      );
+    }
+    if (reference === null) reference = keys.join(",");
+    const luminances = [];
+    for (const tone of TONES) {
+      const fill = group[tone].fill?.$value;
+      const ink = group[tone].ink?.$value;
+      if (fill === undefined || ink === undefined) {
+        fail(`member.${scheme.name}.${tone} 必须同时有 fill 与 ink（颜色是身份字段，不置 0）`);
+      }
+      luminances.push(relLum(validateColor(fill, `member.${scheme.name}.${tone}.fill`)));
+    }
+    for (let i = 1; i < luminances.length; i += 1) {
+      const delta = luminances[i - 1] - luminances[i];
+      if (delta < MIN_DELTA_L) {
+        throw new Error(
+          `成员四色不可分：member.${scheme.name} 的 ${TONES[i - 1]} → ${TONES[i]} 相对亮度差 = ${delta.toFixed(3)}，` +
+            `低于 ${MIN_DELTA_L}（四色必须肉眼可分辨；见 docs/14-member-tones-media-tooltip.md §1.3）`,
+        );
+      }
+    }
+    for (const tone of TONES) {
+      const fillHex = validateColor(group[tone].fill.$value, `member.${scheme.name}.${tone}.fill`);
+      const inkHex = validateColor(group[tone].ink.$value, `member.${scheme.name}.${tone}.ink`);
+      const ratio = contrast(inkHex, fillHex);
+      if (ratio < MIN_INK_CONTRAST) {
+        throw new Error(
+          `成员色首字对比度不足：member.${scheme.name}.${tone} ink ${inkHex} 在 fill ${fillHex} 上仅 ${ratio.toFixed(2)}:1，` +
+            `低于 ${MIN_INK_CONTRAST}:1（首字是正文口径，不因为"只是色块"降级）`,
+        );
+      }
+      console.log(`✓ 成员色 ${scheme.name}.${tone} ink ${ratio.toFixed(2)}:1（fill ${fillHex}）`);
+    }
+  }
+}
+
 /** M0-1 冻结值断言：键形与取值一旦二次变更，生成器先红（冻结窗口只开一次）。 */
 function assertFrozenTokens(t) {
   const eq = (pathStr, actual, expected) => {
@@ -696,6 +753,41 @@ function buildSwiftTokens(t, ctx) {
   L.push("}");
   L.push("");
 
+  // 成员四色（A-11）：组件私有调色板，刻意不进 WDColor（U12 冻结在 32 槽位）。
+  L.push("/// 成员头像四色（A-11）。组件私有调色板，不进 `WDColor`（U12 槽位冻结在 32）。");
+  L.push("/// 每个 tone = 底 + 首字色一对；分配按成员 ID 的 FNV-1a 再 mod 4（见 docs/14-member-tones-media-tooltip.md §1.3）。");
+  L.push("public enum WDMemberTone: String, CaseIterable, Sendable {");
+  L.push("    case tone1 = \"tone-1\"");
+  L.push("    case tone2 = \"tone-2\"");
+  L.push("    case tone3 = \"tone-3\"");
+  L.push("    case tone4 = \"tone-4\"");
+  L.push("");
+  L.push("    /// 底色（随外观解析）。");
+  L.push("    public var fill: Color {");
+  L.push("        switch self {");
+  for (const tone of ["tone-1", "tone-2", "tone-3", "tone-4"]) {
+    const name = camel("", tone);
+    const lightValue = validateColor(t.member[ctx.lightScheme][tone].fill.$value, `member.${ctx.lightScheme}.${tone}.fill`);
+    const darkValue = validateColor(t.member[ctx.darkScheme][tone].fill.$value, `member.${ctx.darkScheme}.${tone}.fill`);
+    L.push(`        case .${name}: return ${swiftColorPair(lightValue, darkValue)}`);
+  }
+  L.push("        }");
+  L.push("    }");
+  L.push("");
+  L.push("    /// 首字色（随外观解析）。");
+  L.push("    public var ink: Color {");
+  L.push("        switch self {");
+  for (const tone of ["tone-1", "tone-2", "tone-3", "tone-4"]) {
+    const name = camel("", tone);
+    const lightValue = validateColor(t.member[ctx.lightScheme][tone].ink.$value, `member.${ctx.lightScheme}.${tone}.ink`);
+    const darkValue = validateColor(t.member[ctx.darkScheme][tone].ink.$value, `member.${ctx.darkScheme}.${tone}.ink`);
+    L.push(`        case .${name}: return ${swiftColorPair(lightValue, darkValue)}`);
+  }
+  L.push("        }");
+  L.push("    }");
+  L.push("}");
+  L.push("");
+
   L.push("/// 间距，基准 4pt。");
   L.push("public enum WDSpacing {");
   for (const [k, v] of Object.entries(t.space)) {
@@ -715,9 +807,15 @@ function buildSwiftTokens(t, ctx) {
   L.push("");
 
   L.push("/// 组件尺寸。U8：触控只生成本端常量（iOS 44）。");
+  L.push("/// `$type: duration` 的叶子按秒给 `Double`（与 WDMotion.Duration 同口径），其余为 pt。");
   L.push("public enum WDSize {");
   for (const leaf of sizeLeaves(t, "ios")) {
-    L.push(`    public static let ${leaf.name}: CGFloat = ${num(leaf.value)}`);
+    if (leaf.type === "duration") {
+      // 时长按秒：与 WDMotion.Duration 的 Swift 出口口径一致（令牌存 ms）
+      L.push(`    public static let ${leaf.name}: Double = ${(Number(leaf.value) / 1000).toFixed(3)}`);
+    } else {
+      L.push(`    public static let ${leaf.name}: CGFloat = ${num(leaf.value)}`);
+    }
   }
   L.push("}");
   L.push("");
@@ -943,6 +1041,30 @@ function buildKotlinTokens(t, ctx) {
     L.push("");
   }
 
+  // 成员四色（A-11）：组件私有调色板，不进 WDColors（U12 冻结在 32 槽位）。
+  L.push("/** 成员头像四色（A-11）。组件私有调色板，不进 `WDColors`（U12 槽位冻结在 32）。 */");
+  L.push("@Immutable");
+  L.push("public class WDMemberToneColors(");
+  L.push("    public val tone1Fill: Color, public val tone1Ink: Color,");
+  L.push("    public val tone2Fill: Color, public val tone2Ink: Color,");
+  L.push("    public val tone3Fill: Color, public val tone3Ink: Color,");
+  L.push("    public val tone4Fill: Color, public val tone4Ink: Color,");
+  L.push(")");
+  L.push("");
+  for (const scheme of ctx.schemes) {
+    L.push(`/** scheme ${scheme.name} 的成员四色。 */`);
+    L.push(`internal val wd${upperFirst(camel("", scheme.name))}MemberTones: WDMemberToneColors = WDMemberToneColors(`);
+    const pairs = ["tone-1", "tone-2", "tone-3", "tone-4"].map((tone) => {
+      const name = camel("", tone);
+      const fill = kotlinColor(validateColor(t.member[scheme.name][tone].fill.$value, `member.${scheme.name}.${tone}.fill`));
+      const ink = kotlinColor(validateColor(t.member[scheme.name][tone].ink.$value, `member.${scheme.name}.${tone}.ink`));
+      return `    ${name}Fill = ${fill}, ${name}Ink = ${ink},`;
+    });
+    L.push(...pairs);
+    L.push(")");
+    L.push("");
+  }
+
   L.push("/** 间距，基准 4dp。 */");
   L.push("public object WDSpacing {");
   for (const [k, v] of Object.entries(t.space)) {
@@ -961,11 +1083,14 @@ function buildKotlinTokens(t, ctx) {
   L.push("}");
   L.push("");
 
-  L.push("/** 组件尺寸。U8：触控只生成本端常量（Android 48）；`$type: number` 的键无单位（Float）。 */");
+  L.push("/** 组件尺寸。U8：触控只生成本端常量（Android 48）；`$type: number` 无单位（Float），`$type: duration` 为毫秒（Int）。 */");
   L.push("public object WDSize {");
   for (const leaf of sizeLeaves(t, "android")) {
     if (leaf.type === "number") {
       L.push(`    public val ${leaf.name}: Float = ${floatLit(leaf.value)}`);
+    } else if (leaf.type === "duration") {
+      // 时长按毫秒整数：与 WDMotion 的 Kotlin 出口口径一致（令牌存 ms）
+      L.push(`    public val ${leaf.name}: Int = ${num(leaf.value)}`);
     } else {
       L.push(`    public val ${leaf.name}: Dp = ${num(leaf.value)}.dp`);
     }
@@ -1365,6 +1490,7 @@ function main() {
   assertFrozenTokens(t);
   const slotPaths = assertSlotCount(t, allSchemes);
   assertContrast(t, allSchemes);
+  assertMemberTones(t, allSchemes);
 
   const defaultScheme = allSchemes.find((s) => s.isDefault).name;
   const lightScheme = (allSchemes.find((s) => s.appearance === "light") ?? allSchemes[0]).name;

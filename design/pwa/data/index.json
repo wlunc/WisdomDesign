@@ -1,0 +1,478 @@
+{
+  "version": "95e544d76ec2",
+  "app": {
+    "name": "Wisdom Design",
+    "designVersion": "v1.0"
+  },
+  "totals": {
+    "galleries": 4,
+    "specs": 42,
+    "sections": 5
+  },
+  "galleries": [
+    {
+      "id": "preview",
+      "title": "浅色版预览",
+      "fullTitle": "浅色版设计预览",
+      "kicker": "设计基础",
+      "description": "色彩、渐变材质、动效与双端屏幕，一页看完设计基调。",
+      "icon": "layers",
+      "theme": "lake",
+      "meta": "设计基础",
+      "hasModes": false,
+      "file": "docs/wisdom-light.html",
+      "count": 5
+    },
+    {
+      "id": "components",
+      "title": "基础组件",
+      "fullTitle": "基础组件规格画廊",
+      "kicker": "01–20",
+      "description": "按钮、输入、开关、列表等 20 个基础组件的变体与状态。",
+      "icon": "grid",
+      "theme": "brand",
+      "meta": "20 个组件",
+      "hasModes": true,
+      "file": "docs/wisdom-components.html",
+      "count": 20
+    },
+    {
+      "id": "advanced",
+      "title": "高级组件",
+      "fullTitle": "高级组件规格画廊",
+      "kicker": "21–36",
+      "description": "16 个带状态机与交互流程的组合组件。",
+      "icon": "sliders",
+      "theme": "deep",
+      "meta": "16 个组件",
+      "hasModes": true,
+      "file": "docs/wisdom-advanced.html",
+      "count": 16
+    },
+    {
+      "id": "patterns",
+      "title": "场景配方",
+      "fullTitle": "场景配方画廊",
+      "kicker": "37 · R1–R5",
+      "description": "家庭场景组件，以及 5 个由基础组件拼出的固定配方。",
+      "icon": "blocks",
+      "theme": "mid",
+      "meta": "6 个条目",
+      "hasModes": true,
+      "file": "docs/wisdom-patterns.html",
+      "count": 6
+    }
+  ],
+  "specs": [
+    {
+      "id": "spec-button",
+      "no": "01",
+      "name": "Button",
+      "tier": "P0",
+      "desc": "主操作按钮。每屏最多一个 filled。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-iconbutton",
+      "no": "02",
+      "name": "IconButton",
+      "tier": "P0",
+      "desc": "纯图标操作。必须带无障碍标签，触控热区不小于 44×44。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-textfield",
+      "no": "03",
+      "name": "TextField",
+      "tier": "P0",
+      "desc": "单行输入。高度一律 46，标签常驻，不复用占位符当标签。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-searchfield",
+      "no": "04",
+      "name": "SearchField",
+      "tier": "P0",
+      "desc": "胶囊搜索框，聚焦时右侧出现取消。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-switch",
+      "no": "05",
+      "name": "Switch",
+      "tier": "P0",
+      "desc": "即时生效的布尔开关，不需要确认按钮。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-checkbox",
+      "no": "06",
+      "name": "Checkbox",
+      "tier": "P0",
+      "desc": "多选与任务完成。渐变填充 + 描边式勾 + 光晕。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-radio",
+      "no": "07",
+      "name": "Radio",
+      "tier": "P1",
+      "desc": "单选。同组内互斥，选中即生效。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-slider",
+      "no": "08",
+      "name": "Slider",
+      "tier": "P0",
+      "desc": "连续取值。数值显示在手柄上方，拖动时跟随。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-stepper",
+      "no": "09",
+      "name": "Stepper",
+      "tier": "P1",
+      "desc": "小范围整数增减，比输入框更省事。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-chip",
+      "no": "10",
+      "name": "Chip",
+      "tier": "P0",
+      "desc": "轻量标记与筛选。三种用法不要混在同一行。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-badge",
+      "no": "11",
+      "name": "Badge",
+      "tier": "P0",
+      "desc": "状态与计数的紧凑表达。颜色不单独承载信息，必须配文字或图标。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-avatar",
+      "no": "12",
+      "name": "Avatar",
+      "tier": "P0",
+      "desc": "成员身份。四档配色是明度阶梯，按成员 ID 固定分配，覆盖一个家庭的全部成员。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-avatarstack",
+      "no": "13",
+      "name": "AvatarStack",
+      "tier": "P0",
+      "desc": "家庭成员堆叠。最多 4 个，超出显示 +n。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-divider",
+      "no": "14",
+      "name": "Divider",
+      "tier": "P1",
+      "desc": "分割线是最后手段。能用间距表达的，不要画线。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-progressbar",
+      "no": "15",
+      "name": "ProgressBar",
+      "tier": "P0",
+      "desc": "线性进度。轨道浅，进度用中蓝，两者对比足够看清。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-progressring",
+      "no": "16",
+      "name": "ProgressRing",
+      "tier": "P0",
+      "desc": "环形进度。用于需要强调的单一指标，环内放等宽数字。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-card",
+      "no": "17",
+      "name": "Card",
+      "tier": "P0",
+      "desc": "内容容器。只有 glass 变体带背景模糊，其余用实底避免圆角边缘出现重影。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-listrow",
+      "no": "18",
+      "name": "ListRow",
+      "tier": "P0",
+      "desc": "列表行。分隔线从文本区起始，末行不显示。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-listsection",
+      "no": "19",
+      "name": "ListSection",
+      "tier": "P0",
+      "desc": "分组标题 + 卡片容器 + 页脚。分组之间用 24pt 间距，不用分割线。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-icon",
+      "no": "20",
+      "name": "Icon",
+      "tier": "P0",
+      "desc": "SF Symbols（iOS）与 Material Symbols Rounded（Android）语义对照，尺寸与底座统一。",
+      "gallery": "components",
+      "file": "docs/wisdom-components.html"
+    },
+    {
+      "id": "spec-segmentedcontrol",
+      "no": "21",
+      "name": "SegmentedControl",
+      "tier": "P0",
+      "desc": "2–5 个互斥视图切换，切换即时生效，页面标题不变。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-picker",
+      "no": "22",
+      "name": "Picker",
+      "tier": "P1",
+      "desc": "5 个以上选项的单选。≤5 项应该用 SegmentedControl 或 Radio。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-datepicker",
+      "no": "23",
+      "name": "DatePicker",
+      "tier": "P1",
+      "desc": "日期与时间。保留各自平台的原生控件，只统一触发入口。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-formrow",
+      "no": "24",
+      "name": "FormRow",
+      "tier": "P1",
+      "desc": "一行标签配一个控件。定义的是排布与对齐，不是控件本身。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-alert",
+      "no": "25",
+      "name": "Alert",
+      "tier": "P0",
+      "desc": "需要立刻做决定，且决定前不能继续。可以撤销的操作不该用 Alert。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-bottomsheet",
+      "no": "26",
+      "name": "BottomSheet",
+      "tier": "P0",
+      "desc": "承接次级内容，不离开当前上下文。顶部圆角 32，底部贴合屏幕。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-actionsheet",
+      "no": "27",
+      "name": "ActionSheet",
+      "tier": "P1",
+      "desc": "一组与当前位置强相关的操作。取消独立成胶囊，不和操作混在一起。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-toast",
+      "no": "28",
+      "name": "Toast",
+      "tier": "P0",
+      "desc": "非阻塞轻提示。它会自己消失，所以承载的信息必须是\"不看也没关系\"的。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-banner",
+      "no": "29",
+      "name": "Banner",
+      "tier": "P0",
+      "desc": "常驻的页面级提示。它不自动消失，所以必须值得占一块常驻空间。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-emptystate",
+      "no": "30",
+      "name": "EmptyState",
+      "tier": "P1",
+      "desc": "没有内容时，说明为什么没有，以及接下来能做什么。四种变体只有文案不同。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-skeleton",
+      "no": "31",
+      "name": "Skeleton",
+      "tier": "P1",
+      "desc": "加载占位。形状必须和真实内容一致，否则比没有骨架更糟。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-pulltorefresh",
+      "no": "32",
+      "name": "PullToRefresh",
+      "tier": "P1",
+      "desc": "主动刷新。指示器覆盖在列表上方，不下推内容。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-navigationbar",
+      "no": "33",
+      "name": "NavigationBar",
+      "tier": "P0",
+      "desc": "告诉用户\"这是哪\"，并提供返回与页面级操作。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-tabbar",
+      "no": "34",
+      "name": "TabBar",
+      "tier": "P0",
+      "desc": "顶层导航。只用于互不隶属的 2–5 个主区域。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-toolbar",
+      "no": "35",
+      "name": "Toolbar",
+      "tier": "P1",
+      "desc": "与当前上下文相关的一组操作。TabBar 切换区域，Toolbar 操作当前内容。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-fab",
+      "no": "36",
+      "name": "FAB",
+      "tier": "P1",
+      "desc": "页面的主操作，悬浮在内容之上。一屏最多一个。",
+      "gallery": "advanced",
+      "file": "docs/wisdom-advanced.html"
+    },
+    {
+      "id": "spec-assigneepicker",
+      "no": "37",
+      "name": "AssigneePicker",
+      "tier": "组件 · P1",
+      "desc": "在一组人里指派负责人。本层唯一的正式组件——有独立状态机，名称也不依赖产品语义。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    },
+    {
+      "id": "spec-taskrow",
+      "no": "R1",
+      "name": "TaskRow",
+      "tier": "配方 · P0",
+      "desc": "列表里的一条任务。尾部只能放一个元素，冲突时按「逾期 > 时间 > 负责人」取舍。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    },
+    {
+      "id": "spec-sharedbadge",
+      "no": "R2",
+      "name": "SharedBadge",
+      "tier": "配方 · P1",
+      "desc": "说明这条内容谁能看到。人数 ≥ 3 时改用\"N 人\"，不逐个列名字。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    },
+    {
+      "id": "spec-streakring",
+      "no": "R3",
+      "name": "StreakRing",
+      "tier": "配方 · P1",
+      "desc": "连续完成天数。它不排名、不比较成员——那会把激励变成考核，和\"温和\"的基调冲突。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    },
+    {
+      "id": "spec-reminderchip",
+      "no": "R4",
+      "name": "ReminderChip",
+      "tier": "配方 · P1",
+      "desc": "提醒时间的显示与设置。提醒刚过时间要显示\"已过时\"而不是自动清空——用户需要知道它没响。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    },
+    {
+      "id": "spec-familyspacecard",
+      "no": "R5",
+      "name": "FamilySpaceCard",
+      "tier": "配方 · P1",
+      "desc": "首页上进入某个家庭空间的入口。 不进组件库 ——它带着产品概念，进库会让库和这一个产品绑死。",
+      "gallery": "patterns",
+      "file": "docs/wisdom-patterns.html"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-colors",
+      "name": "色彩",
+      "gallery": "preview",
+      "file": "docs/wisdom-light.html"
+    },
+    {
+      "id": "sec-material",
+      "name": "渐变 · 材质 · 形状",
+      "gallery": "preview",
+      "file": "docs/wisdom-light.html"
+    },
+    {
+      "id": "sec-gallery",
+      "name": "组件画廊",
+      "gallery": "preview",
+      "file": "docs/wisdom-light.html"
+    },
+    {
+      "id": "sec-motion",
+      "name": "动效",
+      "gallery": "preview",
+      "file": "docs/wisdom-light.html"
+    },
+    {
+      "id": "sec-screens",
+      "name": "双端屏幕",
+      "gallery": "preview",
+      "file": "docs/wisdom-light.html"
+    }
+  ]
+}

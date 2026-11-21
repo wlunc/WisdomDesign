@@ -1780,6 +1780,10 @@ html&gt;body{padding:0}&lt;/style&gt;
 #wd-gal2 .wd-toolbar .tb.on{background:var(--g-mid);color:#fff}
 #wd-gal2 .wd-toolbar .tb[aria-disabled=&quot;true&quot;]{opacity:.4}
 #wd-gal2 .wd-toolbar .sep{width:1px;height:24px;background:var(--g-line);margin:0 2px}
+/* A-14（2026-11-21）：长按提示。高 28、最大宽 200、距按钮 8、圆角 8、实底、elevation.2。
+   500ms 阈值；达到阈值即取消点击（抬手不执行 action）。推导见 docs/14-member-tones-media-tooltip.md §3。 */
+#wd-gal2 .wd-tiptarget{position:relative;display:inline-grid;place-items:center}
+#wd-gal2 .wd-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);height:28px;padding:0 8px;display:inline-flex;align-items:center;border-radius:8px;background:var(--g-card-solid);color:var(--g-text);font-size:11px;font-weight:500;letter-spacing:0;white-space:nowrap;max-width:200px;border:1px solid var(--g-line);box-shadow:0 2px 6px rgba(10,60,100,.06),0 14px 32px rgba(10,60,100,.09);pointer-events:none}
 
 /* 36 FAB */
 #wd-gal2 .wd-fab{width:56px;height:56px;border-radius:19px;background:var(--g-fill);color:var(--g-on-fill);display:grid;place-items:center;box-shadow:var(--g-sh-brand),var(--g-sh2)}
@@ -2158,6 +2162,15 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;span class=&quot;tb&quot;&gt;&lt;i data-lucide=&quot;ellipsis&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
         &lt;/div&gt;
       &lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;wd-row&quot; style=&quot;padding-top:36px&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;长按提示&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
+        &lt;div class=&quot;wd-toolbar&quot;&gt;
+          &lt;span class=&quot;tb wd-tiptarget&quot;&gt;&lt;i data-lucide=&quot;undo-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span class=&quot;wd-tip&quot;&gt;撤销&lt;/span&gt;&lt;/span&gt;
+          &lt;span class=&quot;tb&quot;&gt;&lt;i data-lucide=&quot;redo-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;span class=&quot;sep&quot;&gt;&lt;/span&gt;
+          &lt;span class=&quot;tb on&quot;&gt;&lt;i data-lucide=&quot;bold&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;wd-hint&quot;&gt;500ms 阈值；达到即取消点击&lt;/span&gt;
+      &lt;/div&gt;&lt;/div&gt;
       &lt;div class=&quot;wd-row&quot;&gt;&lt;span class=&quot;wd-k&quot;&gt;底部&lt;/span&gt;&lt;div class=&quot;wd-items&quot;&gt;
         &lt;div class=&quot;wd-toolbar&quot;&gt;
           &lt;span class=&quot;tb&quot;&gt;&lt;i data-lucide=&quot;zoom-out&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
@@ -2170,7 +2183,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;/div&gt;
     &lt;div class=&quot;cell wd-dark&quot; data-label=&quot;深色&quot; data-clone&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;无可用操作&lt;/em&gt; → 按钮禁用而不是隐藏整条工具栏，避免布局跳动&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;长按&lt;/em&gt; → 显示工具提示&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;超过 7 个&lt;/em&gt; → 低频操作收进&quot;更多&quot;&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;acts&quot;&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;无可用操作&lt;/em&gt; → 按钮禁用而不是隐藏整条工具栏，避免布局跳动&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;长按 500ms&lt;/em&gt; → 显示提示，并取消本次点击（抬手不执行操作）&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;提示&lt;/em&gt; → 高 28、距按钮 8、圆角 8、实底；不进无障碍树，不替代标签&lt;/span&gt;&lt;span class=&quot;act&quot;&gt;&lt;em&gt;超过 7 个&lt;/em&gt; → 低频操作收进&quot;更多&quot;&lt;/span&gt;&lt;/div&gt;
 &lt;/section&gt;
 
 &lt;!-- 36 FAB --&gt;
