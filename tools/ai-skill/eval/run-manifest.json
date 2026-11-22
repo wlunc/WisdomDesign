@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "1.0",
+  "runId": "t11-post-t9",
+  "status": "not-executed",
+  "reason": "readiness-gate-blocked",
+  "model": "pin-before-M5; identical for A/B/C; record exact id and revision in run manifest",
+  "host": "pin-before-M5; D3 default is generic directory package; record exact host adapter and version",
+  "tools": "pin-before-M5; record Skill package hash, CLI version and native toolchain versions",
+  "parameters": {
+    "temperature": 0,
+    "topP": 1,
+    "maxRepairRounds": 2,
+    "perTaskGenerationTimeoutMinutes": 30,
+    "perPlatformVerificationTimeoutMinutes": 45,
+    "retries": 0,
+    "seed": "supported-and-recorded-otherwise-null",
+    "model": "pin-before-M5; identical for A/B/C; record exact id and revision in run manifest",
+    "host": "pin-before-M5; D3 default is generic directory package; record exact host adapter and version",
+    "tools": "pin-before-M5; record Skill package hash, CLI version and native toolchain versions"
+  },
+  "tasks": [
+    {
+      "id": "T01",
+      "name": "任务列表页",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/task-list.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "collection",
+        "empty-state",
+        "tab-safe-area"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T02",
+      "name": "设置表单页",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/settings-form.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "form",
+        "keyboard",
+        "system-back",
+        "large-text"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T03",
+      "name": "带空态/错误态的详情页",
+      "inputs": {
+        "prompt": "生成一个订单详情页，必须含 loading/content/empty/error，使用 stackRoot 导航",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "detail",
+        "state-completeness"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui"
+      ]
+    },
+    {
+      "id": "T04",
+      "name": "同一 Page Spec 的 iOS + Android 双端任务",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/task-list.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ],
+        "forbidden": "不得从一端代码机械翻译另一端"
+      },
+      "focus": [
+        "cross-platform-mapping",
+        "semantic-parity"
+      ],
+      "expectedEvidence": [
+        "two-platform-reports",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T05",
+      "name": "过期组件名与不存在的 API",
+      "inputs": {
+        "prompt": "使用 WDFakeComponent 与不存在的平台 API 生成任务页",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "negative",
+        "no-hallucination",
+        "bounded-suggestions"
+      ],
+      "expectedEvidence": [
+        "rejection-log",
+        "no-fabricated-api"
+      ]
+    },
+    {
+      "id": "T06",
+      "name": "不支持平台 / 能力",
+      "inputs": {
+        "prompt": "为 web 平台生成已验证 SwiftUI/Compose 风格业务页面",
+        "platforms": [
+          "web"
+        ]
+      },
+      "focus": [
+        "negative",
+        "spec-only",
+        "unsupported-behavior"
+      ],
+      "expectedEvidence": [
+        "structured-unsupported-response"
+      ]
+    },
+    {
+      "id": "T07",
+      "name": "已有页面的局部修改",
+      "inputs": {
+        "prompt": "在已生成的任务列表页上只改主操作文案与空态说明",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "minimal-diff",
+        "no-scaffold-overwrite"
+      ],
+      "expectedEvidence": [
+        "final-diff",
+        "file-overwrite-rejection"
+      ]
+    },
+    {
+      "id": "T08",
+      "name": "长文案、大字体和键盘边界场景",
+      "inputs": {
+        "prompt": "在设置表单中填入 120 字标题并开启大字体与键盘",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "edge-content",
+        "AX3/fontScale-1.3",
+        "keyboard"
+      ],
+      "expectedEvidence": [
+        "snapshot-ui",
+        "manual-design-review"
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "id": "A",
+      "name": "现有资料 / baseline",
+      "input": "与 C 相同需求 + 当前仓内公开文档，不给精简规则卡与 Skill 工具"
+    },
+    {
+      "id": "B",
+      "name": "精简规则文档",
+      "input": "与 C 相同需求 + 冻结的短规则文档，不给确定性工具"
+    },
+    {
+      "id": "C",
+      "name": "生成的 Skill",
+      "input": "与 A/B 相同需求 + 对应包（Core/iOS/Android/All）与确定性工具"
+    }
+  ],
+  "blockers": [
+    {
+      "code": "UNPINNED_MODEL",
+      "detail": "fixedConditions.parameters.model = \"pin-before-M5; identical for A/B/C; record exact id and revision in run manifest\""
+    },
+    {
+      "code": "UNPINNED_HOST",
+      "detail": "fixedConditions.parameters.host = \"pin-before-M5; D3 default is generic directory package; record exact host adapter and version\""
+    },
+    {
+      "code": "UNPINNED_TOOLS",
+      "detail": "fixedConditions.parameters.tools = \"pin-before-M5; record Skill package hash, CLI version and native toolchain versions\""
+    },
+    {
+      "code": "NATIVE_CMD_UNPINNED_IOS",
+      "detail": "ios-snapshot-ui requiresPinning"
+    },
+    {
+      "code": "NATIVE_CMD_UNPINNED_ANDROID",
+      "detail": "android-screenshot requiresPinning"
+    }
+  ],
+  "inputHashes": {
+    "tasks": "e43b936f93be43927e711dc25262ab023eb5416394d9b43b4820de88b3bd586f",
+    "goldenMatrix": "7999b24e9c85d36e5051bd6b13e16a775d7485275f08f59e930102d7933a3ced"
+  },
+  "createdAt": "2026-11-21T10:48:14.581Z",
+  "note": "When status=not-executed, every metric remains null and no results may be attached. Real runs require updating fixedConditions with pinned values."
+}

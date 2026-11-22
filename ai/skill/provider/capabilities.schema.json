@@ -1,0 +1,687 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wisdomdesign.local/ai-skill/provider/1.0/capabilities.schema.json",
+  "title": "WisdomDesign Provider Capabilities v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "platform",
+    "groups"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "ios",
+        "android",
+        "web"
+      ]
+    },
+    "groups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime",
+        "navigation",
+        "layout",
+        "typography",
+        "input",
+        "accessibility",
+        "rendering",
+        "verification"
+      ],
+      "properties": {
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: runtime.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "navigation": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: navigation.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: layout.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: typography.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: input.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: accessibility.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "rendering": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: rendering.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Platform capability group: verification.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "not-verified"
+              ]
+            },
+            "evidence": {
+              "type": "string",
+              "enum": [
+                "contract-only",
+                "discovered",
+                "example-compiled",
+                "template-verified"
+              ]
+            },
+            "sourceRefs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "maxItems": 50
+                  }
+                ]
+              }
+            },
+            "verifiedBy": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "notVerified": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          }
+        }
+      }
+    },
+    "componentCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specOnly": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^WD[A-Za-z]+$"
+          },
+          "uniqueItems": true
+        },
+        "experimental": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^WD[A-Za-z]+$"
+          },
+          "uniqueItems": true
+        },
+        "verified": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^WD[A-Za-z]+$"
+          },
+          "uniqueItems": true
+        },
+        "unsupported": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^WD[A-Za-z]+$"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

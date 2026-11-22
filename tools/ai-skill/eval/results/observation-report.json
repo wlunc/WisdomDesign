@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "1.0",
+  "suite": "m5-evaluation",
+  "generatedAt": "2026-11-21T10:48:14.582Z",
+  "status": "observation-only",
+  "readiness": {
+    "schemaVersion": "1.0",
+    "ready": false,
+    "blockers": [
+      {
+        "code": "UNPINNED_MODEL",
+        "detail": "fixedConditions.parameters.model = \"pin-before-M5; identical for A/B/C; record exact id and revision in run manifest\""
+      },
+      {
+        "code": "UNPINNED_HOST",
+        "detail": "fixedConditions.parameters.host = \"pin-before-M5; D3 default is generic directory package; record exact host adapter and version\""
+      },
+      {
+        "code": "UNPINNED_TOOLS",
+        "detail": "fixedConditions.parameters.tools = \"pin-before-M5; record Skill package hash, CLI version and native toolchain versions\""
+      },
+      {
+        "code": "NATIVE_CMD_UNPINNED_IOS",
+        "detail": "ios-snapshot-ui requiresPinning"
+      },
+      {
+        "code": "NATIVE_CMD_UNPINNED_ANDROID",
+        "detail": "android-screenshot requiresPinning"
+      }
+    ],
+    "fixedConditions": {
+      "tasks": 8,
+      "arms": 3,
+      "combos": 24,
+      "parameters": {
+        "temperature": 0,
+        "topP": 1,
+        "maxRepairRounds": 2,
+        "perTaskGenerationTimeoutMinutes": 30,
+        "perPlatformVerificationTimeoutMinutes": 45,
+        "retries": 0,
+        "seed": "supported-and-recorded-otherwise-null",
+        "model": "pin-before-M5; identical for A/B/C; record exact id and revision in run manifest",
+        "host": "pin-before-M5; D3 default is generic directory package; record exact host adapter and version",
+        "tools": "pin-before-M5; record Skill package hash, CLI version and native toolchain versions"
+      }
+    },
+    "evaluatedAt": "2026-11-21T10:48:14.581Z",
+    "note": "Readiness gate protects the protocol: without pinned model/host/tools and a built package, all 24 cells must stay not-executed."
+  },
+  "frozenTasks": [
+    {
+      "id": "T01",
+      "name": "任务列表页",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T02",
+      "name": "设置表单页",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T03",
+      "name": "带空态/错误态的详情页",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T04",
+      "name": "同一 Page Spec 的 iOS + Android 双端任务",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T05",
+      "name": "过期组件名与不存在的 API",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T06",
+      "name": "不支持平台 / 能力",
+      "platforms": [
+        "web"
+      ]
+    },
+    {
+      "id": "T07",
+      "name": "已有页面的局部修改",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "T08",
+      "name": "长文案、大字体和键盘边界场景",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "id": "A",
+      "name": "现有资料 / baseline"
+    },
+    {
+      "id": "B",
+      "name": "精简规则文档"
+    },
+    {
+      "id": "C",
+      "name": "生成的 Skill"
+    }
+  ],
+  "metrics": {
+    "quality": [
+      {
+        "metric": "首次原生编译成功率",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "不存在的组件/参数/枚举/Modifier/API 数",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "设计规则违例数",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "状态覆盖率",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "平台测试矩阵通过率",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "人工设计问题数与严重度",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "最终人工修改行数",
+        "value": null,
+        "status": "not-executed"
+      }
+    ],
+    "repair": [
+      {
+        "metric": "修复轮次",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "失败类型分布",
+        "value": null,
+        "status": "not-executed"
+      }
+    ],
+    "cost": [
+      {
+        "metric": "端到端 Token",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "缓存命中与缓存 Token",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "工具调用次数与耗时",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "原生构建耗时",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "模型费用（可得时）",
+        "value": null,
+        "status": "not-executed"
+      },
+      {
+        "metric": "输出代码行数与重复骨架比例",
+        "value": null,
+        "status": "not-executed"
+      }
+    ]
+  },
+  "comparisons": {
+    "A_vs_B": null,
+    "B_vs_C": null,
+    "A_vs_C": null,
+    "status": "not-executed"
+  },
+  "claims": [],
+  "policy": "样本不足只报告观察值，不承诺固定节省比例；真实结果需 readiness.ready=true 后由真实 adapter 提供。"
+}

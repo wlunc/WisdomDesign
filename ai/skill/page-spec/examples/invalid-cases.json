@@ -1,0 +1,295 @@
+{
+  "description": "M0 反例固定集。每个 case 必须按 expectedError.code 失败；M1 校验器应返回 code/jsonPath/message/suggestion。",
+  "cases": [
+    {
+      "id": "unknown-component",
+      "expectedError": {
+        "code": "UNKNOWN_COMPONENT",
+        "jsonPath": "/regions/0/component"
+      },
+      "spec": {
+        "schemaVersion": "1.0",
+        "page": {
+          "id": "bad-component",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection",
+          "primaryAction": "createTask"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "empty",
+            "kind": "empty"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "WDFakeComponent",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    },
+    {
+      "id": "collection-missing-empty",
+      "expectedError": {
+        "code": "COLLECTION_MISSING_EMPTY",
+        "jsonPath": "/states"
+      },
+      "spec": {
+        "schemaVersion": "1.0",
+        "page": {
+          "id": "missing-empty",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection",
+          "primaryAction": "createTask"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "WDListSection",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    },
+    {
+      "id": "no-primary-action",
+      "expectedError": {
+        "code": "NO_PRIMARY_ACTION",
+        "jsonPath": "/page/primaryAction"
+      },
+      "spec": {
+        "schemaVersion": "1.0",
+        "page": {
+          "id": "no-action",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "empty",
+            "kind": "empty"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "WDListSection",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    },
+    {
+      "id": "unknown-field",
+      "expectedError": {
+        "code": "UNKNOWN_FIELD",
+        "jsonPath": "/page/unexpected"
+      },
+      "spec": {
+        "schemaVersion": "1.0",
+        "page": {
+          "id": "extra",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection",
+          "primaryAction": "createTask",
+          "unexpected": "x"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "empty",
+            "kind": "empty"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "WDListSection",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    },
+    {
+      "id": "platform-type-leak",
+      "expectedError": {
+        "code": "PLATFORM_TYPE_LEAK",
+        "jsonPath": "/regions/0/component"
+      },
+      "spec": {
+        "schemaVersion": "1.0",
+        "page": {
+          "id": "leak",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection",
+          "primaryAction": "createTask"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "empty",
+            "kind": "empty"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "SomeSwiftUIView<State>",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    },
+    {
+      "id": "wrong-schema-version",
+      "expectedError": {
+        "code": "INVALID_SCHEMA_VERSION",
+        "jsonPath": "/schemaVersion"
+      },
+      "spec": {
+        "schemaVersion": "2.0",
+        "page": {
+          "id": "wrong-version",
+          "intent": "查看任务",
+          "navigation": "tabRoot",
+          "contentPattern": "collection",
+          "primaryAction": "createTask"
+        },
+        "states": [
+          {
+            "id": "loading",
+            "kind": "loading"
+          },
+          {
+            "id": "content",
+            "kind": "content"
+          },
+          {
+            "id": "empty",
+            "kind": "empty"
+          },
+          {
+            "id": "error",
+            "kind": "error"
+          }
+        ],
+        "regions": [
+          {
+            "id": "tasks",
+            "kind": "collection",
+            "component": "WDListSection",
+            "itemPattern": "TaskRow"
+          }
+        ],
+        "accessibility": {
+          "title": "任务"
+        },
+        "acceptance": [
+          "列表可读"
+        ]
+      }
+    }
+  ]
+}

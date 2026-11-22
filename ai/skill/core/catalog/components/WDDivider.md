@@ -1,0 +1,58 @@
+<!-- GENERATED FILE - DO NOT EDIT. -->
+<!-- Source: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.rb. -->
+<!-- Regenerate with: ruby tools/ai-skill/lib/extract-design.rb | node tools/ai-skill/lib/generate-core-catalog.js --out <dir> -->
+<!-- No platform API claims are included. -->
+
+# WDDivider 语义卡
+
+Component: `WDDivider`
+Spec: `docs/specs/01-basic.md` (number 14)
+Contract: `contracts/WDDivider.yaml` (sha256 `3505f4ae6ecd91c75c710f3d953d569d65235c2aa3fb74ffc96c0d4e48e7ba9a`)
+
+## 用途（来自正式规格 §1）
+
+分隔。**这是最后手段**——能用间距表达的，不要画线。
+
+- **用**：列表行之间、两个语义不同的区块之间
+- **不要用**：卡片与卡片之间（用 `space.4` 间距）；分组标题与内容之间（用间距）；装饰性分隔
+
+## 来源追溯
+
+- `docs/specs/01-basic.md:1304`
+- `docs/specs/01-basic.md:1306`
+- `docs/specs/01-basic.md:1309`
+- `docs/specs/01-basic.md:1308`
+- `docs/specs/01-basic.md:1326`
+- `docs/specs/01-basic.md:1328`
+- `docs/specs/01-basic.md:1336`
+- `docs/specs/01-basic.md:1338`
+- `docs/specs/01-basic.md:1348`
+- `docs/specs/01-basic.md:1350`
+
+## 状态（来自正式规格 §5）
+
+- 无状态。颜色固定 `border.hairline`，不随选中或按下变化。（`docs/specs/01-basic.md:1328`）
+
+## 内容（来自正式规格 §7）
+
+- 分割线不带文字。需要标签的分隔请用分组标题（`WDListSection`）。（`docs/specs/01-basic.md:1338`）
+
+## 无障碍（来自正式规格 §10）
+
+- 不进入无障碍树；分组语义由 `WDListSection` 的标题承担，不由分割线承担。（`docs/specs/01-basic.md:1350`）
+
+## 契约摘要（来自 YAML）
+
+- params: 1
+- slots: 无
+- enums: WDDividerStyle
+
+## 检索与组合 overlay（不得覆盖真源）
+
+- searchAliases: none
+- combinesWith: none
+- pageRegions: none
+
+## 平台说明
+
+本卡不包含任何 Swift / Kotlin 平台 API 猜测。平台实现与证据只由对应 Provider 提供。

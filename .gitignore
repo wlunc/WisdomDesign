@@ -1,2 +1,4 @@
 .DS_Store
 *.tmp
+ai/skill/core/dist/
+dist/ai-skill/

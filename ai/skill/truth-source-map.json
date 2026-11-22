@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0",
+  "status": "implementation-ready",
+  "principle": "同一事实只有一个权威来源；overlay 只补检索与组合语义，不覆盖视觉数值、API 或验证结论。",
+  "conflictResolution": [
+    "平台真实 API / 签名冲突：以编译后的平台公开符号、源码与 ABI 证据为准，YAML 不得覆盖。",
+    "canonical 参数、槽位、默认值语义冲突：以 contracts/*.yaml 与 contracts/README.md 为准。",
+    "用途 / 反例 / 状态 / 内容语义冲突：以 docs/specs/01-basic.md、02-advanced.md、03-patterns.md 为准。",
+    "视觉数值冲突：以 tokens/wisdom.tokens.json 为准。",
+    "布局 / 无障碍 / 内容规则冲突：以 docs/09-layout.md、06-accessibility.md、07-content.md 为准。",
+    "历史资料（含 docs/02-components.md）只作参考，不进入生成目录，不作为裁决依据。",
+    "验证状态冲突：以对应报告证据为准，不以后填写状态字段为准。"
+  ],
+  "fields": [
+    {
+      "field": "componentIds",
+      "authority": "contracts/WD*.yaml",
+      "count": 37,
+      "note": "文件名与 component 值一一对应；R1–R5 是配方，不计数。"
+    },
+    {
+      "field": "component.params/slots/default/enums",
+      "authority": "contracts/WD*.yaml + contracts/README.md",
+      "validator": "tools/contracts-check.rb（现有真源门禁，本流水线不接管）"
+    },
+    {
+      "field": "component.purpose/counterexample/state/content",
+      "authority": "docs/specs/01-basic.md, docs/specs/02-advanced.md, docs/specs/03-patterns.md"
+    },
+    {
+      "field": "recipe.R1-R5",
+      "authority": "docs/specs/03-patterns.md",
+      "note": "只作配方，不混入 37 组件数。"
+    },
+    {
+      "field": "tokenVersionAndValues",
+      "authority": "tokens/wisdom.tokens.json",
+      "version": "1.1.0"
+    },
+    {
+      "field": "layoutRules",
+      "authority": "docs/09-layout.md"
+    },
+    {
+      "field": "accessibilityRules",
+      "authority": "docs/06-accessibility.md"
+    },
+    {
+      "field": "contentRules",
+      "authority": "docs/07-content.md"
+    },
+    {
+      "field": "pageSpecStructure",
+      "authority": "ai/skill/page-spec/schema.json",
+      "note": "派生契约，不是设计真源。"
+    },
+    {
+      "field": "providerCapabilities",
+      "authority": "platform repos build config + public symbols/source; declared through provider SPI",
+      "note": "设计仓只消费与校验，不解释平台 API。"
+    },
+    {
+      "field": "apiCards",
+      "authority": "iOS symbol graph / public snapshots; Android Kotlin public declarations + ABI baseline",
+      "note": "必须带证据等级。"
+    },
+    {
+      "field": "nativeTemplates",
+      "authority": "platform-owned template sources; business landing in consumer/AIStarter",
+      "note": "不进入 WisdomUI 发布组件库。"
+    },
+    {
+      "field": "verificationStatus",
+      "authority": "reports produced by declared commands",
+      "note": "无报告即 not-verified。"
+    }
+  ],
+  "nonAuthoritative": [
+    "docs/02-components.md（历史清单）",
+    "design/gallery/**（可视化，不是规范）",
+    "历史评审/排期/审计叙事文档",
+    "Provider 自填 verified 字段"
+  ]
+}

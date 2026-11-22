@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0",
+  "status": "frozen-for-review",
+  "componentOrder": {
+    "rule": "按黄金页面需求、真实调用频次和平台能力成熟度排序；每层未通过前不进入下一层。",
+    "phases": [
+      {
+        "phase": "P0-golden-slice",
+        "components": "task-list / settings-form 涉及的组件（WDListSection、WDListRow、WDButton、WDFormRow、WDTextField、WDEmptyState、WDCheckbox/WDSwitch 等按实际 spec 解析）",
+        "reason": "已完成 M2/M3 纵向切片验证后再扩展"
+      },
+      {
+        "phase": "P1-high-frequency",
+        "components": "WDCard、WDBadge、WDChip、WDIcon、WDAvatar、WDProgressBar、WDProgressRing、WDSearchField、WDSegmentedControl",
+        "reason": "高频基础组件，按平台真实 API 与 ABI 逐个升级"
+      },
+      {
+        "phase": "P2-feedback-navigation",
+        "components": "WDAlert、WDBanner、WDToast、WDBottomSheet、WDActionSheet、WDNavigationBar、WDTabBar、WDToolbar、WDFAB",
+        "reason": "涉及键盘、焦点、返回与遮挡，需完整 UI 矩阵"
+      },
+      {
+        "phase": "P3-specialized",
+        "components": "WDDatePicker、WDPicker、WDRadio、WDSlider、WDStepper、WDPullRefresh、WDSkeleton、WDAssigneePicker、WDAvatarStack、WDDivider",
+        "reason": "平台差异较大或低频，按需扩展；不可编译项保持 spec-only"
+      }
+    ]
+  },
+  "pagePatternOrder": [
+    {
+      "rank": 1,
+      "id": "list-filter",
+      "name": "列表与筛选",
+      "entry": "已有 task-list 正例",
+      "gate": "消费侧编译 + 状态矩阵 + 设计评审 + 负向脚手架"
+    },
+    {
+      "rank": 2,
+      "id": "form-edit",
+      "name": "表单与编辑",
+      "entry": "已有 settings-form 正例",
+      "gate": "键盘/返回/大字体矩阵"
+    },
+    {
+      "rank": 3,
+      "id": "detail",
+      "name": "详情",
+      "entry": "M5 T03",
+      "gate": "loading/content/empty/error 完整"
+    },
+    {
+      "rank": 4,
+      "id": "overview",
+      "name": "概览",
+      "entry": "后续任务",
+      "gate": "内容层级与视觉重量评审"
+    },
+    {
+      "rank": 5,
+      "id": "modal-task",
+      "name": "模态任务",
+      "entry": "后续任务",
+      "gate": "焦点进入/归还、系统返回、弹层遮挡"
+    },
+    {
+      "rank": 6,
+      "id": "empty-onboarding-error",
+      "name": "空态 / 新手引导与失败恢复",
+      "entry": "后续任务",
+      "gate": "边界文案与可恢复操作"
+    }
+  ],
+  "newPlatformAccession": {
+    "rule": "没有真实实现与验证工具时只能 spec-only；新增平台只新增 Provider、能力画像、API 适配器、模板、Token/组件映射与验证。",
+    "order": [
+      "1. 确认平台真实组件实现、构建工具与公共 API 证据来源",
+      "2. 建立 capability profile（runtime/navigation/layout/typography/input/accessibility/rendering/verification）",
+      "3. 实现 API 适配器并按四级证据生成 API 卡",
+      "4. 建立最小调用例并在平台真实工具链编译",
+      "5. 建立模板并跑规定快照/UI 矩阵",
+      "6. 增加 manifest coverage 与版本兼容范围，先以 experimental/spec-only 发布",
+      "7. 独立设计评审与宿主加载验证后再考虑 verified"
+    ],
+    "webStatus": "当前没有与双端对等、已验收的 Web 组件实现；只保留 Provider SPI，Web 能力只能标 spec-only，不宣称支持 Web 代码生成。"
+  }
+}

@@ -235,27 +235,34 @@ wisdomdesign/
 
 `provider.json` 只声明适配器、版本与验证入口；API 数据从真实源码 / 符号工具生成，不在 Provider 文档中另抄一份。
 
-### 4.3 生成包目录
+### 4.3 生成包目录（与 R12 实现对齐）
 
 ```text
 dist/ai-skill/<skill-version>/
-├── wisdom-page-core/
-├── wisdom-page-ios/
-├── wisdom-page-android/
-├── wisdom-page-all/
-├── packages/
+├── wisdom-page-core/              # 必有：单仓 checkout 也能构建
+│   ├── SKILL.md
+│   ├── catalog/                   # 37 张语义卡 + catalog.md + manifest.json
+│   ├── page-spec/                 # schema + examples
+│   ├── runtime/                   # validate-spec.js / get-component.js / README
+│   ├── component-overlays/        # 检索元数据（含 alias）
+│   ├── build-info.json            # residentBytes / 预算依据 / inputs
+│   ├── files.json                 # 逐文件 SHA-256（含 LICENSE-NOTICE.txt）
+│   ├── manifest.json              # 对 M0 manifest.schema.json 0 错
+│   └── LICENSE-NOTICE.txt
+├── wisdom-page-ios/               # 可选：iOS 平台仓可用且被选入时
+├── wisdom-page-android/           # 可选
+├── wisdom-page-all/               # 可选：同时构建 ios+android 时
+├── packages/                      # 按实际构建的包集生成 ZIP
 │   ├── wisdom-page-core.zip
-│   ├── wisdom-page-ios.zip
-│   ├── wisdom-page-android.zip
-│   └── wisdom-page-all.zip
-├── checksums.json
-└── reports/
-    ├── build-report.json
-    ├── verification-report.json
-    └── evaluation-report.json
+│   └── ...
+└── checksums.json                 # ZIP 哈希 + 各包 manifest/files.json 自指哈希
 ```
 
-每个可加载包都有独立 `SKILL.md` 和 `manifest.json`。All 包复用 Core 和平台包内容，不形成第五份真源。
+- **没有 `reports/` 目录**：机器报告落 `tools/ai-skill/reports/m4-ci-result.json`（CI artifact）、每包 `build-info.json` 与 `files.json`、以及顶层 `checksums.json`；不存在 `build-report/verification-report/evaluation-report` 这些历史设计稿文件。
+- **单仓 core-only**：标准 checkout 没有同级 iOS / android 时，`python3 tools/ai-skill/package.py --platforms core` 只产出 Core 包，manifest 只记录 wisdomdesign 来源（不伪造平台 commit）。
+- **full**：`--platforms core,ios,android` 且平台仓通过 `--ios-root/--android-root` 或 `WISDOMDESIGN_*_ROOT` 或同级目录提供；缺失时以清晰非零退出提示，不静默降级。
+
+每个可加载包都有独立 `SKILL.md`、`manifest.json` 和 `files.json`。All 包复用 Core 和平台包内容，不形成第五份真源。
 
 ---
 
@@ -668,40 +675,48 @@ loading / content / empty / error
 
 ---
 
-## 11. CLI 契约
+## 11. CLI 契约（与 R12 实现对齐）
 
-拟提供统一命令，具体参数在 M0 契约冻结时评审：
+实际命令（`wisdomdesign/tools/ai-skill/`）；**不存在** `pack` / `verify-templates` / `evaluate` 子命令——打包在 `package.py`，模板验证属平台仓 CI，评测在 `eval/run.js`。
 
 ```bash
-# 从显式输入构建指定范围
-node tools/ai-skill/cli.js build --platform core,ios,android \
-  --ios ../iOS --android ../android
+# Core 包：设计真源 -> 目录包（平台仓仅作来源出处，可选）
+node tools/ai-skill/cli.js build [--out <dir>] [--ios-root ../iOS] [--android-root ../android]
 
-# 临时目录重建、执行结构与反漂移检查
-node tools/ai-skill/cli.js check --platform core,ios,android \
-  --ios ../iOS --android ../android
+# 临时目录重建 + 结构与反漂移检查（不覆盖正式产物）
+node tools/ai-skill/cli.js check
 
-# 流水线自身和运行时工具正反例
+# 流水线自身与运行时正反例（含打包布局 runtime、超预算负例）
 node tools/ai-skill/cli.js test
 
-# 验证指定原生模板，不执行 AI 生成
-node tools/ai-skill/cli.js verify-templates --platform ios
+# 确定性四类包 + ZIP + checksums（与 cli.js 共用 lib/manifest.js）
+python3 tools/ai-skill/package.py --platforms core                 # 单仓 checkout
+python3 tools/ai-skill/package.py --platforms core,ios,android \
+  --ios-root ../iOS --android-root ../android                     # full
 
-# 固定任务集的真实生成评测
-node tools/ai-skill/cli.js evaluate --baseline --candidate
+# 已构建包审计（manifest schema / 文件计数 / 哈希 / ZIP / 包内 runtime / 预算）
+node tools/ai-skill/tests/dist-package.test.js --platforms core,ios,android
 
-# 确定性 ZIP 与 checksums
-node tools/ai-skill/cli.js pack
+# CI 辅助（单仓可运行）
+node tools/ai-skill/ci/route-changes.js --paths-file changed-files.txt --require-paths --out plan.json
+node tools/ai-skill/ci/check-native-layers.js --plan plan.json [--ios-root ../iOS --android-root ../android] [--strict-evidence]
+node tools/ai-skill/ci/release-gate.js --dist dist/ai-skill/v1.0.0
+
+# M5 评测 harness（真实评测需 readiness exit 0；当前 5 个 blocker）
+node tools/ai-skill/eval/run.js --check-readiness
+node tools/ai-skill/eval/run.js --report
 ```
 
 要求：
 
-- 无参数不隐式写其它仓；
-- 路径来自参数或 workspace 配置；
+- 无参数不隐式写其它仓；未提供平台仓时 Core 构建/打包仍可完成，full 打包以清晰非零退出提示 checkout / `--*-root`，不再假设三仓同级；
+- CLI `build/check/test` 只负责 Core；平台载荷打包在 `package.py`，模板验证在平台仓 CI，评测在 `eval/run.js`；
+- 路径来自参数、环境变量（`WISDOMDESIGN_IOS_ROOT` / `WISDOMDESIGN_ANDROID_ROOT`）或同级 workspace 布局；
 - 所有失败以非零退出码返回；
 - 机器报告输出 JSON，人类摘要不替代原始报告；
 - `check` 不写平台源码、不更新 ABI / API 基线；
-- `evaluate` 与其它只读检查分离，因为它会调用模型并产生成本；
+- 真实模型评测与只读检查分离（`eval/run.js`），因为它会调用模型并产生成本；
+- 单套 manifest：`tools/ai-skill/lib/manifest.js`，写入前对 M0 schema 校验；
 - 发布不是默认命令的隐式步骤。
 
 技术选型建议：Node.js 标准库负责编排、JSON、哈希与测试；YAML 通过现有 Ruby 标准库适配器读取，**不手写 YAML 解析器**。首版不引入 npm 运行时依赖。若未来替换为经过评审的解析库，Provider SPI 与产物格式不变。
@@ -710,14 +725,15 @@ node tools/ai-skill/cli.js pack
 
 ## 12. CI 与变更触发
 
-### 12.1 每次相关 PR
+### 12.1 每次相关 PR（单仓 checkout 可运行）
 
 - Core 提取与 Page Spec 检查；
 - 运行时正反例；
-- 包结构、死链和路径安全；
+- 包结构、死链和路径安全（跨仓证据链接 `../../iOS/...` 在无平台仓时记为 cross-repo/unverifiable，不计死链；审计下限按源文档计，不依赖生成 dist）；
 - 可复现 `check`；
 - 来源、版本和 coverage 报告；
-- `SKILL.md` 常驻预算检查。
+- `SKILL.md` 常驻预算检查；
+- 打包/复现层默认 **core-only**（`package.py --platforms core`）；只有显式 checkout 平台仓（`--ios-root/--android-root`）时才跑 full 打包。
 
 ### 12.2 按输入范围触发
 
@@ -827,7 +843,7 @@ M0 冻结任务集和指标定义；首次评测只建立基线，不预设必�
 必须同时满足：
 
 1. Core、iOS、Android 生成包可从各自真源重建；
-2. `build / check / test / pack` 有可运行证据；
+2. `cli.js build / check / test` 与 `package.py --platforms ...`、`dist-package.test.js` 有可运行证据（`pack` 子命令不存在，打包器即 `package.py`）；
 3. 至少一个 iOS 和一个 Android 黄金页面在消费侧通过各自规定验证；
 4. 不支持能力会显式失败或降级；
 5. 生成包可被目标宿主实际加载；

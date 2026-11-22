@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "status": "not-executed",
+  "note": "失败样本台账。任何真实任务失败必须原样保留，不得删除；readiness 未通过时 entries 为空，不代表没有失败，而是尚未运行。",
+  "policy": {
+    "deleteFailures": false,
+    "requiredFields": ["runId", "taskId", "arm", "failureType", "exitCode", "evidenceRef", "keptAt"],
+    "allowedFailureTypes": ["compile", "api-hallucination", "design-violation", "state-coverage", "platform-matrix", "host-load", "tool-error", "timeout"]
+  },
+  "entries": []
+}

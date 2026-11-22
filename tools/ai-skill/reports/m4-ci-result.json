@@ -1,0 +1,331 @@
+{
+  "schemaVersion": "1.0",
+  "suite": "m4-ci",
+  "generatedBy": "tools/ai-skill/tests/m4-ci.test.js",
+  "note": "Contract/static gate layer only. Not a cli.js build, native compile, host load, or release.",
+  "totals": {
+    "pass": 63,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "baseline-manifest-valid",
+      "status": "passed",
+      "detail": "base manifest passes schema"
+    },
+    {
+      "id": "baseline-provider-valid",
+      "status": "passed",
+      "detail": "base provider passes schema"
+    },
+    {
+      "id": "baseline-api-card-valid",
+      "status": "passed",
+      "detail": "base API card passes schema"
+    },
+    {
+      "id": "token-incompatible",
+      "status": "passed",
+      "detail": "token version drift rejected (schema+guard)"
+    },
+    {
+      "id": "contract-incompatible",
+      "status": "passed",
+      "detail": "contract schema version drift rejected (schema+guard)"
+    },
+    {
+      "id": "provider-schema-incompatible",
+      "status": "passed",
+      "detail": "provider schema version drift rejected (schema+guard)"
+    },
+    {
+      "id": "manifest-schema-incompatible",
+      "status": "passed",
+      "detail": "manifest schema version drift rejected (schema+guard)"
+    },
+    {
+      "id": "skill-version-invalid",
+      "status": "passed",
+      "detail": "skill version must follow semver pattern (schema+guard)"
+    },
+    {
+      "id": "provider-declared-version-incompatible",
+      "status": "passed",
+      "detail": "provider.schemaVersion!=1.0 rejected"
+    },
+    {
+      "id": "template-incompatible",
+      "status": "passed",
+      "detail": "template version drift detected by compatibility guard"
+    },
+    {
+      "id": "template-mismatch-cannot-be-verified",
+      "status": "passed",
+      "detail": "mismatched template cannot boost status to verified"
+    },
+    {
+      "id": "provider-incompatible",
+      "status": "passed",
+      "detail": "incompatible provider status detected"
+    },
+    {
+      "id": "provider-self-certify",
+      "status": "passed",
+      "detail": "declared=verified with no evidenceRefs rejected"
+    },
+    {
+      "id": "provider-self-certify-omitted",
+      "status": "passed",
+      "detail": "verified with evidenceRefs/computedAtBuild omitted rejected"
+    },
+    {
+      "id": "provider-self-certify-no-evidence-refs",
+      "status": "passed",
+      "detail": "declared=verified with evidenceRefs omitted rejected"
+    },
+    {
+      "id": "provider-self-certify-no-computed",
+      "status": "passed",
+      "detail": "declared=verified with computedAtBuild omitted rejected"
+    },
+    {
+      "id": "provider-self-certify-false-computed",
+      "status": "passed",
+      "detail": "declared=verified with computedAtBuild=false rejected"
+    },
+    {
+      "id": "api-card-upgrade-without-compile",
+      "status": "passed",
+      "detail": "template-verified without executed compile rejected"
+    },
+    {
+      "id": "api-card-upgrade-omitted-compilation",
+      "status": "passed",
+      "detail": "template-verified with compilation omitted rejected"
+    },
+    {
+      "id": "api-card-example-compiled-omitted",
+      "status": "passed",
+      "detail": "example-compiled with compilation omitted rejected"
+    },
+    {
+      "id": "api-card-template-verified-matrix",
+      "status": "passed",
+      "detail": "template-verified without matrixRef rejected"
+    },
+    {
+      "id": "api-card-no-source-refs",
+      "status": "passed",
+      "detail": "API card must have sourceRefs"
+    },
+    {
+      "id": "dirty-wisdomdesign-release",
+      "status": "passed",
+      "detail": "wisdomdesign dirty + release rejected (schema=true, guard=true)"
+    },
+    {
+      "id": "dirty-ios-release",
+      "status": "passed",
+      "detail": "ios dirty + release rejected (schema=true, guard=true)"
+    },
+    {
+      "id": "dirty-android-release",
+      "status": "passed",
+      "detail": "android dirty + release rejected (schema=true, guard=true)"
+    },
+    {
+      "id": "dirty-release-guard-note",
+      "status": "passed",
+      "detail": "M0 schema allOf covers all three repos; explicit guard is kept as a second line of defence"
+    },
+    {
+      "id": "clean-release-allowed",
+      "status": "passed",
+      "detail": "clean repos may be release"
+    },
+    {
+      "id": "dirty-snapshot-allowed",
+      "status": "passed",
+      "detail": "dirty repos allowed as workspace-snapshot"
+    },
+    {
+      "id": "verified-without-nativeCompile",
+      "status": "passed",
+      "detail": "overall=verified requires nativeCompile=true"
+    },
+    {
+      "id": "verified-without-runtimeMatrix",
+      "status": "passed",
+      "detail": "overall=verified requires runtimeMatrix=true"
+    },
+    {
+      "id": "verified-without-designReview",
+      "status": "passed",
+      "detail": "overall=verified requires designReview=true"
+    },
+    {
+      "id": "verified-without-hostLoad",
+      "status": "passed",
+      "detail": "overall=verified requires hostLoad=true"
+    },
+    {
+      "id": "unsupported-web-design-valid",
+      "status": "passed",
+      "detail": "unsupported platform annotation accepted as design-only"
+    },
+    {
+      "id": "cannot-claim-web-verified-in-spec",
+      "status": "passed",
+      "detail": "page spec cannot self-claim platform verified"
+    },
+    {
+      "id": "path-safety-2f6574632f",
+      "status": "passed",
+      "detail": "ref \"/etc/passwd\" recognized as unsafe"
+    },
+    {
+      "id": "path-safety-2e2e2f7365",
+      "status": "passed",
+      "detail": "ref \"../secrets\" recognized as unsafe"
+    },
+    {
+      "id": "path-safety-7265706f72",
+      "status": "passed",
+      "detail": "ref \"reports/../../secrets\" recognized as unsafe"
+    },
+    {
+      "id": "path-safety-433a5c7365",
+      "status": "passed",
+      "detail": "ref \"C:\\\\secret\" recognized as unsafe"
+    },
+    {
+      "id": "path-safety-7265706f72",
+      "status": "passed",
+      "detail": "ref \"reports/x\\u0000.json\" recognized as unsafe"
+    },
+    {
+      "id": "path-safety-guard",
+      "status": "passed",
+      "detail": "path guard accepts relative, rejects traversal/absolute"
+    },
+    {
+      "id": "dead-link-audit",
+      "status": "passed",
+      "detail": "272 md files audited, 74 internal links, 6 cross-repo links (0 not verifiable in this checkout), 0 external links"
+    },
+    {
+      "id": "dead-link-cross-repo-classification",
+      "status": "passed",
+      "detail": "sibling iOS evidence link is cross-repo, not dead"
+    },
+    {
+      "id": "dead-link-escape-rejected",
+      "status": "passed",
+      "detail": "unregistered path escape is rejected"
+    },
+    {
+      "id": "dead-link-audit-not-empty",
+      "status": "passed",
+      "detail": "link audit saw 74 internal links across 272 md files"
+    },
+    {
+      "id": "route-doc-only",
+      "status": "passed",
+      "detail": "docs-only PR does not claim native tests"
+    },
+    {
+      "id": "route-ios-native",
+      "status": "passed",
+      "detail": "iOS source change requires native layer"
+    },
+    {
+      "id": "route-android-native",
+      "status": "passed",
+      "detail": "Android ABI change requires ABI layer"
+    },
+    {
+      "id": "route-token-compat",
+      "status": "passed",
+      "detail": "token change requires dual-platform compat"
+    },
+    {
+      "id": "route-pr-payload-has-no-list",
+      "status": "passed",
+      "detail": "pull_request.changed_files is a count, not paths"
+    },
+    {
+      "id": "route-pr-paths-file",
+      "status": "passed",
+      "detail": "PR file list from git diff reaches the packaging layer"
+    },
+    {
+      "id": "route-rest-files",
+      "status": "passed",
+      "detail": "REST files[] payload parsed"
+    },
+    {
+      "id": "route-push-commits",
+      "status": "passed",
+      "detail": "push commits payload parsed"
+    },
+    {
+      "id": "route-packaging-layer",
+      "status": "passed",
+      "detail": "package.py change requires clean-unpack/checksum layers"
+    },
+    {
+      "id": "route-manifest-writer",
+      "status": "passed",
+      "detail": "manifest generator change requires dist-package tests"
+    },
+    {
+      "id": "route-runtime-budget",
+      "status": "passed",
+      "detail": "runtime change requires runtime + budget layers"
+    },
+    {
+      "id": "native-layer-all-template-compile",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-android-abi",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-android-native-compile",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-android-screenshot-ui",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-host-load",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-ios-native-compile",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "native-layer-ios-snapshot-ui",
+      "status": "passed",
+      "detail": "registered owner/command/status/evidence"
+    },
+    {
+      "id": "check-no-mutation",
+      "status": "passed",
+      "detail": "truth fingerprint unchanged 117edaf6bc26 == 117edaf6bc26"
+    }
+  ],
+  "truthFingerprint": "117edaf6bc263e8418ecf18ac542edcb96a602e17b3f5588fc7249f3990d8fa0",
+  "internalLinkCount": 74,
+  "externalLinkCount": 0,
+  "markdownFilesAudited": 272
+}

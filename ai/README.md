@@ -1,6 +1,6 @@
 # AI 消费层与 Skill 生成源目录
 
-> 状态：规划保留目录，尚未实施。
+> 状态：已实施（M0 契约 + M1 Core + M2/M3 Provider + M4 打包/CI + M5 harness）。原生编译/UI 矩阵与真实 AI 评测未全部执行，状态以各产物与复跑证据为准，不以目录存在推断通过。
 
 本目录的实施契约见 [Skill 生成流水线实施方案](../AIOptimize/02-SKILL-BUILD-PIPELINE.md)，阶段安排见 [开发计划](../AIOptimize/03-DEVELOPMENT-PLAN.md)。
 
@@ -13,4 +13,8 @@
 
 ## 当前状态
 
-尚未创建 `skill/`、Page Schema、Provider、运行时脚本或正式生成产物。本文件只是方案导航，不代表流水线已经可运行。
+- `skill/` 下已有 Page Schema、Provider SPI/API 卡 schema、包 manifest schema、37 语义卡、校验器与查询运行时、SKILL.md 模板与治理 JSON；
+- `tools/ai-skill/` 提供提取/生成/构建/检查/打包/CI 工具，`node tools/ai-skill/cli.js test` 与 `python3 tools/ai-skill/package.py` + `node tools/ai-skill/tests/dist-package.test.js` 可复跑；
+- `dist/ai-skill/v1.0.0` 下有 Core/iOS/Android/All 四包与 checksums（生成物，不作为提交证据）；
+- 未执行：宿主加载、iOS/Android 快照/UI 矩阵、真机、M5 真实评测；原生编译状态以平台仓 `ai/skill-provider/verification.json` 为准（iOS consumer build 通过、Android blocked）。
+- 入口与边界见 `AIOptimize/README.md`、`AIOptimize/02-SKILL-BUILD-PIPELINE.md` 与 `tools/ai-skill/README.md`。

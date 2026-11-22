@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wisdomdesign.local/ai-skill/provider/1.0/provider.schema.json",
+  "title": "WisdomDesign Provider SPI v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "displayName",
+    "library",
+    "libraryVersion",
+    "source",
+    "adapters",
+    "capabilities",
+    "status",
+    "unsupportedBehavior"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "enum": [
+        "ios",
+        "android",
+        "web"
+      ]
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "library": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "libraryVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit",
+        "dirty",
+        "contentHash"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "dirty": {
+          "type": "boolean"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dirtyFiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "maxItems": 200
+        }
+      }
+    },
+    "adapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "api",
+        "tokens",
+        "templates",
+        "verify"
+      ],
+      "properties": {
+        "api": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tokens": {
+          "type": "string",
+          "minLength": 1
+        },
+        "templates": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verify": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "capabilities": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path to capabilities.json inside provider package."
+    },
+    "apiCards": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path/card index inside provider package."
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effective",
+        "declared",
+        "reason"
+      ],
+      "properties": {
+        "effective": {
+          "type": "string",
+          "enum": [
+            "spec-only",
+            "experimental",
+            "verified",
+            "unsupported",
+            "incompatible"
+          ]
+        },
+        "declared": {
+          "type": "string",
+          "enum": [
+            "spec-only",
+            "experimental",
+            "verified",
+            "unsupported",
+            "incompatible"
+          ],
+          "description": "Provider authored intent; never overrides effective."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "maxItems": 20
+        },
+        "computedAtBuild": {
+          "const": true
+        }
+      }
+    },
+    "unsupportedBehavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "onMissingComponent",
+        "onMissingApiCard",
+        "onMissingTemplate",
+        "onIncompatibleVersion",
+        "forbidden"
+      ],
+      "properties": {
+        "onMissingComponent": {
+          "type": "string",
+          "enum": [
+            "spec-only",
+            "unsupported"
+          ]
+        },
+        "onMissingApiCard": {
+          "type": "string",
+          "enum": [
+            "spec-only",
+            "unsupported"
+          ]
+        },
+        "onMissingTemplate": {
+          "type": "string",
+          "enum": [
+            "fail-with-guidance",
+            "spec-only"
+          ]
+        },
+        "onIncompatibleVersion": {
+          "const": "fail-build"
+        },
+        "forbidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "fabricate-api",
+              "fake-verified",
+              "bypass-test",
+              "cross-repo-write"
+            ]
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true
+        }
+      }
+    },
+    "writeBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "defaultReadOnlyPlatformRepos": {
+          "const": true
+        },
+        "allowedGeneratedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 20
+        },
+        "requiresOwnerApprovalForPlatformWrites": {
+          "const": true
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "properties": { "effective": { "const": "verified" } }, "required": ["effective"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "required": ["evidenceRefs", "computedAtBuild"],
+            "properties": {
+              "evidenceRefs": { "minItems": 1 },
+              "computedAtBuild": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "properties": { "declared": { "const": "verified" } }, "required": ["declared"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "required": ["evidenceRefs", "computedAtBuild"],
+            "properties": {
+              "evidenceRefs": { "minItems": 1 },
+              "computedAtBuild": { "const": true }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

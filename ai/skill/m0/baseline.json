@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "capturedAt": "2026-11-21T18:13:26+08:00",
+  "captureMethod": "git rev-parse HEAD; git status --short; SHA-256 over NUL-separated relative path and file digest lines",
+  "repositories": {
+    "wisdomdesign": {
+      "path": "wisdomdesign",
+      "commit": "b2c05d9f15d63cfa49948347f8c2b211cd7bde9e",
+      "branch": "main",
+      "dirty": false,
+      "dirtyFiles": [],
+      "trackedContentHash": null,
+      "note": "Baseline commit before M0 contract files were created; new contract files are the current deliverable."
+    },
+    "ios": {
+      "path": "iOS",
+      "commit": "c3c32f3c81f66444abd10614acfc0095f80aebd6",
+      "branch": "main",
+      "dirty": true,
+      "trackedContentHash": "2b531363126fca19b716637db1703ad0bc01c354e1baa3b08df81a0969884a1d",
+      "dirtyFiles": [
+        "Sources/WisdomUI/Components/Composites/WDToolbar/WDToolbar.swift",
+        "Sources/WisdomUI/Components/Composites/WDToolbar/WDToolbarTooltip.swift",
+        "Sources/WisdomUI/Components/Primitives/WDAvatar/WDAvatar.swift",
+        "Sources/WisdomUI/Components/Primitives/WDCard/WDCard.swift",
+        "Tests/WisdomUITests/Components/WDCardTests.swift"
+      ],
+      "isolation": "Do not overwrite, stage, revert, or include these edits in Skill build inputs."
+    },
+    "android": {
+      "path": "android",
+      "commit": "3656d6ff8ae83cfd07166dd7fe85db489ef61110",
+      "branch": "main",
+      "dirty": false,
+      "trackedContentHash": "1614a84bdd66a6488427fec83546d4593249cff260ffb969f026c25265adbdfa",
+      "dirtyFiles": []
+    }
+  },
+  "designSources": {
+    "tokenVersion": "1.1.0",
+    "tokenFile": "tokens/wisdom.tokens.json",
+    "tokenHash": "953044a85a8ea93894a6d76d22b8c632466e3a9c830219ba682769d43e7f6f24",
+    "contractFiles": 37,
+    "contractTreeHash": "cb06e63fd950310d61bfb753d712ad7865e68c533ec447a3bbbc79dc4db4b005",
+    "specTreeHash": "f13f74a3c8e714e8290fe2f3574710ff4fb509b57ad9198c1ee117d5ac9d52da"
+  },
+  "limitations": [
+    "No native compile, snapshot, UI, device, or host-load verification was executed by this contract task.",
+    "D1 approval is represented by the task assignment to freeze M0 contracts; final independent review remains separate."
+  ]
+}

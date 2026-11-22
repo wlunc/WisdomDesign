@@ -1,0 +1,232 @@
+name: ai-skill-ci
+
+# M4 分层 CI（qa-verifier / t10；R8 接线；R12 单仓可运行修复）
+# 纪律：check 不改真源、不自动提交；原生编译/快照/ABI 由平台仓各自拥有；
+# 文档改动不伪报原生测试；发布需显式 workflow_dispatch + release=true。
+#
+# R12 单仓说明：标准 GitHub Actions checkout 只有 wisdomdesign 一个仓，没有同级
+# iOS / android，也没有预生成的 ai/skill/core/catalog 与 dist。因此：
+#   - L0/L1/L2 与 package-repro 默认在“单仓 + core-only”下运行并通过；
+#   - package-repro 通过 vars.WISDOM_IOS_REPO / vars.WISDOM_ANDROID_REPO +
+#     secrets.WISDOM_REPO_TOKEN 显式 checkout 平台仓时才切到 full 打包（core,ios,android）；
+#   - full 模式下平台仓 checkout 到 platform-checkouts/{iOS,android}，通过
+#     --ios-root/--android-root 传入，不假设三仓同级布局；
+#   - 未执行的原生/宿主/M5 项不会被本 workflow 声明为通过。
+#
+# 层级与实现：
+#   L0 契约结构 / 反例 / 运行时 / 常驻预算   -> contract-selftest + m4-ci + governance + cli.js test
+#   L1 变更范围路由（PR 文件列表 + push 提交）  -> ci/route-changes.js --paths-file
+#   L2 原生层声明与证据引用（不执行原生命令）   -> ci/check-native-layers.js
+#   L3 发布门禁（显式批准；校验真实 manifest）  -> ci/release-gate.js --dist dist/ai-skill/v1.0.0
+#   可复现层：cli.js build + check，package.py 两次 checksums diff
+#   打包层：dist-package.test.js 审计已构建包集（core-only 或 full）
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.png'
+      - '**/*.jpg'
+      - 'LICENSE'
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: '显式发布门禁（true 才运行 release-gate）'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-skill-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract-structure:
+    name: L0 契约结构 / 反例 / 运行时 / 预算（单仓可运行）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: M0 契约自检
+        run: node tools/ai-skill/tests/contract-selftest.js
+      - name: M4 CI / 版本兼容 / 负向测试 / 死链审计
+        run: node tools/ai-skill/tests/m4-ci.test.js
+      - name: M6 治理自检
+        run: node tools/ai-skill/tests/governance-selftest.js
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+      - name: 组件契约真源检查
+        run: ruby tools/contracts-check.rb
+      - name: Token 生成器自测（只读沙箱）
+        run: bash tools/token-build/selftest.sh
+      - name: M1 运行时 + 常驻预算（cli.js test）
+        run: node tools/ai-skill/cli.js test
+      - name: 保存机器报告为 artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-ci-report
+          path: tools/ai-skill/reports/m4-ci-result.json
+          if-no-files-found: warn
+
+  change-scope-routing:
+    name: L1 变更范围路由（PR 使用真实文件列表）
+    runs-on: ubuntu-latest
+    needs: contract-structure
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 收集变更文件（PR：base...HEAD；push：HEAD^..HEAD）
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags origin "${{ github.base_ref }}"
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > changed-files.txt
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --name-only HEAD^ HEAD > changed-files.txt
+          else
+            : > changed-files.txt
+          fi
+          echo "changed files:"
+          cat changed-files.txt
+      - name: 生成范围计划（PR 必须有文件列表，禁止退化为 baseline）
+        if: github.event_name == 'pull_request'
+        run: |
+          node tools/ai-skill/ci/route-changes.js \
+            --event "${{ github.event_path }}" \
+            --paths-file changed-files.txt \
+            --require-paths \
+            --out m4-change-plan.json
+          cat m4-change-plan.json
+      - name: 生成范围计划（push / 手动）
+        if: github.event_name != 'pull_request'
+        run: |
+          node tools/ai-skill/ci/route-changes.js \
+            --event "${{ github.event_path }}" \
+            --paths-file changed-files.txt \
+            --out m4-change-plan.json
+          cat m4-change-plan.json
+      - name: 文档 PR 只做范围声明
+        run: |
+          node -e '
+            const p = require("./m4-change-plan.json");
+            if (p.docOnly && p.nativeRequired) { console.error("doc-only must not require native"); process.exit(1); }
+            console.log("scope plan:", p.requiredLayers.join(",") || "none");
+          '
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m4-change-plan
+          path: m4-change-plan.json
+
+  native-depth:
+    name: L2 原生层声明与证据引用（平台仓各自拥有，本仓不执行原生命令）
+    runs-on: ubuntu-latest
+    needs: change-scope-routing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/download-artifact@v4
+        with:
+          name: m4-change-plan
+      - name: 校验原生层登记与证据引用（单仓：只校验登记；不伪造结果）
+        run: |
+          node tools/ai-skill/ci/check-native-layers.js --plan m4-change-plan.json
+          echo "::notice::平台原生门禁由各自仓 CI 负责；本仓未执行 xcodebuild/gradle，不声明原生通过"
+
+  package-repro:
+    name: 打包 / 可复现层（默认 core-only；平台仓显式 checkout 时 full）
+    runs-on: ubuntu-latest
+    needs: contract-structure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+      - name: 选择打包范围（未配置平台仓变量时 core-only）
+        id: scope
+        env:
+          IOS_REPO: ${{ vars.WISDOM_IOS_REPO }}
+          ANDROID_REPO: ${{ vars.WISDOM_ANDROID_REPO }}
+          PLATFORM_TOKEN: ${{ secrets.WISDOM_REPO_TOKEN }}
+        run: |
+          if [ -n "$IOS_REPO" ] && [ -n "$ANDROID_REPO" ] && [ -n "$PLATFORM_TOKEN" ]; then
+            echo "platforms=core,ios,android" >> "$GITHUB_OUTPUT"
+            echo "roots=--ios-root $GITHUB_WORKSPACE/platform-checkouts/iOS --android-root $GITHUB_WORKSPACE/platform-checkouts/android" >> "$GITHUB_OUTPUT"
+            echo "scope=full"
+          else
+            echo "platforms=core" >> "$GITHUB_OUTPUT"
+            echo "roots=" >> "$GITHUB_OUTPUT"
+            echo "scope=core-only"
+          fi
+      - name: 显式 checkout iOS 平台仓（仅在配置了仓库变量+token 时）
+        if: steps.scope.outputs.scope == 'full'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.WISDOM_IOS_REPO }}
+          path: platform-checkouts/iOS
+          token: ${{ secrets.WISDOM_REPO_TOKEN }}
+      - name: 显式 checkout Android 平台仓（仅在配置了仓库变量+token 时）
+        if: steps.scope.outputs.scope == 'full'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.WISDOM_ANDROID_REPO }}
+          path: platform-checkouts/android
+          token: ${{ secrets.WISDOM_REPO_TOKEN }}
+      - name: 可复现构建（cli.js build + check）
+        run: |
+          node tools/ai-skill/cli.js build ${{ steps.scope.outputs.roots }}
+          node tools/ai-skill/cli.js check ${{ steps.scope.outputs.roots }}
+      - name: 两次打包 checksums 必须逐字节一致
+        run: |
+          python3 tools/ai-skill/package.py --platforms "${{ steps.scope.outputs.platforms }}" ${{ steps.scope.outputs.roots }}
+          cp dist/ai-skill/v1.0.0/checksums.json /tmp/checksums-run1.json
+          python3 tools/ai-skill/package.py --platforms "${{ steps.scope.outputs.platforms }}" ${{ steps.scope.outputs.roots }}
+          diff /tmp/checksums-run1.json dist/ai-skill/v1.0.0/checksums.json
+      - name: 已构建包审计（manifest schema / 文件计数 / 逐文件哈希 / ZIP / 包内 runtime / 预算）
+        run: node tools/ai-skill/tests/dist-package.test.js --platforms "${{ steps.scope.outputs.platforms }}"
+      - name: full 模式：L2 严格校验平台仓证据引用
+        if: steps.scope.outputs.scope == 'full'
+        run: |
+          printf 'iOS/Sources/WisdomUI/Components/WDButton.swift\nandroid/wisdom-ui/api/wisdom-ui.api\n' > /tmp/native-plan-paths.txt
+          node tools/ai-skill/ci/route-changes.js --paths-file /tmp/native-plan-paths.txt --out /tmp/native-plan.json >/dev/null
+          node tools/ai-skill/ci/check-native-layers.js --plan /tmp/native-plan.json --strict-evidence ${{ steps.scope.outputs.roots }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-skill-dist
+          path: dist/ai-skill/v1.0.0
+
+  release-gate:
+    name: L3 发布门禁（仅显式批准）
+    runs-on: ubuntu-latest
+    needs: [contract-structure, change-scope-routing, native-depth, package-repro]
+    if: github.event_name == 'workflow_dispatch' && inputs.release == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/download-artifact@v4
+        with:
+          name: ai-skill-dist
+          path: dist/ai-skill/v1.0.0
+      - name: 校验真实包 manifest / checksums / dirty-release / verified 不变量
+        run: node tools/ai-skill/ci/release-gate.js --dist dist/ai-skill/v1.0.0
+      - name: 无自动提交 / 无自动发布步骤
+        run: echo "本 workflow 不含 git commit/push 或发布上传步骤；发布由发布负责人显式批准"

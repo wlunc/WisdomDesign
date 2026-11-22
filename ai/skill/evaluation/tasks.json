@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "1.0",
+  "status": "implementation-ready",
+  "fixedConditions": {
+    "arms": [
+      {
+        "id": "A",
+        "name": "现有资料 / baseline",
+        "input": "与 C 相同需求 + 当前仓内公开文档，不给精简规则卡与 Skill 工具"
+      },
+      {
+        "id": "B",
+        "name": "精简规则文档",
+        "input": "与 C 相同需求 + 冻结的短规则文档，不给确定性工具"
+      },
+      {
+        "id": "C",
+        "name": "生成的 Skill",
+        "input": "与 A/B 相同需求 + 对应包（Core/iOS/Android/All）与确定性工具"
+      }
+    ],
+    "controls": [
+      "同一模型与推理参数",
+      "同一需求文本与 Page Spec 输入",
+      "同一宿主与工具版本",
+      "同一工程基线与验证命令",
+      "同一超时与失败重试上限",
+      "失败样本不删除"
+    ],
+    "parameters": {
+      "temperature": 0,
+      "topP": 1,
+      "maxRepairRounds": 2,
+      "perTaskGenerationTimeoutMinutes": 30,
+      "perPlatformVerificationTimeoutMinutes": 45,
+      "retries": 0,
+      "seed": "supported-and-recorded-otherwise-null",
+      "model": "pin-before-M5; identical for A/B/C; record exact id and revision in run manifest",
+      "host": "pin-before-M5; D3 default is generic directory package; record exact host adapter and version",
+      "tools": "pin-before-M5; record Skill package hash, CLI version and native toolchain versions"
+    },
+    "invalidRunConditions": [
+      "A/B/C 条件不一致",
+      "模型或参数中途变化",
+      "删除失败样本",
+      "以静态 lint 替代原生验证",
+      "样本不足却给普遍百分比结论"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "T01",
+      "name": "任务列表页",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/task-list.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "collection",
+        "empty-state",
+        "tab-safe-area"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T02",
+      "name": "设置表单页",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/settings-form.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "form",
+        "keyboard",
+        "system-back",
+        "large-text"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T03",
+      "name": "带空态/错误态的详情页",
+      "inputs": {
+        "prompt": "生成一个订单详情页，必须含 loading/content/empty/error，使用 stackRoot 导航",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "detail",
+        "state-completeness"
+      ],
+      "expectedEvidence": [
+        "spec",
+        "compile",
+        "snapshot-ui"
+      ]
+    },
+    {
+      "id": "T04",
+      "name": "同一 Page Spec 的 iOS + Android 双端任务",
+      "inputs": {
+        "pageSpec": "ai/skill/page-spec/examples/task-list.valid.json",
+        "platforms": [
+          "ios",
+          "android"
+        ],
+        "forbidden": "不得从一端代码机械翻译另一端"
+      },
+      "focus": [
+        "cross-platform-mapping",
+        "semantic-parity"
+      ],
+      "expectedEvidence": [
+        "two-platform-reports",
+        "design-review"
+      ]
+    },
+    {
+      "id": "T05",
+      "name": "过期组件名与不存在的 API",
+      "inputs": {
+        "prompt": "使用 WDFakeComponent 与不存在的平台 API 生成任务页",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "negative",
+        "no-hallucination",
+        "bounded-suggestions"
+      ],
+      "expectedEvidence": [
+        "rejection-log",
+        "no-fabricated-api"
+      ]
+    },
+    {
+      "id": "T06",
+      "name": "不支持平台 / 能力",
+      "inputs": {
+        "prompt": "为 web 平台生成已验证 SwiftUI/Compose 风格业务页面",
+        "platforms": [
+          "web"
+        ]
+      },
+      "focus": [
+        "negative",
+        "spec-only",
+        "unsupported-behavior"
+      ],
+      "expectedEvidence": [
+        "structured-unsupported-response"
+      ]
+    },
+    {
+      "id": "T07",
+      "name": "已有页面的局部修改",
+      "inputs": {
+        "prompt": "在已生成的任务列表页上只改主操作文案与空态说明",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "minimal-diff",
+        "no-scaffold-overwrite"
+      ],
+      "expectedEvidence": [
+        "final-diff",
+        "file-overwrite-rejection"
+      ]
+    },
+    {
+      "id": "T08",
+      "name": "长文案、大字体和键盘边界场景",
+      "inputs": {
+        "prompt": "在设置表单中填入 120 字标题并开启大字体与键盘",
+        "platforms": [
+          "ios",
+          "android"
+        ]
+      },
+      "focus": [
+        "edge-content",
+        "AX3/fontScale-1.3",
+        "keyboard"
+      ],
+      "expectedEvidence": [
+        "snapshot-ui",
+        "manual-design-review"
+      ]
+    }
+  ],
+  "metrics": {
+    "quality": [
+      "首次原生编译成功率",
+      "不存在的组件/参数/枚举/Modifier/API 数",
+      "设计规则违例数",
+      "状态覆盖率",
+      "平台测试矩阵通过率",
+      "人工设计问题数与严重度",
+      "最终人工修改行数"
+    ],
+    "repair": [
+      "修复轮次",
+      "失败类型分布"
+    ],
+    "cost": [
+      "端到端 Token",
+      "缓存命中与缓存 Token",
+      "工具调用次数与耗时",
+      "原生构建耗时",
+      "模型费用（可得时）",
+      "输出代码行数与重复骨架比例"
+    ],
+    "costFormula": "endToEndTokens = entryRules + retrieval + apiTemplateInputs + businessInput + codeOutput + errorFeedback + repairRounds",
+    "cachePolicy": "缓存命中、缓存 Token 与未命中输入分别记录；不能用 SKILL.md 大小代替端到端成本。",
+    "reportingPolicy": "样本不足只报告观察值；M4 后基于基线设置回归阈值，变更阈值必须说明原因。"
+  },
+  "artifacts": [
+    "run-manifest.json",
+    "prompts-and-inputs/",
+    "model-outputs/",
+    "tool-call-logs/",
+    "token-and-cache.json",
+    "native-command-results/",
+    "snapshots-and-ui/",
+    "final-diffs/",
+    "design-review.md",
+    "failure-ledger.json"
+  ]
+}

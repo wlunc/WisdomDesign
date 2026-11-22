@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0",
+  "status": "frozen-for-review",
+  "versioning": {
+    "skill": "MAJOR.MINOR.PATCH；breaking 契约/包结构升级 MAJOR，向后兼容能力升级 MINOR，仅修复升级 PATCH",
+    "pageSpec": "独立 1.x；Breaking 需新 major 或显式不兼容标记，不与 Skill 版本绑定",
+    "provider": "按平台独立版本；libraryVersion 与 source commit/dirty/hash 一起锁定",
+    "templates": "按平台独立版本；模板变更必须重跑消费侧编译与快照/UI",
+    "manifest": "独立 1.x；字段 breaking 需新 major",
+    "compatibility": "manifest 声明 tokens/contracts/providers/templates 兼容范围；不兼容构建失败"
+  },
+  "changeTriggers": [
+    {
+      "change": "Token / specs / contracts",
+      "mustRun": [
+        "Core 全量提取",
+        "Page Spec 正反例",
+        "双端兼容解析",
+        "受影响模板"
+      ],
+      "writeBoundary": "不自动修改平台真源"
+    },
+    {
+      "change": "iOS API / Provider / 模板",
+      "mustRun": [
+        "iOS 编译",
+        "对应快照/UI",
+        "API 卡来源核对"
+      ],
+      "writeBoundary": "iOS 仓所有者执行，设计仓只读"
+    },
+    {
+      "change": "Android API / Provider / 模板",
+      "mustRun": [
+        "Android 编译",
+        "ABI apiCheck/apiDump 漂移",
+        "对应截图/UI"
+      ],
+      "writeBoundary": "Android 仓所有者执行，设计仓只读"
+    },
+    {
+      "change": "构建器 / 渲染器 / CLI",
+      "mustRun": [
+        "全量结构检查",
+        "可复现 check",
+        "全平台模板编译"
+      ],
+      "writeBoundary": "不写平台仓"
+    },
+    {
+      "change": "打包器 / manifest",
+      "mustRun": [
+        "干净目录解包",
+        "安装与加载验证",
+        "checksums 校验"
+      ],
+      "writeBoundary": "发布动作需显式批准"
+    },
+    {
+      "change": "仅开发计划 / 方案文字",
+      "mustRun": [
+        "文档链接与范围检查"
+      ],
+      "writeBoundary": "不宣称原生测试已跑"
+    }
+  ],
+  "trendMonitoring": {
+    "taskSet": "evaluation/tasks.json（8 任务，A/B/C 三臂）",
+    "metrics": {
+      "quality": [
+        "首次原生编译成功率",
+        "API 幻觉数",
+        "设计违例数",
+        "状态覆盖率",
+        "平台矩阵通过率",
+        "人工设计问题数/严重度",
+        "最终人工修改行数"
+      ],
+      "repair": [
+        "修复轮次",
+        "失败类型分布"
+      ],
+      "cost": [
+        "端到端 Token",
+        "缓存命中/缓存 Token",
+        "工具调用次数与耗时",
+        "原生构建耗时",
+        "费用（可得时）",
+        "输出行数与重复骨架比例"
+      ]
+    },
+    "thresholds": "先建立基线；M4 后基于固定任务设置回归阈值。阈值变更需记录原因、样本范围与批准人。",
+    "reporting": "样本不足只写观察值，不给普遍百分比；失败样本不删除；原始 run-manifest、Token、工具、编译、diff 与设计评审可审计。",
+    "cadence": "每个相关 PR 跑轻量门禁；每个发布候选跑完整固定任务集；趋势按固定任务版本纵向对比，模型/宿主/工具版本变化需另起基线。"
+  },
+  "releaseGate": [
+    "所有 verified 声明有对应报告与 evidenceRefs",
+    "固定评测无未解释回归",
+    "干净环境可解包、加载、查询与复制模板",
+    "包哈希与构建报告一致",
+    "未验证项列入发布说明",
+    "版本与输入来源可审计",
+    "旧版本升级与失效提示明确"
+  ],
+  "prohibited": [
+    "CI 自动提交生成结果或 ABI 基线",
+    "覆盖 iOS 已有 dirty 修改",
+    "用静态 lint 冒充原生验证",
+    "无样本承诺固定节省比例",
+    "发布动作作为默认命令隐式步骤"
+  ]
+}

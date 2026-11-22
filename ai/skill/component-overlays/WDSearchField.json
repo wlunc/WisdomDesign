@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDSearchField",
+  "searchAliases": ["搜索框", "查询输入", "filter input"],
+  "combinesWith": ["WDChip", "WDSegmentedControl"],
+  "pageRegions": ["toolbar", "collection-header"]
+}

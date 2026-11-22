@@ -1,0 +1,327 @@
+{
+  "schemaVersion": "1.0",
+  "runId": "t11-observation",
+  "generatedAt": "2026-11-21T10:29:51.576Z",
+  "ready": false,
+  "blockers": [
+    {
+      "code": "UNPINNED_MODEL",
+      "detail": "fixedConditions.parameters.model = \"pin-before-M5; identical for A/B/C; record exact id and revision in run manifest\""
+    },
+    {
+      "code": "UNPINNED_HOST",
+      "detail": "fixedConditions.parameters.host = \"pin-before-M5; D3 default is generic directory package; record exact host adapter and version\""
+    },
+    {
+      "code": "UNPINNED_TOOLS",
+      "detail": "fixedConditions.parameters.tools = \"pin-before-M5; record Skill package hash, CLI version and native toolchain versions\""
+    },
+    {
+      "code": "CLI_MISSING",
+      "detail": "tools/ai-skill/cli.js not found (core-dev M1/M4-package)"
+    },
+    {
+      "code": "PACKAGE_MISSING",
+      "detail": "dist/ai-skill generated bundle not found (core-dev M4-package)"
+    },
+    {
+      "code": "NATIVE_CMD_UNPINNED_IOS",
+      "detail": "ios-snapshot-ui requiresPinning"
+    },
+    {
+      "code": "NATIVE_CMD_UNPINNED_ANDROID",
+      "detail": "android-screenshot requiresPinning"
+    }
+  ],
+  "cells": [
+    {
+      "taskId": "T01",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "任务列表页",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T01",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "任务列表页",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T01",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "任务列表页",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T02",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "设置表单页",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T02",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "设置表单页",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T02",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "设置表单页",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T03",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "带空态/错误态的详情页",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T03",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "带空态/错误态的详情页",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T03",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "带空态/错误态的详情页",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T04",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "同一 Page Spec 的 iOS + Android 双端任务",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T04",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "同一 Page Spec 的 iOS + Android 双端任务",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T04",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "同一 Page Spec 的 iOS + Android 双端任务",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T05",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "过期组件名与不存在的 API",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T05",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "过期组件名与不存在的 API",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T05",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "过期组件名与不存在的 API",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T06",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "不支持平台 / 能力",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T06",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "不支持平台 / 能力",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T06",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "不支持平台 / 能力",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T07",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "已有页面的局部修改",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T07",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "已有页面的局部修改",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T07",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "已有页面的局部修改",
+      "armName": "生成的 Skill"
+    },
+    {
+      "taskId": "T08",
+      "arm": "A",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "长文案、大字体和键盘边界场景",
+      "armName": "现有资料 / baseline"
+    },
+    {
+      "taskId": "T08",
+      "arm": "B",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "长文案、大字体和键盘边界场景",
+      "armName": "精简规则文档"
+    },
+    {
+      "taskId": "T08",
+      "arm": "C",
+      "status": "not-executed",
+      "quality": null,
+      "repair": null,
+      "cost": null,
+      "artifacts": null,
+      "reason": "prerequisites-not-satisfied",
+      "taskName": "长文案、大字体和键盘边界场景",
+      "armName": "生成的 Skill"
+    }
+  ],
+  "policy": "No cell may be filled unless readiness.ready=true and a real adapter supplies measurements. Failure samples are preserved, never deleted."
+}

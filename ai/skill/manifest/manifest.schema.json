@@ -1,0 +1,611 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wisdomdesign.local/ai-skill/manifest/1.0/manifest.schema.json",
+  "title": "WisdomDesign Skill Package Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "package",
+    "version",
+    "contents",
+    "sources",
+    "versions",
+    "status",
+    "coverage",
+    "verification",
+    "reproducibility"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "package": {
+      "type": "string",
+      "enum": [
+        "wisdom-page-core",
+        "wisdom-page-ios",
+        "wisdom-page-android",
+        "wisdom-page-all"
+      ]
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill"
+      ],
+      "properties": {
+        "skill": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "pageSpecSchema": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "providerSchema": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "manifestSchema": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "contents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "platforms",
+        "entry"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "directory",
+            "zip"
+          ]
+        },
+        "platforms": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "core",
+              "ios",
+              "android"
+            ]
+          }
+        },
+        "entry": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "fileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repositories",
+        "design"
+      ],
+      "properties": {
+        "repositories": {
+          "type": "object",
+          "description": "wisdomdesign is always required. ios/android entries are required only for packages that include that platform payload; a Core-only build from a single-repo checkout omits them instead of inventing a commit (R12).",
+          "additionalProperties": false,
+          "required": [
+            "wisdomdesign"
+          ],
+          "properties": {
+            "wisdomdesign": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "repository",
+                "commit",
+                "dirty"
+              ],
+              "properties": {
+                "repository": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commit": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "dirty": {
+                  "type": "boolean"
+                },
+                "dirtyFiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "maxItems": 200
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            },
+            "ios": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "repository",
+                "commit",
+                "dirty"
+              ],
+              "properties": {
+                "repository": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commit": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "dirty": {
+                  "type": "boolean"
+                },
+                "dirtyFiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "maxItems": 200
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            },
+            "android": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "repository",
+                "commit",
+                "dirty"
+              ],
+              "properties": {
+                "repository": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commit": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "dirty": {
+                  "type": "boolean"
+                },
+                "dirtyFiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "maxItems": 200
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            }
+          }
+        },
+        "design": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tokenVersion",
+            "tokenHash",
+            "contractCount",
+            "contractTreeHash"
+          ],
+          "properties": {
+            "tokenVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            },
+            "tokenHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "contractCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contractTreeHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "specTreeHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tokens",
+        "contracts",
+        "providers",
+        "templates"
+      ],
+      "properties": {
+        "tokens": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "contracts": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "providers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        },
+        "templates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "releaseKind",
+        "overall",
+        "platforms"
+      ],
+      "properties": {
+        "releaseKind": {
+          "type": "string",
+          "enum": [
+            "release",
+            "workspace-snapshot"
+          ]
+        },
+        "overall": {
+          "type": "string",
+          "enum": [
+            "spec-only",
+            "experimental",
+            "verified",
+            "unsupported",
+            "incompatible"
+          ]
+        },
+        "platforms": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ios": {
+              "type": "string",
+              "enum": [
+                "spec-only",
+                "experimental",
+                "verified",
+                "unsupported",
+                "incompatible"
+              ]
+            },
+            "android": {
+              "type": "string",
+              "enum": [
+                "spec-only",
+                "experimental",
+                "verified",
+                "unsupported",
+                "incompatible"
+              ]
+            },
+            "web": {
+              "type": "string",
+              "enum": [
+                "spec-only",
+                "experimental",
+                "verified",
+                "unsupported",
+                "incompatible"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "components",
+        "verification",
+        "a11yStates"
+      ],
+      "properties": {
+        "components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "specOnly",
+            "experimental",
+            "verified",
+            "unsupported"
+          ],
+          "properties": {
+            "specOnly": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "experimental": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "verified": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unsupported": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "structure",
+            "nativeCompile",
+            "runtimeMatrix",
+            "designReview",
+            "hostLoad"
+          ],
+          "properties": {
+            "structure": {
+              "type": "boolean"
+            },
+            "nativeCompile": {
+              "type": "boolean"
+            },
+            "runtimeMatrix": {
+              "type": "boolean"
+            },
+            "designReview": {
+              "type": "boolean"
+            },
+            "hostLoad": {
+              "type": "boolean"
+            }
+          }
+        },
+        "a11yStates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "default",
+              "large-text",
+              "light",
+              "dark",
+              "short-content",
+              "long-content",
+              "keyboard",
+              "screen-reader"
+            ]
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reportRef",
+        "checksumsRef",
+        "unverified"
+      ],
+      "properties": {
+        "reportRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "checksumsRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "unverified": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "uniqueItems": true,
+          "maxItems": 50
+        }
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "noAbsolutePaths",
+        "noTimestamps",
+        "noMachineIdentifiers",
+        "fixedNewline",
+        "fixedZipTimestamps"
+      ],
+      "properties": {
+        "noAbsolutePaths": {
+          "const": true
+        },
+        "noTimestamps": {
+          "const": true
+        },
+        "noMachineIdentifiers": {
+          "const": true
+        },
+        "fixedNewline": {
+          "const": "LF"
+        },
+        "fixedZipTimestamps": {
+          "const": true
+        },
+        "builderVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sources": {
+            "properties": {
+              "repositories": {
+                "properties": {
+                  "wisdomdesign": { "properties": { "dirty": { "const": true } }, "required": ["dirty"] }
+                },
+                "required": ["wisdomdesign"]
+              }
+            },
+            "required": ["repositories"]
+          }
+        },
+        "required": ["sources"]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "properties": { "releaseKind": { "const": "workspace-snapshot" } },
+            "required": ["releaseKind"]
+          }
+        },
+        "required": ["status"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sources": {
+            "properties": {
+              "repositories": {
+                "properties": {
+                  "ios": { "properties": { "dirty": { "const": true } }, "required": ["dirty"] }
+                },
+                "required": ["ios"]
+              }
+            },
+            "required": ["repositories"]
+          }
+        },
+        "required": ["sources"]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "properties": { "releaseKind": { "const": "workspace-snapshot" } },
+            "required": ["releaseKind"]
+          }
+        },
+        "required": ["status"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sources": {
+            "properties": {
+              "repositories": {
+                "properties": {
+                  "android": { "properties": { "dirty": { "const": true } }, "required": ["dirty"] }
+                },
+                "required": ["android"]
+              }
+            },
+            "required": ["repositories"]
+          }
+        },
+        "required": ["sources"]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "properties": { "releaseKind": { "const": "workspace-snapshot" } },
+            "required": ["releaseKind"]
+          }
+        },
+        "required": ["status"]
+      }
+    },
+    {
+      "if": { "properties": { "status": { "properties": { "overall": { "const": "verified" } } } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "verification": {
+                "properties": {
+                  "nativeCompile": { "const": true },
+                  "runtimeMatrix": { "const": true },
+                  "designReview": { "const": true },
+                  "hostLoad": { "const": true }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

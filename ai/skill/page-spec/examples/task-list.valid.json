@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0",
+  "profile": "cross-platform",
+  "page": {
+    "id": "task-list",
+    "intent": "查看并管理家庭任务",
+    "navigation": "tabRoot",
+    "contentPattern": "collection",
+    "primaryAction": "createTask",
+    "sourceRefs": [
+      "docs/specs/03-patterns.md#R1",
+      "docs/09-layout.md#1.1"
+    ]
+  },
+  "states": [
+    {
+      "id": "loading",
+      "kind": "loading"
+    },
+    {
+      "id": "content",
+      "kind": "content"
+    },
+    {
+      "id": "empty",
+      "kind": "empty",
+      "note": "显示可执行的新建任务入口"
+    },
+    {
+      "id": "error",
+      "kind": "error"
+    }
+  ],
+  "regions": [
+    {
+      "id": "tasks",
+      "kind": "collection",
+      "component": "WDListSection",
+      "itemPattern": "TaskRow",
+      "intent": "按完成状态分组的任务列表"
+    },
+    {
+      "id": "primary-action",
+      "kind": "actions",
+      "component": "WDFAB",
+      "intent": "新建任务"
+    }
+  ],
+  "accessibility": {
+    "title": "家庭任务",
+    "readingOrder": "visual-order",
+    "announcements": [
+      "任务列表已加载",
+      "任务已创建"
+    ]
+  },
+  "acceptance": [
+    "空列表显示可执行的空状态",
+    "主操作有可读的读屏标签",
+    "底部内容不被 Tab 栏遮挡",
+    "浅色与深色均满足对比门槛"
+  ],
+  "overrides": {
+    "density": "comfortable",
+    "textScalingRequired": true,
+    "colorSchemes": [
+      "light",
+      "dark"
+    ]
+  },
+  "platforms": [
+    {
+      "platform": "ios",
+      "status": "not-verified",
+      "reason": "黄金页面尚未执行 xcodebuild 与 UI 矩阵"
+    },
+    {
+      "platform": "android",
+      "status": "not-verified",
+      "reason": "黄金页面尚未执行 Gradle 与 UI 矩阵"
+    }
+  ]
+}

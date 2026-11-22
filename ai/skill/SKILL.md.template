@@ -1,0 +1,62 @@
+<!-- GENERATED FILE - DO NOT EDIT. -->
+<!-- Source: wisdomdesign truth sources via tools/ai-skill/cli.js build. -->
+<!-- Regenerate: node tools/ai-skill/cli.js build --out ai/skill/core/dist/wisdom-page-core -->
+<!-- Core package: design semantics only; no platform API and no native verification claims. -->
+
+# Wisdom Page Core Skill
+
+## 1. Trigger scope and exclusions
+
+Use for: design analysis, component selection, Page Spec authoring and structural validation, cross-platform handoff, spec-only platform statements.
+Do not use for: generating SwiftUI / Compose code directly, claiming a platform is compiled or verified, rendering UI in the App runtime, modifying platform APIs / ABI or consumer project configuration.
+
+## 2. Three-mode routing
+
+| Mode | Flow | Loaded content |
+| --- | --- | --- |
+| Design | request to Page Brief to Page Spec to structural validation to design review | SKILL.md + page-spec + catalog short lines; never platform API |
+| Single Platform | request to page pattern to target Provider to exact API to native template to business differences to platform verification | switch to the matching platform Provider package; Core provides semantics only |
+| Cross Platform | one Page Spec to iOS Provider / Android Provider mapped separately, each verified separately | Core semantics + both Providers; never mechanically translate one platform into another |
+
+The Core package has no Provider, API card, or native template. Any code-generation request must first identify the target platform and switch to the corresponding Provider; if absent, stop per section 8.
+
+## 3. Entry points and forbidden reads
+
+The only resident entry point is this file. Load on demand: page-spec/schema.json, page-spec/examples/, catalog/catalog.md, catalog/components/WD*.md, runtime/validate-spec.js, runtime/get-component.js.
+
+Forbidden as normative sources: design/gallery/**, docs/02-components.md, historical review / schedule / audit narratives, platform internal symbols, uncompiled signature guesses.
+
+Source priority: platform API truth comes from platform Provider packages; params / slots / defaults / enums come from contracts/WD*.yaml; purpose / counterexamples / state / content / accessibility conclusions come from docs/specs/01-basic.md, 02-advanced.md, 03-patterns.md; visual numbers come from tokens/wisdom.tokens.json; layout / accessibility / content rules come from docs/09-layout.md, 06-accessibility.md, 07-content.md. The shipped catalog manifest records the same policy under catalog/manifest.json (policy) and per-card source anchors; when sources disagree, the order above decides and the conflict is reported instead of silently merged.
+
+## 4. Page Brief and Page Spec
+
+Write a Page Brief first: user intent, navigation skeleton, content pattern, primary action, states, accessibility title, acceptance items. Then write the Page Spec; structural validation proves structure only, not compilation or visual quality.
+
+## 5. On-demand loading rules
+
+- Component selection: read catalog/catalog.md short lines first; read a single catalog/components/<ID>.md only after candidates are clear.
+- Keyword queries use runtime/get-component.js, returning <= 8 candidates by default, hard cap 20.
+- Exact ID queries return one semantic-card summary, never the whole library.
+- Validation uses runtime/validate-spec.js; fix by code/jsonPath/message/suggestion, never bypass rules.
+- Platform APIs are read precisely per component only inside the platform Provider package; Core carries no resident API data.
+
+## 6. Scaffold and business modification boundary
+
+Templates are copied deterministically to a caller-specified project path and refuse overwrite by default; the model changes only business data, state, copy, actions, and component composition. Never auto-modify dependencies, signing, navigation, build scripts, or component-library source. The Core package has no scaffold template; single-platform scaffolding comes from the matching Provider.
+
+## 7. Verification loop
+
+Structure: Page Spec validation + component existence + catalog anti-drift. Native: compile / snapshot / UI / device run through platform repo commands, results in reports. Design: information architecture, primary-action hierarchy, state completeness confirmed by an independent design review. Passing one layer never substitutes the next; unexecuted layers are marked not-verified / not-evaluated.
+
+## 8. Stop conditions
+
+Stop immediately and explain when any of these occurs; do not fabricate or paper over with extra prompts:
+1. Unknown component, unknown parameter, unsourced API or signature.
+2. Requirement missing intent / navigation / content pattern / primary action / states.
+3. Target platform has no Provider, or capability is spec-only / unsupported / incompatible / not-verified.
+4. Token / Contract / Provider / template versions incompatible, or dirty workspace while a release is requested.
+5. Validation errors exceed the limited repair rounds, or path / overwrite / safety boundary is uncertain.
+
+## 9. Resident entry budget
+
+This SKILL.md is the only resident entry; budget cap is {{BUDGET_BYTES}} bytes. The builder checks the actual size automatically and records residentBytes / residentBudgetBytes in build-info.json (the manifest records the package content hash). Exceeding the cap fails the build; never compress by deleting stop conditions or source priority.

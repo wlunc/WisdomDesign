@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "1.0",
+  "generatedBy": "tools/ai-skill/tests/dist-package.test.js",
+  "policy": "The packager copies platform provider payloads read-only. A machine path inside platform-owned evidence docs cannot be rewritten without the platform owner, so it must be registered here with file, matched pattern, owner and reason. Any unregistered machine path fails the dist-package audit, so new leakage cannot pass silently.",
+  "exemptions": []
+}

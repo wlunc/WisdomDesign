@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0",
+  "status": "frozen-for-review",
+  "source": "AIOptimize/03-DEVELOPMENT-PLAN.md §9.1",
+  "principle": "按真实需求和黄金页面驱动，不按组件数量驱动；无报告即该层未覆盖。",
+  "layers": [
+    {
+      "id": "L1-design-semantics",
+      "name": "设计语义覆盖",
+      "authority": "contracts/*.yaml + docs/specs/** + tokens",
+      "countField": "designSemantic",
+      "evidence": "语义卡与真源锚点",
+      "gate": "component ID 唯一、用途/反例/状态来源可追溯"
+    },
+    {
+      "id": "L2-platform-api-discovery",
+      "name": "平台公开 API 发现",
+      "authority": "iOS symbol graph/public snapshot; Android Kotlin declarations + ABI",
+      "countField": "discovered",
+      "evidence": "API 卡与 sourceRefs",
+      "gate": "至少 discovered；不得从 YAML 猜签名"
+    },
+    {
+      "id": "L3-minimal-compile",
+      "name": "最小调用例编译",
+      "authority": "平台仓消费方 target / 获批 fixture",
+      "countField": "compiled",
+      "evidence": "编译命令、SDK、target、退出码",
+      "gate": "example-compiled；iOS 禁 swift build/test 冒充"
+    },
+    {
+      "id": "L4-template-verification",
+      "name": "模板使用验证",
+      "authority": "平台所有者的原生模板与脚手架",
+      "countField": "templateVerified",
+      "evidence": "模板矩阵报告与脚手架负例",
+      "gate": "template-verified；不默认改工程配置"
+    },
+    {
+      "id": "L5-snapshot-ui",
+      "name": "快照 / UI 覆盖",
+      "authority": "平台测试计划与人工设计评审",
+      "countField": "snapshotUi",
+      "evidence": "快照/UI 报告 + 设计评审表",
+      "gate": "规定状态、浅深色、大字体、平台交互分别出结果"
+    }
+  ],
+  "reportingRules": [
+    "每层独立统计，禁止用上一层通过替代下一层。",
+    "平台缺失组件保持 spec-only / unsupported，不提升状态。",
+    "覆盖率分母按平台实际组件集合与该层适用集合分别记录，不预设 37 全平台可用。",
+    "统计必须附 inputs commit/dirty/hash、报告引用和统计时间；本文件统计时间只记录生成时刻，发布包内不得写当前时间。",
+    "R1–R5 是配方，不计入组件数。"
+  ],
+  "currentBaseline": {
+    "note": "2026-11-22 R8 修复后刷新：M1 语义卡 37 张（含状态/内容/无障碍结论与逐行 sourceRefs）；M2/M3 Provider 已建立但 L3–L5 未执行；M4 四包与 checksums 已生成并可自动校验；M5 harness 完成、真实评测未执行。L2 按平台分别统计，不合并成单一口径。",
+    "designSemantic": 37,
+    "discovered": {
+      "ios": 10,
+      "android": 11,
+      "note": "带 API 卡的 catalog 组件数（iOS 33 张卡覆盖 10 个组件 + 5 个 Foundation 入口；Android 17 张卡 = 11 组件 + 6 个 Foundation 入口）；Foundation 入口不计入组件数。"
+    },
+    "compiled": 0,
+    "templateVerified": 0,
+    "snapshotUi": 0,
+    "unverified": [
+      "L2 仅 discovered；无 example-compiled 卡证据",
+      "原生编译：iOS consumer build 通过，Android 编译 blocked（缺 :demo consumer 模块）",
+      "快照/UI 矩阵：iOS blocked（PTY 沙箱）、Android not-run",
+      "M4 宿主加载未执行（仅通用目录包 + ZIP/checksums 自动校验）",
+      "M5 评测未执行：无模型/宿主/工具 pin，无 results、Token 或设计评分",
+      "真机与设备矩阵未执行"
+    ]
+  }
+}

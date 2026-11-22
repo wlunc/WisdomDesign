@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0",
+  "generatedBy": "tools/ai-skill/ci/check-native-layers.js",
+  "policy": "wisdomdesign CI never executes xcodebuild / gradle and never claims a native pass. Each native/UI layer required by change-scope routing must be registered here with its owner, command, real status and an evidence reference owned by the platform repo. L2 validates the registration and the evidence reference; it does not re-run the platform command.",
+  "layers": {
+    "ios-native-compile": {
+      "owner": "iOS",
+      "status": "passed",
+      "command": "CFFIXED_USER_HOME=$PWD/iOS/.build/home xcodebuild build -project iOS/AIStarter/AIStarter.xcodeproj -scheme AIStarter -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath iOS/.build/dd-ai-starter-rel CODE_SIGNING_ALLOWED=NO",
+      "statusNote": "Consumer Release build of AIStarter against the real WisdomUI public module; re-run exit 0 on 2026-11-22.",
+      "evidence": [
+        { "repo": "iOS", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/commands/0" }
+      ]
+    },
+    "ios-snapshot-ui": {
+      "owner": "iOS",
+      "status": "blocked",
+      "command": "xcodebuild test -project iOS/AIStarter/AIStarter.xcodeproj -scheme GoldenPageMatrix -destination 'platform=iOS Simulator,name=iPhone 16'",
+      "statusNote": "GoldenPageMatrixTests-Runner.app builds, but the test host needs a pseudo-terminal that the sandbox blocks (exit 65). Not a pass.",
+      "evidence": [
+        { "repo": "iOS", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/runtimeMatrix" }
+      ]
+    },
+    "android-native-compile": {
+      "owner": "android",
+      "status": "blocked",
+      "command": "./gradlew :demo:assembleRelease",
+      "statusNote": "No :demo consumer module in settings.gradle.kts and no activity-compose dependency in :wisdom-ui; blocked, not passed.",
+      "evidence": [
+        { "repo": "android", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/executed/2" }
+      ]
+    },
+    "android-abi": {
+      "owner": "android",
+      "status": "not-run",
+      "command": "./gradlew :wisdom-ui:apiDump && git diff --exit-code -- wisdom-ui/api/wisdom-ui.api",
+      "statusNote": "ABI baseline read only; apiDump not executed in this pipeline.",
+      "evidence": [
+        { "repo": "android", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/notExecuted/1" }
+      ]
+    },
+    "android-screenshot-ui": {
+      "owner": "android",
+      "status": "not-run",
+      "command": "./gradlew :demo:screenshotTest",
+      "statusNote": "Screenshot/UI matrix not executed; entries are not-run.",
+      "evidence": [
+        { "repo": "android", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/runtimeMatrix" }
+      ]
+    },
+    "host-load": {
+      "owner": "wisdomdesign",
+      "status": "not-run",
+      "command": "unzip the release package into a clean host directory and run node runtime/validate-spec.js --file page-spec/examples/task-list.valid.json",
+      "statusNote": "No clean-environment host load has been executed; final-acceptance.md keeps it unverified.",
+      "evidence": [
+        { "repo": "wisdomdesign", "kind": "document", "path": "ai/skill/governance/final-acceptance.md" }
+      ]
+    },
+    "all-template-compile": {
+      "owner": "iOS+android",
+      "status": "blocked",
+      "command": "platform template compile: iOS copy_template.py + consumer build; android :demo:assembleRelease",
+      "statusNote": "iOS template copy is verified; android template compile is blocked (see android-native-compile).",
+      "evidence": [
+        { "repo": "iOS", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/commands/1" },
+        { "repo": "android", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/executed/2" }
+      ]
+    }
+  }
+}
