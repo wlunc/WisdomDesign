@@ -70,19 +70,34 @@
 | 项 | 状态 | 需要的条件 |
 | --- | --- | --- |
 | P0-3 Android 原生闭环 | **paused（用户决定）** | native compile 已过；平台尚未完成，暂停继续 UI 矩阵/ABI/fontScale/TalkBack/IME；Provider 保持 experimental/规划态 |
-| P0-4 iOS UI 矩阵/library gate | attempted / blocked | 已跑 `Scripts/ci.sh pr`：格式 212 文件通过、build-for-testing 通过；测试执行仍因 CoreSimulator `DTServiceHub/lockdown` 连接失败而挂起（exit 65，0 测试执行）。需健康模拟器环境 |
+| P0-4 iOS UI 矩阵/library gate | **closed（自动矩阵）** | library gate 全绿（400/400 测试、API 零 diff、覆盖率门槛通过）；GoldenPageMatrix 3/3 通过（5 状态 × 默认/AX3，截图附件）。light/dark、对比度、VoiceOver、真机、独立设计评审仍标 not-run |
 | P0-5 宿主加载 | not-run | 确定目标 AI 宿主 |
 | P0-6 M5 真实评测 | not-run | pin 模型/宿主/工具/预算 |
 
-### 5.1 P0-4 尝试记录（2026-11-22）
+### 5.1 P0-4 记录（2026-11-22，Xcode 27.2）
 
-- 修复格式门禁范围：`Scripts/check-format.sh` 不再把 `AIStarter/**` 与 `ai/skill-provider/templates/**` 当库源码检查（它们是消费方/模板，不是 WisdomUI 库）。
-- `Scripts/ci.sh pr` 实测：
-  - PR-0 格式：212 files，`check-format: OK`；
-  - PR-1a `build-for-testing`：通过（2.7s）；
-  - PR-1b 测试：失败 exit 65。日志显示模拟器 `DTServiceHubClient failed to bless service hub` / `localDeviceConnectionWithError`，随后 `xctest encountered an error (The test runner hung before establishing connection)`；0 测试执行。
-- 尝试过 iPhone Air 26.5 与 iPhone 15 Pro 17.5、重启 CoreSimulator 服务；`simctl spawn` 正常，但 `xctest` 仍无法连接测试宿主。
-- 结论：library gate 与 UI 矩阵均被宿主机 CoreSimulator 服务阻断，未取得通过证据；不改测试代码来绕过。
+**library gate（`Scripts/ci.sh pr`）：通过，exit 0**
+
+- PR-0：结构检查 0 error；`check-format` 212 files 通过；
+- PR-1a：`build-for-testing` 通过；
+- PR-1b：`passed=400 failed=0 skipped=0`（47 suites）；
+- PR-2：API 符号零 diff（`symbols=1404`）；
+- 覆盖率门槛（Foundation ≥80%，3 targets）通过；
+- 总耗时 80.33s。
+
+**UI 矩阵（GoldenPageMatrixTests）：通过，exit 0**
+
+- 3 个测试全部通过；`testGoldenStateMatrix` 覆盖 `loading/contentShort/contentLong/empty/error × 默认/AX3` 共 10 个组合，截图作为 XCTAttachment 产出；耗时 60.86s。
+- 过程中修复：
+  - `Scripts/check-format.sh` 排除 `AIStarter/**` 与模板（消费方不是库源码）；
+  - `.swift-format` 补 Xcode 27 必填键 `orderedImports.shouldGroupImports`；
+  - API 快照仅工具链元数据（SDK 26.5→27.2、Swift 6.3.3→6.4.2）更新，无符号变化；
+  - `WDCardMediaBand` 有图时高度被图片固有尺寸撑到 320；改为占位色负责布局、图片仅 overlay，恢复 16:9 几何；
+  - UI 测试根视图改为 `descendants(matching: .any)`（ScrollView 不作为 staticText/otherElement 暴露）。
+
+**仍未验证**：light/dark 视觉截图、对比度、VoiceOver 焦点、真机、键盘滚动、独立设计评审（测试中显式 not-run）。
+
+> 说明：Xcode 26.6 时曾因 CoreSimulator `DTServiceHub/lockdown` 无法启动测试宿主；升级 Xcode 27.2 后恢复。
 
 ## 6. 脚本语言统一为 JavaScript（2026-11-22）
 
@@ -93,6 +108,7 @@
 
 ## 7. 结论
 
-- P0-1/P0-2 已关闭；P0-3 的 native compile 前置阻断已解除，但 M3 仍未达到完整出口。
-- 06 报告的裁决 **B（存在阻断项）仍成立**：M2/M3/M4/M5/M6 出口未全部闭合。
+- P0-1/P0-2/P0-4 已关闭；M2 自动矩阵（library gate + 5 状态 × 默认/AX3）已通过；人工视觉/无障碍/真机项仍 not-run。
+- P0-3 的 native compile 前置阻断已解除，但 Android 用户决定暂停，M3 未达完整出口。
+- 06 报告的裁决 **B（存在阻断项）仍成立**：M3/M4/M5/M6 出口未全部闭合（M4 宿主加载、M5 真实评测仍未开始）。
 - 不可声明“计划任务完成/双端闭环已验证/M5 已评测/宿主可加载”；可声明的技术预览范围见 06 报告 §0.3。
