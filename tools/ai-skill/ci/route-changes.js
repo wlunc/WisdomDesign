@@ -42,7 +42,7 @@ const RULES = [
   },
   {
     id: 'packaging-manifest',
-    pattern: /(^|\/)(dist\/ai-skill\/|tools\/ai-skill\/(package\.py|lib\/manifest\.js|lib\/write-manifest\.js)|ai\/skill\/manifest\/)/,
+    pattern: /(^|\/)(dist\/ai-skill\/|tools\/ai-skill\/(package\.js|lib\/manifest\.js|lib\/write-manifest\.js)|ai\/skill\/manifest\/)/,
     layers: ['clean-unpack', 'host-load', 'checksum-verify', 'dist-package-tests'],
     reason: 'Packaging / manifest changed'
   },

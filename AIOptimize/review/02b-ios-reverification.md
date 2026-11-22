@@ -2,7 +2,7 @@
 
 > 复核人：contract-reviewer（独立复验；非 R6 实现者）
 > 复核时间：2026-11-22 10:35–10:47（Asia/Shanghai）
-> 复核对象：iOS/ai/skill-provider/**（provider.json、capabilities.json、verification.json、api-cards/**、validate_provider.py、generate_api_cards.py、SOURCES.json、SNAPSHOT.md、CI-INTEGRATION.md、FIXES-t6.md）与 iOS/AIStarter/**；只读对照 wisdomdesign 的 M0 schema-lite、catalog 与 dist。
+> 复核对象：iOS/ai/skill-provider/**（provider.json、capabilities.json、verification.json、api-cards/**、validate_provider.js、generate_api_cards.js、SOURCES.json、SNAPSHOT.md、CI-INTEGRATION.md、FIXES-t6.md）与 iOS/AIStarter/**；只读对照 wisdomdesign 的 M0 schema-lite、catalog 与 dist。
 > 只读边界：未修改任何实现、契约、平台源、generated 或 API 基线；只新增本报告。复跑 xcodebuild/typecheck 产生 iOS/.build 缓存（gitignored）和新 xcresult；未改 tracked 文件。
 > 环境：Xcode 26.6 (17F113)，iphonesimulator 26.5 SDK，Swift 6.3.3；Python 3.10；Node v24.21.0；iOS HEAD 64539fe78d9a036a6e34cbfa01c72e4430c0e2b0；wisdomdesign HEAD b2c05d9。
 
@@ -10,7 +10,7 @@
 
 **R7 verdict：pass（附 7 项非阻断剩余项，见 §5）。**
 
-- R2 的 F1–F8 修复项均已独立复验成立：33/33 卡 schema-lite 0 违规；status 由 validate_provider.py 重算并可用负例证明会拒绝 verified 注入；typecheck 记录命令可从 cwd=. 原样运行 rc=0；所有卡片/证据引用可解析；快照 stale 与 dist 审计说明准确；UI 测试 target 配置与 Runner 构建成立；覆盖 10/37 已显式声明并与 catalog 交叉校验；iOS 源码/generated/API 无 tracked 改动。
+- R2 的 F1–F8 修复项均已独立复验成立：33/33 卡 schema-lite 0 违规；status 由 validate_provider.js 重算并可用负例证明会拒绝 verified 注入；typecheck 记录命令可从 cwd=. 原样运行 rc=0；所有卡片/证据引用可解析；快照 stale 与 dist 审计说明准确；UI 测试 target 配置与 Runner 构建成立；覆盖 10/37 已显式声明并与 catalog 交叉校验；iOS 源码/generated/API 无 tracked 改动。
 - UI matrix 仍被沙箱 PTY 阻塞（exit 65，0 断言），library gate 仍 not-run；因此本报告不把任何 UI/原生/宿主项写成通过。
 - 剩余问题主要是证据卫生与流水线待办：scaffold 命令含参数占位符、validator 未真实接入 CI（已登记豁免）、dist 仍为旧的 provider 快照等待 t8 重打包、少量文档时间/基线表述需收敛。它们不推翻 F1–F8 的修复结论。
 
@@ -28,7 +28,7 @@
 
 | # | 命令 | 退出码 | 结果 |
 | --- | --- | --- | --- |
-| 1 | python3 iOS/ai/skill-provider/validate_provider.py | **0** | M2 iOS provider validation passed: 33 cards, recomputed status=experimental, snapshot=stale, coverage=10/37 |
+| 1 | python3 iOS/ai/skill-provider/validate_provider.js | **0** | M2 iOS provider validation passed: 33 cards, recomputed status=experimental, snapshot=stale, coverage=10/37 |
 | 2 | 用仓库 wisdomdesign/tools/ai-skill/lib/schema-lite.js + api-card.schema.json 校验 33 张真实卡 | **0** | cards=33，invalid=0；index==磁盘 33；iosLabel 出现 0 次；33/33 在 allowed limitations 中有 iOS label mapping |
 | 3 | 同 schema-lite 校验 provider.json / capabilities.json | **0** | 两个对象均 0 错误 |
 | 4 | 沙箱负例：给 WDButton.main 注入 iosLabel，跑 validate_provider | **1** | FAIL: WDButton.main.json schema: $: unknown property 'iosLabel' |
@@ -43,11 +43,11 @@
 
 ~~~bash
 git -C iOS show c3c32f3:api/WisdomUI.api.json > /tmp/r7-api-baseline.json
-python3 iOS/ai/skill-provider/api-cards/generate_api_cards.py --api /tmp/r7-api-baseline.json --out /tmp/r7-cards-baseline
+python3 iOS/ai/skill-provider/api-cards/generate_api_cards.js --api /tmp/r7-api-baseline.json --out /tmp/r7-cards-baseline
 # exit 0；api sha256=123136bdf1f5299d740e1e220c7973eb82914c5df53eb093053ac51469158c34
 # 与仓库 33 张卡 + index.json 逐文件 SHA-256 相同（0 diff）
 
-python3 iOS/ai/skill-provider/api-cards/generate_api_cards.py --api iOS/api/WisdomUI.api.json --out /tmp/r7-cards-head
+python3 iOS/ai/skill-provider/api-cards/generate_api_cards.js --api iOS/api/WisdomUI.api.json --out /tmp/r7-cards-head
 # exit 1；public snapshot drift: api=1d3be9d7... icon=0b2761c4...
 ~~~
 
@@ -61,7 +61,7 @@ python3 iOS/ai/skill-provider/api-cards/generate_api_cards.py --api iOS/api/Wisd
 | --- | --- | --- | --- |
 | 1 | verification.json #1 原文（cwd=.，Release generic simulator） | **0** | ** BUILD SUCCEEDED **；AIStarter.app 产出 |
 | 2 | verification.json #2 原文（cwd=.，4 个源文件 swiftc typecheck） | **0** | 0 输出错误；4 个源文件通过 |
-| 3 | 脚手架合法复制（隔离镜像：copy_template.py task-list Out/Copied.swift，父目录存在） | **0** | 复制成功；cmp 与模板逐字节相同（0） |
+| 3 | 脚手架合法复制（隔离镜像：copy_template.js task-list Out/Copied.swift，父目录存在） | **0** | 复制成功；cmp 与模板逐字节相同（0） |
 | 4 | 脚手架覆盖已存在目标 | **1** | refusing to overwrite existing file |
 | 5 | 脚手架 ../Evil.swift | **1** | destination escapes workspace |
 | 6 | 脚手架经 symlink 指向仓外 | **1** | destination escapes workspace，仓外无文件 |
@@ -117,7 +117,7 @@ python3 iOS/ai/skill-provider/api-cards/generate_api_cards.py --api iOS/api/Wisd
 
 ### R7-R2（low）validator 未真正接入 CI，computedAtBuild 仍由人工运行保证
 
-- 证据：iOS/.github/workflows/ci.yml 与 wisdomdesign/.github/workflows/ai-skill-ci.yml 均无 validate_provider 调用；本次全仓 grep 0 命中。verification.ciIntegration=exempt-registered，CI-INTEGRATION.md 说明跨仓限制。package.py 仍直接读取 provider.json 的 status（当前 package.py 130 行附近），不调用 validator；因此打包器本身不强制重算。
+- 证据：iOS/.github/workflows/ci.yml 与 wisdomdesign/.github/workflows/ai-skill-ci.yml 均无 validate_provider 调用；本次全仓 grep 0 命中。verification.ciIntegration=exempt-registered，CI-INTEGRATION.md 说明跨仓限制。package.js 仍直接读取 provider.json 的 status（当前 package.js 130 行附近），不调用 validator；因此打包器本身不强制重算。
 - 影响：这一项按 t6 明确允许的登记豁免处理，可接受；但 computedAtBuild:true 在无人工运行 validator 的打包路径上仍不是自动保证。建议 t8/流水线负责人在重打包前运行 validator，或未来在跨仓 checkout 可用时接 CI。
 - 判定：不影响 pass；属于流程残余风险。
 
@@ -164,5 +164,5 @@ python3 iOS/ai/skill-provider/api-cards/generate_api_cards.py --api iOS/api/Wisd
 ## 8. 审计索引
 
 - 复跑日志：/tmp/r7-xcodebuild.log、/tmp/r7-typecheck.log、/tmp/r7-ui-matrix.log、/tmp/r7-neg*.out。
-- 关键证据文件：iOS/ai/skill-provider/{provider.json, verification.json, capabilities.json, validate_provider.py, api-cards/index.json, api-cards/SOURCES.json, SNAPSHOT.md, CI-INTEGRATION.md, FIXES-t6.md}；iOS/AIStarter/{GoldenPageMatrixReport.json, README.md, AIStarter.xcodeproj/project.pbxproj}；wisdomdesign/ai/skill/provider/api-card.schema.json；wisdomdesign/tools/ai-skill/lib/schema-lite.js；wisdomdesign/dist/ai-skill/v1.0.0/wisdom-page-ios/manifest.json。
+- 关键证据文件：iOS/ai/skill-provider/{provider.json, verification.json, capabilities.json, validate_provider.js, api-cards/index.json, api-cards/SOURCES.json, SNAPSHOT.md, CI-INTEGRATION.md, FIXES-t6.md}；iOS/AIStarter/{GoldenPageMatrixReport.json, README.md, AIStarter.xcodeproj/project.pbxproj}；wisdomdesign/ai/skill/provider/api-card.schema.json；wisdomdesign/tools/ai-skill/lib/schema-lite.js；wisdomdesign/dist/ai-skill/v1.0.0/wisdom-page-ios/manifest.json。
 - 只读性：本报告是唯一写入；iOS tracked 变更仅预先存在的 .gitignore；Sources/Tests/api/generated 零 diff。

@@ -155,7 +155,7 @@ api-card template-verified, compilation.executed=false -> CONST
 | 计划验收项 | 证据 | 结论 |
 | --- | --- | --- |
 | Core/iOS/Android/All 包边界 | schema package enum 四值；dist/ai-skill/v1.0.0 实际四包 | PASS（边界存在） |
-| manifest 含来源 commit/dirty/hash/版本/状态/coverage | schema 定义了 version/contents/sources/versions/status/coverage/verification/reproducibility；但实际 cli 产出的 core manifest 和 package.py 的 M4 manifest 均不符合该 schema（15/26/24/24/25 个错误，缺 version/contents/sources.repositories/versions/status/verification/reproducibility 等）；package.py 自行定义另一套字段且没有任何 schema 校验 | **PARTIAL/FAIL（契约与实现脱节，见 F2）** |
+| manifest 含来源 commit/dirty/hash/版本/状态/coverage | schema 定义了 version/contents/sources/versions/status/coverage/verification/reproducibility；但实际 cli 产出的 core manifest 和 package.js 的 M4 manifest 均不符合该 schema（15/26/24/24/25 个错误，缺 version/contents/sources.repositories/versions/status/verification/reproducibility 等）；package.js 自行定义另一套字段且没有任何 schema 校验 | **PARTIAL/FAIL（契约与实现脱节，见 F2）** |
 | 不包含时间戳/绝对路径 | 实际 core/M4 manifest 与 build-info grep 未发现 2026-xx-xx 日期、/Users/、/var/folders；schema 通过 additionalProperties=false 限制未知顶层字段 | PASS（值层面仍靠 builder 自律） |
 | 状态与证据关系有测试用例 | 当前 schema 对 wisdomdesign/ios/android dirty+release 均返回 CONST（我实测三种仓库都拒绝）；overall=verified 缺 4 类 verification 也拒绝；但 provider/api-card 证据洞未覆盖 | PARTIAL（manifest 覆盖较好；provider/API 卡见 F3） |
 | 首版宿主加载格式已确认或明确通用包 | decisions D3 明确先通用目录包、hostLoad=false 直到干净环境验证；实际未执行宿主加载 | PASS（按“明确先做通用包”满足） |
@@ -253,9 +253,9 @@ api-card template-verified, compilation.executed=false -> CONST
 
 - **证据 1**：冻结 schema 只被 tests/contract-fixtures.test.js 与 tests/m4-ci.test.js 用于合成 fixture；没有任何 builder/package 代码读取它。
 - **证据 2**：用该 schema 校验实际产物：ai/skill/core/dist/wisdom-page-core/manifest.json 15 个错误；dist/ai-skill/v1.0.0/{core,ios,andoid,all} 分别 26/24/24/25 个错误；缺 version/contents/sources.repositories/versions/status/verification/reproducibility 等顶层字段。
-- **证据 3**：package.py:81-90 自行定义 platformScope/generatedBy/residentEntry/sources/coverage/files，且不读取/不校验 manifest.schema.json；M4 CI 契约 §6 要求的 dist-package 用例组尚未加入（m4-ci.test.js 39 项中没有 dist/package 项）。
+- **证据 3**：package.js:81-90 自行定义 platformScope/generatedBy/residentEntry/sources/coverage/files，且不读取/不校验 manifest.schema.json；M4 CI 契约 §6 要求的 dist-package 用例组尚未加入（m4-ci.test.js 39 项中没有 dist/package 项）。
 - **证据 4（完整性）**：core 包 files.count=49 但实际 50 个文件，hashes 缺 LICENSE-NOTICE.txt 与 manifest.json；ios/android/all 包 hashes 缺 LICENSE-NOTICE.txt，且 files.sha256[manifest.json] 是写入新 manifest 之前的旧 hash（stale self-hash）。这些是 M4 打包细节，归 R4 深查，但已足以说明“manifest 字段/哈希完整”的声称不能直接成立。
-- **建议修复**：明确唯一权威 manifest schema；要么让 package.py/cli 产出并按 schema 校验（含 dirty→workspace-snapshot、verified→四 flags、文件清单），要么正式废止/升级 M0 schema 并同步文档/测试；新增从 dist 包读取并校验 manifest 的测试。
+- **建议修复**：明确唯一权威 manifest schema；要么让 package.js/cli 产出并按 schema 校验（含 dirty→workspace-snapshot、verified→四 flags、文件清单），要么正式废止/升级 M0 schema 并同步文档/测试；新增从 dist 包读取并校验 manifest 的测试。
 - **影响**：M0-4 出口和 M4 包验收都不能按“manifest 契约已冻结并落地”记录。
 
 ### F3（medium）Provider / API 卡 schema 允许“省略证据字段”绕过 verified 约束
@@ -368,7 +368,7 @@ api-card template-verified, compilation.executed=false -> CONST
   - manifest/manifest.schema.json:510-611（allOf dirty/verified 约束）
   - provider/provider.schema.json:120-169（status/evidenceRefs 可选）
   - provider/api-card.schema.json:3（错误 $id）、:70-106（compilation 条件不完整）
-  - tools/ai-skill/package.py:81-90（自定义 manifest）、:171-181（manifest 覆盖顺序）、:189-195（checksums）
+  - tools/ai-skill/package.js:81-90（自定义 manifest）、:171-181（manifest 覆盖顺序）、:189-195（checksums）
   - tools/ai-skill/tests/runtime.test.js:9（只测源码 SKILL_ROOT）、build.test.js:12/33（只 build 不执行包内 runtime）
 - 关键证据文件：
   - ai/skill/CONTRACT-STATUS.md（frozen-for-review）

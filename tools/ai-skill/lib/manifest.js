@@ -3,7 +3,7 @@
 //
 // Both producers use this module, so there is exactly one manifest format:
 //   - tools/ai-skill/cli.js build            -> Core package
-//   - tools/ai-skill/lib/write-manifest.js   -> package.py (Core / iOS / Android / All)
+//   - tools/ai-skill/lib/write-manifest.js   -> package.js (Core / iOS / Android / All)
 //
 // The generated manifest is validated against the frozen M0 contract
 // ai/skill/manifest/manifest.schema.json with tools/ai-skill/lib/schema-lite.js;

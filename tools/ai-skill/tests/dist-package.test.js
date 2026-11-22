@@ -11,7 +11,7 @@
 // Usage: node tools/ai-skill/tests/dist-package.test.js [--dist <dir>] [--platforms core,ios,android]
 // Without --platforms the expected set is read from checksums.json (auto-detect), so a
 // core-only dist from a single-repo checkout is audited the same way as a full dist.
-// Exit: 0 all checks passed; 1 audit failure; 2 dist missing (run package.py first).
+// Exit: 0 all checks passed; 1 audit failure; 2 dist missing (run package.js first).
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
@@ -98,7 +98,7 @@ function metadataOf(entry) {
 const distArgument = arg('dist', path.join(ROOT, 'dist', 'ai-skill', 'v1.0.0'));
 const dist = path.resolve(distArgument);
 if (!fs.existsSync(dist)) {
-  console.error('dist package directory missing: ' + dist + '\nrun: python3 tools/ai-skill/package.py');
+  console.error('dist package directory missing: ' + dist + '\nrun: node tools/ai-skill/package.js');
   process.exit(2);
 }
 

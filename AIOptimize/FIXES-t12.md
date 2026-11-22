@@ -10,7 +10,7 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
 
 | R9 发现 | 修复后 |
 | --- | --- |
-| 单仓 checkout 下 `cli.js build/test`、`package.py` 因同级 iOS/android 不存在而失败 | `cli.js build/test` 不再要求平台仓；`package.py` 新增 `--platforms` 与 `--ios-root/--android-root`（或 env），默认 full 缺平台仓时**清晰非零退出**，`--platforms core` 单仓成功 |
+| 单仓 checkout 下 `cli.js build/test`、`package.js` 因同级 iOS/android 不存在而失败 | `cli.js build/test` 不再要求平台仓；`package.js` 新增 `--platforms` 与 `--ios-root/--android-root`（或 env），默认 full 缺平台仓时**清晰非零退出**，`--platforms core` 单仓成功 |
 | `manifest.js.catalogIds()` 依赖预生成 `ai/skill/core/catalog`（自举循环） | 组件集合改从设计真源 `contracts/WD*.yaml` 读取；`cli.js build` 在无 catalog 的干净 checkout 可直接构建；源码布局 runtime 测试按需用同一生成器补齐 catalog |
 | `m4-ci` 死链审计把 `../../iOS/...` 跨仓证据链接判死；`md ≥ 90` 下限依赖生成 dist | 跨仓链接显式分类：平台仓存在时校验文件、单仓时记 cross-repo/unverifiable（不计死链），其它越界仍判死；下限改为源文档口径（≥20 内部链接、≥10 md） |
 | F11 仍有过期数字 | 按最终一次 m4-ci/governance 输出刷新 04 两份与 `FIXES-t8.md`（governance 23、当前 fingerprint、md 数、5 个 job）；02 设计文档 §4.3/§11/§12.1 与实现对齐 |
@@ -26,10 +26,10 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
   `package includes ios but its source checkout is unavailable; checkout the iOS repo next to wisdomdesign, pass --ios-root <dir>, or set WISDOMDESIGN_IOS_ROOT`。
 - manifest schema 的 `sources.repositories.required` 从三仓改为 **wisdomdesign 必填**（平台包仍带各自仓状态）；Core-only 包不再需要伪造平台 commit。
 
-### 1.2 CLI / 打包器（`cli.js`、`package.py`、`write-manifest.js`）
+### 1.2 CLI / 打包器（`cli.js`、`package.js`、`write-manifest.js`）
 
 - `cli.js build` 新增可选 `--ios-root/--android-root`（仅来源出处）；不传也能构建 Core（平台来源缺省则不记录）。
-- `package.py --platforms core|core,ios,android`（默认 full）；`--ios-root/--android-root` 支持任意 checkout 位置（CI 用 `platform-checkouts/`，不再假设三仓同级）。
+- `package.js --platforms core|core,ios,android`（默认 full）；`--ios-root/--android-root` 支持任意 checkout 位置（CI 用 `platform-checkouts/`，不再假设三仓同级）。
 - 默认 full 且平台仓缺失时：`exit 1` + 明确提示（checkout / `--*-root` / `--platforms core`），不静默降级。
 - `write-manifest.js` 同步新增根目录参数；四类包仍共用 `lib/manifest.js` 单套格式。
 
@@ -59,7 +59,7 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
 - `04-M4-CI-Verification.md`：governance 19→23、m4-ci 61→63、fingerprint → 当前值、md 267→268（最终 269，含本文件）、内部链接 50→44 + 跨仓 6；新增单仓复现矩阵。
 - `04-M4-CI-Compatibility-Contract.md`：“四层 job” → 5 个 job（L0 / L1 / L2 / package-repro / L3），并写明 core-only 默认与 full 显式 checkout。
 - `FIXES-t8.md`：fingerprint `2eef9f399184` 更新为当前值并注明复算范围（排除生成 catalog/dist）。
-- `02-SKILL-BUILD-PIPELINE.md` §4.3 改为实际 dist 布局（无 `reports/`，含 `files.json/build-info.json/checksums.json`）；§11 CLI 契约改为实际 `build/check/test` + `package.py` + `eval/run.js`（删除不存在的 `pack/verify-templates/evaluate`）；§12.1 补单仓/core-only 说明；§16 判定同步。
+- `02-SKILL-BUILD-PIPELINE.md` §4.3 改为实际 dist 布局（无 `reports/`，含 `files.json/build-info.json/checksums.json`）；§11 CLI 契约改为实际 `build/check/test` + `package.js` + `eval/run.js`（删除不存在的 `pack/verify-templates/evaluate`）；§12.1 补单仓/core-only 说明；§16 判定同步。
 
 ## 4. 验证矩阵
 
@@ -72,11 +72,11 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
 | `node tools/ai-skill/tests/governance-selftest.js` | 0 | M6 GOVERNANCE SELFTEST OK |
 | `node tools/ai-skill/cli.js test` | 0 | 契约 25 + 目录 8 + 运行时 12 + 构建 11 |
 | `node tools/ai-skill/cli.js build` + `check` | 0 / 0 | 52 文件；manifest schema-valid；check OK |
-| `python3 tools/ai-skill/package.py --platforms core` ×2 | 0 / 0 | core-only 53 文件；两次 checksums 逐字节一致 |
+| `node tools/ai-skill/package.js --platforms core` ×2 | 0 / 0 | core-only 53 文件；两次 checksums 逐字节一致 |
 | `node tools/ai-skill/tests/dist-package.test.js --platforms core` | 0 | 32/32 |
 | `node tools/ai-skill/ci/release-gate.js` | 0 | core-only candidate validated |
 | `node tools/ai-skill/ci/check-native-layers.js --plan …` | 0 | 登记通过；平台证据 external-owned（不判死、不声称通过） |
-| `python3 tools/ai-skill/package.py`（默认 full，无平台仓） | 1 | 明确提示平台来源缺失与三种修复方式 |
+| `node tools/ai-skill/package.js`（默认 full，无平台仓） | 1 | 明确提示平台来源缺失与三种修复方式 |
 
 ### 4.2 三仓工作区（本机）
 
@@ -84,7 +84,7 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
 | --- | --- | --- |
 | `node tools/ai-skill/cli.js test` | 0 | 契约 25 + 目录 8 + 运行时 12 + 构建 11 |
 | `node tools/ai-skill/cli.js build` + `check` | 0 / 0 | 52 文件，resident 5,389 B |
-| `python3 tools/ai-skill/package.py` ×2 | 0 / 0 | 四包 53/98/80/125；checksums 逐字节一致 |
+| `node tools/ai-skill/package.js` ×2 | 0 / 0 | 四包 53/98/80/125；checksums 逐字节一致 |
 | `node tools/ai-skill/tests/dist-package.test.js` | 0 | 119/119 |
 | `node tools/ai-skill/ci/release-gate.js` | 0 | 四包 candidate validated |
 | `node tools/ai-skill/ci/check-native-layers.js --strict-evidence` | 0 | 7 层登记 + 平台仓证据指针可解析 |
@@ -93,14 +93,14 @@ R9 的 4 类 blocking/partial finding 已修复，并分别用**单仓 /tmp 干�
 ### 4.3 单仓 + 显式平台根（模拟 CI full 模式）
 
 在 /tmp 干净 checkout 中执行
-`package.py --platforms core,ios,android --ios-root <workspace>/iOS --android-root <workspace>/android`：
+`package.js --platforms core,ios,android --ios-root <workspace>/iOS --android-root <workspace>/android`：
 四包生成成功；`dist-package --platforms core,ios,android` 119/119；`check-native-layers --strict-evidence --ios-root … --android-root …` 证据指针全部解析。
 
 ## 5. 变更文件
 
 - `tools/ai-skill/lib/manifest.js`：平台来源解析（显式根/env/同级）、`catalogIds` 改读 contracts、schema 校验保持、单仓时省略平台来源。
 - `tools/ai-skill/lib/write-manifest.js`、`cli.js`：新增 `--ios-root/--android-root`。
-- `tools/ai-skill/package.py`：`--platforms`、平台根参数、按包集生成 checksums、清晰错误语义。
+- `tools/ai-skill/package.js`：`--platforms`、平台根参数、按包集生成 checksums、清晰错误语义。
 - `ai/skill/manifest/manifest.schema.json`：`sources.repositories.required` 放宽为 wisdomdesign（Core-only 不再伪造平台 commit）；平台包仍记录各自仓状态。
 - `tools/ai-skill/tests/{m4-ci,dist-package,runtime}.test.js`；`tools/ai-skill/ci/{check-native-layers,release-gate}.js`。
 - `tools/ai-skill/README.md`；`.github/workflows/ai-skill-ci.yml`。

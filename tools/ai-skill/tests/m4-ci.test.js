@@ -267,13 +267,13 @@ check('route-token-compat', tokenPlan.requiredLayers.indexOf('dual-platform-comp
 // 8b. GitHub event payload parsing (R4: pull_request carries no file list unless fetched)
 const prPayload = { pull_request: { changed_files: 3, base: { ref: 'main' }, head: { ref: 'feature' } } };
 check('route-pr-payload-has-no-list', collectChangedPaths(prPayload).length === 0, 'pull_request.changed_files is a count, not paths');
-const prWithPathsFile = collectChangedPaths(prPayload, ['tools/ai-skill/package.py']);
+const prWithPathsFile = collectChangedPaths(prPayload, ['tools/ai-skill/package.js']);
 check('route-pr-paths-file', planFor(prWithPathsFile).requiredLayers.includes('checksum-verify') && planFor(prWithPathsFile).requiredLayers.includes('dist-package-tests'), 'PR file list from git diff reaches the packaging layer');
 const restPayload = { files: [{ filename: 'iOS/Sources/WisdomUI/Components/WDButton.swift' }] };
 check('route-rest-files', planFor(collectChangedPaths(restPayload)).requiredLayers.includes('ios-native-compile'), 'REST files[] payload parsed');
-const pushPayload = { commits: [{ added: ['tools/ai-skill/package.py'], modified: ['android/wisdom-ui/api/wisdom-ui.api'], removed: [] }] };
+const pushPayload = { commits: [{ added: ['tools/ai-skill/package.js'], modified: ['android/wisdom-ui/api/wisdom-ui.api'], removed: [] }] };
 check('route-push-commits', planFor(collectChangedPaths(pushPayload)).requiredLayers.includes('android-abi'), 'push commits payload parsed');
-check('route-packaging-layer', planFor(['tools/ai-skill/package.py']).requiredLayers.includes('checksum-verify'), 'package.py change requires clean-unpack/checksum layers');
+check('route-packaging-layer', planFor(['tools/ai-skill/package.js']).requiredLayers.includes('checksum-verify'), 'package.js change requires clean-unpack/checksum layers');
 check('route-manifest-writer', planFor(['tools/ai-skill/lib/manifest.js']).requiredLayers.includes('dist-package-tests'), 'manifest generator change requires dist-package tests');
 const runtimePlan = planFor(['ai/skill/runtime/get-component.js']);
 check('route-runtime-budget', runtimePlan.requiredLayers.includes('runtime-tests') && runtimePlan.requiredLayers.includes('budget-check'), 'runtime change requires runtime + budget layers');

@@ -1,6 +1,6 @@
 'use strict';
 // M1-2 组件目录与语义卡生成器。
-// 输入是 extract-design.rb 的标准输出；本脚本只读真源/提取结果，写限定输出目录。
+// 输入是 extract-design.js 的标准输出；本脚本只读真源/提取结果，写限定输出目录。
 
 const fs = require('fs');
 const path = require('path');
@@ -9,11 +9,11 @@ const { spawnSync } = require('child_process');
 
 const TOOL_ROOT = path.resolve(__dirname, '..');
 const DESIGN_ROOT = path.resolve(TOOL_ROOT, '..', '..');
-const EXTRACTOR = path.join(TOOL_ROOT, 'lib', 'extract-design.rb');
+const EXTRACTOR = path.join(TOOL_ROOT, 'lib', 'extract-design.js');
 const BANNER = [
   'GENERATED FILE - DO NOT EDIT.',
-  'Source: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.rb.',
-  'Regenerate with: ruby tools/ai-skill/lib/extract-design.rb | node tools/ai-skill/lib/generate-core-catalog.js --out <dir>',
+  'Source: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.js.',
+  'Regenerate with: node tools/ai-skill/lib/extract-design.js | node tools/ai-skill/lib/generate-core-catalog.js --out <dir>',
   'No platform API claims are included.'
 ].join('\n');
 
@@ -41,15 +41,15 @@ function resolveOutside(base, target) {
   return relative.startsWith('..') || path.isAbsolute(relative);
 }
 
-function extractFromRuby() {
-  const result = spawnSync('ruby', [EXTRACTOR], { encoding: 'utf8' });
-  if (result.error) throw new Error(`failed to start Ruby extractor: ${result.error.message}`);
-  if (result.status !== 0) throw new Error(`Ruby extractor failed (${result.status}): ${result.stderr}`);
+function extractFromDesign() {
+  const result = spawnSync('node', [EXTRACTOR], { encoding: 'utf8' });
+  if (result.error) throw new Error(`failed to start JS extractor: ${result.error.message}`);
+  if (result.status !== 0) throw new Error(`JS extractor failed (${result.status}): ${result.stderr}`);
   return result.stdout;
 }
 
 function readExtract(args) {
-  const text = args.extract ? fs.readFileSync(path.resolve(args.extract), 'utf8') : extractFromRuby();
+  const text = args.extract ? fs.readFileSync(path.resolve(args.extract), 'utf8') : extractFromDesign();
   let data;
   try { data = JSON.parse(text); } catch (error) { throw new Error(`extract JSON parse failed: ${error.message}`); }
   if (!data || data.schemaVersion !== '1.0') throw new Error('unsupported extract schemaVersion');

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Package manifest writer used by tools/ai-skill/package.py (and any other packager).
+// Package manifest writer used by tools/ai-skill/package.js (and any other packager).
 // It is the only place that renders manifest.json / files.json / build-info.json, so
 // the Core builder and the M4 packager cannot drift into a second manifest format.
 //

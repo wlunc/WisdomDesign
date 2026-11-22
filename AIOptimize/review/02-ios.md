@@ -21,7 +21,7 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 | 3 | 卡片符合 M0 `api-card.schema.json` | **33/33 违反**（`additionalProperties:false` 不允许 `iosLabel`；仓库内 schema-lite 已实测复现） | ❌ high（F1） |
 | 4 | 卡片生成可复现 | 对 `provider.json` 声明的基线快照（c3c32f3）重放：**逐字节一致**（33 卡，diff rc=0）；对当前 HEAD 快照：**rc=1 拒绝生成**（api 快照 hash 已变） | ⚠️ 部分（F6） |
 | 5 | provider status 由证据计算 | **未实现**：没有任何构建器代码重算 `status.effective`；`computedAtBuild:true` 是手写 JSON；打包器仅复制该字段 | ❌ medium（F2） |
-| 6 | provider 未自认证 `verified` | `declared=effective=experimental`；`validate_provider.py` 强制 `effective != verified`；全仓未见 iOS `verified` 声明 | ✅ 通过（但校验未接入 CI） |
+| 6 | provider 未自认证 `verified` | `declared=effective=experimental`；`validate_provider.js` 强制 `effective != verified`；全仓未见 iOS `verified` 声明 | ✅ 通过（但校验未接入 CI） |
 | 7 | AIStarter Release xcodebuild 可复现成功 | 用 verification.json 记录命令复跑：**BUILD SUCCEEDED，exit 0**；`AIStarter.app` + 3 个 .o 重新生成 | ✅ 通过 |
 | 8 | swiftc typecheck | 记录命令**按原文不可运行**（路径根混用，rc=1）；修正路径后 exit 0 | ⚠️ 命令不可复现（F3） |
 | 9 | 脚手架拒绝覆盖 / 路径逃逸 / 合法复制 | 覆盖 rc=1；`../` 与 `../../` rc=1；symlink 逃逸 rc=1；非法 page id / 缺目录 / 非法文件名 / 无参数 rc=1；合法复制 rc=0 且内容逐字节相同 | ✅ 通过 |
@@ -46,16 +46,16 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 
 | # | 命令（摘要） | 退出码 | 结果 |
 | --- | --- | --- | --- |
-| 1 | `python3 iOS/ai/skill-provider/validate_provider.py` | **0** | `M2 iOS provider validation passed: 33 cards, status=experimental` |
+| 1 | `python3 iOS/ai/skill-provider/validate_provider.js` | **0** | `M2 iOS provider validation passed: 33 cards, status=experimental` |
 | 2 | node + 仓库内 `schema-lite.js` 校验 33 张真实卡 | 0 | **33/33 报 `ADDITIONAL_PROPERTY: unknown property iosLabel`**；provider/capabilities 均为 0 错误 |
 | 3 | 去掉 `iosLabel` 后再用 schema-lite 校验 | 0 | **0 张仍不合法**（证明唯一违反项就是 `iosLabel`） |
-| 4 | 在镜像目录重放 `generate_api_cards.py`（输入 = `c3c32f3:api/WisdomUI.api.json`，sha256 123136bd…） | **0** | `wrote 33 API cards`；与仓库卡逐字节 `diff -r` **rc=0** |
+| 4 | 在镜像目录重放 `generate_api_cards.js`（输入 = `c3c32f3:api/WisdomUI.api.json`，sha256 123136bd…） | **0** | `wrote 33 API cards`；与仓库卡逐字节 `diff -r` **rc=0** |
 | 5 | 同一生成器 + 当前 `api/WisdomUI.api.json`（sha256 1d3be9d7…） | **1** | `public snapshot drift: api=1d3be9d7… icon=0b2761c4…`（防漂移 pin 拒绝） |
 | 6 | verification.json #1：Release xcodebuild（`-destination 'generic/platform=iOS Simulator' -derivedDataPath iOS/.build/dd-ai-starter-rel`） | **0** | `** BUILD SUCCEEDED **`；`AIStarter.app` 与 `AIStarterApp.o/APIMinimalExample.o/TaskListView.o` 均重新生成（10:15） |
 | 7 | verification.json #2 原文命令（cwd=工作区根） | **1** | `error opening input file 'AIStarter/AIStarter/…'`（路径根错误） |
 | 8 | verification.json #2 原文命令（cwd=iOS） | **1** | `no such module 'WisdomUI'`（`-I iOS/.build/…` 在 iOS 下解析为 `iOS/iOS/.build`） |
 | 9 | 修正路径后的 typecheck（cwd=iOS，`-I .build/dd-ai-starter-rel/Build/Products/Release-iphonesimulator`） | **0** | 4 个源文件（AIStarterApp/ContentView/APIMinimalExample/TaskListView）通过 |
-| 10 | 脚手架合法复制（镜像树，`copy_template.py task-list Out/Copied`） | **0** | 复制成功；`cmp` 与模板 **rc=0**（逐字节相同） |
+| 10 | 脚手架合法复制（镜像树，`copy_template.js task-list Out/Copied`） | **0** | 复制成功；`cmp` 与模板 **rc=0**（逐字节相同） |
 | 11 | 脚手架覆盖已有文件 | **1** | `refusing to overwrite existing file` |
 | 12 | 脚手架 `../Evil` / `../../Evil` / symlink 跳出 | **1 / 1 / 1** | 均 `destination escapes workspace`；未写出目标文件 |
 | 13 | 非法 page id / 目标目录不存在 / 非法文件名 / 无参数 | **1 / 1 / 1 / 1** | 各自拒绝 |
@@ -75,18 +75,18 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 - 卡片覆盖 15 个 API 类型（其中 10 个是 37 组件目录中的组件：WDBanner/WDButton/WDEmptyState/WDFAB/WDFormRow/WDListRow/WDListSection/WDPullRefresh/WDSkeleton/WDTextField；另 5 个是 Foundation 公开入口：WDTheme/WDTextStyle/WDSemantics/WDGlass/WDEffectsBudget）。
 
 **主溯源：通过**
-- `validate_provider.py` exit 0：每张卡的 `symbol` 必须存在于 `api/WisdomUI.api.json`，且至少有 `access == public` 声明；卡内 `signature` 以 ` | ` 拆分后必须与快照中的 `decl` 逐条**字符串相等**。33/33 通过（对**当前** API 快照同样通过）。
+- `validate_provider.js` exit 0：每张卡的 `symbol` 必须存在于 `api/WisdomUI.api.json`，且至少有 `access == public` 声明；卡内 `signature` 以 ` | ` 拆分后必须与快照中的 `decl` 逐条**字符串相等**。33/33 通过（对**当前** API 快照同样通过）。
 - 生成器对 33 张卡的主引用写为 `api/WisdomUI.api.json#<symbol>`，可解析。
 
 **次溯源：33/33 悬空（F4）**
 - 每张卡的第 2 条 `sourceRefs` 为 `ai/skill-provider/api-cards/SOURCES.json#<symbol>`；但 `SOURCES.json` 只有 7 个顶层键（schemaVersion/platform/generatedAt/policy/baseline/sourceRefs/driftPolicy），**没有任何 symbol 级条目**。脚本实测 33/33 片段无法解析。
-- 另有 3 处证据引用 `ai/skill-provider/verification.json#ios-minimal-compile`（[provider.json](iOS/ai/skill-provider/provider.json:35) 1 处，[capabilities.json](iOS/ai/skill-provider/capabilities.json:11)、[capabilities.json](iOS/ai/skill-provider/capabilities.json:74) 各 1 处），而 verification.json 的 5 个 command id 中没有 `ios-minimal-compile`（实际是 `ios-minimal-typecheck` / `ios-consumer-xcodebuild-release`）。`validate_provider.py` 不校验引用可解析性，因此未发现。
+- 另有 3 处证据引用 `ai/skill-provider/verification.json#ios-minimal-compile`（[provider.json](iOS/ai/skill-provider/provider.json:35) 1 处，[capabilities.json](iOS/ai/skill-provider/capabilities.json:11)、[capabilities.json](iOS/ai/skill-provider/capabilities.json:74) 各 1 处），而 verification.json 的 5 个 command id 中没有 `ios-minimal-compile`（实际是 `ios-minimal-typecheck` / `ios-consumer-xcodebuild-release`）。`validate_provider.js` 不校验引用可解析性，因此未发现。
 
 **M0 schema 符合性：33/33 失败（F1，high）**
-- 冻结 schema [api-card.schema.json](wisdomdesign/ai/skill/provider/api-card.schema.json:6) 明确 `additionalProperties: false`，properties 中**没有 `iosLabel`**；生成器 [generate_api_cards.py](iOS/ai/skill-provider/api-cards/generate_api_cards.py:68) 却给每张卡写入 `iosLabel`。
+- 冻结 schema [api-card.schema.json](wisdomdesign/ai/skill/provider/api-card.schema.json:6) 明确 `additionalProperties: false`，properties 中**没有 `iosLabel`**；生成器 [generate_api_cards.js](iOS/ai/skill-provider/api-cards/generate_api_cards.js:68) 却给每张卡写入 `iosLabel`。
 - 用仓库自身的 [schema-lite.js](wisdomdesign/tools/ai-skill/lib/schema-lite.js:63)（支持 `additionalProperties:false`）校验真实卡：**33/33 报 `ADDITIONAL_PROPERTY unknown property iosLabel`**；删除该字段后 33/33 通过，说明这是唯一违反项。
-- [validate_provider.py](iOS/ai/skill-provider/validate_provider.py:44) 只做了 `required` 键、字段非空、symbol/signature 的自定义检查，没有调用 schema-lite / 完整 JSON Schema，所以其 “passed” 是**子集校验**，不能支撑 “卡片符合 M0 契约” 的结论。
-- 修复路径二选一（均需契约所有者确认）：① 走 M0 契约变更，在 schema 中正式增加受控的 `iosLabel` 字段；② 从卡中去掉该字段（iOS 标签信息已有 `signature`/`callShape`），并把 `validate_provider.py` 改为对每张卡执行 schema-lite 校验。
+- [validate_provider.js](iOS/ai/skill-provider/validate_provider.js:44) 只做了 `required` 键、字段非空、symbol/signature 的自定义检查，没有调用 schema-lite / 完整 JSON Schema，所以其 “passed” 是**子集校验**，不能支撑 “卡片符合 M0 契约” 的结论。
+- 修复路径二选一（均需契约所有者确认）：① 走 M0 契约变更，在 schema 中正式增加受控的 `iosLabel` 字段；② 从卡中去掉该字段（iOS 标签信息已有 `signature`/`callShape`），并把 `validate_provider.js` 改为对每张卡执行 schema-lite 校验。
 
 **可复现性**
 - 在隔离镜像中用**同一生成器代码**、输入 `git show c3c32f3:api/WisdomUI.api.json`（sha256 123136bd…，与 pin 相符）重放：exit 0，33 张卡与仓库现有卡**逐字节一致**（`diff -r` rc=0）。→ 卡片内容确实由该快照确定性生成，非手改。
@@ -95,8 +95,8 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 ### 4.2 provider status：结论保守正确，但“由证据计算”未实现
 
 - [provider.json](iOS/ai/skill-provider/provider.json:28)：`declared=experimental`，`effective=experimental`，`reason` 说明 “Public symbols discovered and a minimal consumer example compiled; runtime matrix not executed”。该结论与 §4.1/§4.6 的实际证据**匹配**：卡片 33/33 是 `discovered` 级，消费者构建仅证明 golden page 用到的调用形态编译通过，UI/快照矩阵 blocked，达不到 `template-verified`。因此 `experimental` 是正确且保守的，**没有自认证 verified**。
-- 但 [status-policy.md](wisdomdesign/ai/skill/provider/status-policy.md:20) 要求 `status.effective` 必须由构建器根据证据重算；全仓检索结果：**没有任何构建器代码读取 verification.json/capabilities 计算 status**。唯一的消费者是 [package.py](wisdomdesign/tools/ai-skill/package.py:128)，它只 `read_json(provider.json).get("status")` 并原样写入 manifest；[validate_provider.py](iOS/ai/skill-provider/validate_provider.py:24) 只断言 `effective in STATUS 且 != verified`。因此 [provider.json](iOS/ai/skill-provider/provider.json:37) 的 `"computedAtBuild": true` 是**手写声明，无代码支撑**（F2）。
-- `validate_provider.py` 未接入任何 CI：iOS `.github/workflows/ci.yml`、wisdomdesign `.github/workflows/ai-skill-ci.yml` 均无调用；只在 dist 包的 manifest 哈希表中出现（作为被复制文件）。因此 “final validation passed” 目前是**人工一次性运行**，不可持续审计。
+- 但 [status-policy.md](wisdomdesign/ai/skill/provider/status-policy.md:20) 要求 `status.effective` 必须由构建器根据证据重算；全仓检索结果：**没有任何构建器代码读取 verification.json/capabilities 计算 status**。唯一的消费者是 [package.js](wisdomdesign/tools/ai-skill/package.js:128)，它只 `read_json(provider.json).get("status")` 并原样写入 manifest；[validate_provider.js](iOS/ai/skill-provider/validate_provider.js:24) 只断言 `effective in STATUS 且 != verified`。因此 [provider.json](iOS/ai/skill-provider/provider.json:37) 的 `"computedAtBuild": true` 是**手写声明，无代码支撑**（F2）。
+- `validate_provider.js` 未接入任何 CI：iOS `.github/workflows/ci.yml`、wisdomdesign `.github/workflows/ai-skill-ci.yml` 均无调用；只在 dist 包的 manifest 哈希表中出现（作为被复制文件）。因此 “final validation passed” 目前是**人工一次性运行**，不可持续审计。
 
 ### 4.3 AIStarter Release xcodebuild：复现成功
 
@@ -114,7 +114,7 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 
 ### 4.5 脚手架安全：全部通过（含额外边界）
 
-对 [copy_template.py](iOS/AIStarter/AIStarter/copy_template.py:17) 在隔离镜像（保留脚本/模板相对路径，避免写入 iOS 仓）执行：
+对 [copy_template.js](iOS/AIStarter/AIStarter/copy_template.js:17) 在隔离镜像（保留脚本/模板相对路径，避免写入 iOS 仓）执行：
 
 | 用例 | 结果 |
 | --- | --- |
@@ -125,7 +125,7 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 | 非法 page id / 目标目录不存在 / 非法文件名 / 无参数 | 均 **rc=1** |
 | 在真实仓库内测试覆盖与逃逸（只触发拒绝、不写入） | 分别 rc=1 / rc=1 |
 
-结论：**默认拒绝覆盖、路径逃逸拒绝、合法复制**三项均成立。说明：该工具是“白名单 + 路径校验 + 逐字节复制”，并**不做**流水线方案 §9.3 所说的“受控标识符替换”；`AIStarter/Generated/TaskListView.swift` 与模板完全相同（仍叫 `AISkillTaskListView`），应用内的 `AIStarter/AIStarter/TaskListView.swift` 只是模板改了一个 struct 名（另无尾换行）。README 对“copy_template.py 仅复制”的描述是准确的，故不列为缺陷，仅提示与方案措辞存在差距。
+结论：**默认拒绝覆盖、路径逃逸拒绝、合法复制**三项均成立。说明：该工具是“白名单 + 路径校验 + 逐字节复制”，并**不做**流水线方案 §9.3 所说的“受控标识符替换”；`AIStarter/Generated/TaskListView.swift` 与模板完全相同（仍叫 `AISkillTaskListView`），应用内的 `AIStarter/AIStarter/TaskListView.swift` 只是模板改了一个 struct 名（另无尾换行）。README 对“copy_template.js 仅复制”的描述是准确的，故不列为缺陷，仅提示与方案措辞存在差距。
 
 ### 4.6 verification.json 与 UI matrix：blocked 为真，周边文档过期
 
@@ -172,10 +172,10 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 
 | ID | 严重度 | 问题 | 必要修复 |
 | --- | --- | --- | --- |
-| **IOS-R2-F1** | **high** | 33/33 API 卡违反 M0 冻结 [api-card.schema.json](wisdomdesign/ai/skill/provider/api-card.schema.json:6) 的 `additionalProperties:false`：每张卡多出 `iosLabel`；仓库内 schema-lite 实测 33/33 `ADDITIONAL_PROPERTY`。而 [validate_provider.py](iOS/ai/skill-provider/validate_provider.py:44) 只查 required 键，未做 schema 校验，导致 “final validation passed” 是子集结论。 | 二选一：① 走 M0 契约变更，在 schema 正式增加受控字段（并同步 provider/消费方）；② 从 [generate_api_cards.py](iOS/ai/skill-provider/api-cards/generate_api_cards.py:68) 删除 `iosLabel` 并重生成 33 卡。无论哪种，`validate_provider.py` 必须对每张卡执行 schema-lite/完整 JSON Schema，且断言 `index.cards == 磁盘卡文件 == 33`（现为 `count >= 30`，[validate_provider.py](iOS/ai/skill-provider/validate_provider.py:54)）。 |
-| **IOS-R2-F2** | **medium** | provider status 并非“由证据计算”：无构建器代码重算 `effective`；[package.py](wisdomdesign/tools/ai-skill/package.py:128) 仅复制；`computedAtBuild: true`（[provider.json](iOS/ai/skill-provider/provider.json:37)）无支撑。`validate_provider.py` 也未接入任何 CI，是一次性人工校验。 | ① 实现构建期重算（至少按 `verification.json` 的 passed/blocked/not-run 与卡片 evidence 推导 experimental/verified 门槛），或把 `computedAtBuild` 改为 false/去除并如实写“authored snapshot”；② 将 `validate_provider.py` 接入 iOS 或 wisdomdesign CI，记录命令与退出码。 |
+| **IOS-R2-F1** | **high** | 33/33 API 卡违反 M0 冻结 [api-card.schema.json](wisdomdesign/ai/skill/provider/api-card.schema.json:6) 的 `additionalProperties:false`：每张卡多出 `iosLabel`；仓库内 schema-lite 实测 33/33 `ADDITIONAL_PROPERTY`。而 [validate_provider.js](iOS/ai/skill-provider/validate_provider.js:44) 只查 required 键，未做 schema 校验，导致 “final validation passed” 是子集结论。 | 二选一：① 走 M0 契约变更，在 schema 正式增加受控字段（并同步 provider/消费方）；② 从 [generate_api_cards.js](iOS/ai/skill-provider/api-cards/generate_api_cards.js:68) 删除 `iosLabel` 并重生成 33 卡。无论哪种，`validate_provider.js` 必须对每张卡执行 schema-lite/完整 JSON Schema，且断言 `index.cards == 磁盘卡文件 == 33`（现为 `count >= 30`，[validate_provider.js](iOS/ai/skill-provider/validate_provider.js:54)）。 |
+| **IOS-R2-F2** | **medium** | provider status 并非“由证据计算”：无构建器代码重算 `effective`；[package.js](wisdomdesign/tools/ai-skill/package.js:128) 仅复制；`computedAtBuild: true`（[provider.json](iOS/ai/skill-provider/provider.json:37)）无支撑。`validate_provider.js` 也未接入任何 CI，是一次性人工校验。 | ① 实现构建期重算（至少按 `verification.json` 的 passed/blocked/not-run 与卡片 evidence 推导 experimental/verified 门槛），或把 `computedAtBuild` 改为 false/去除并如实写“authored snapshot”；② 将 `validate_provider.js` 接入 iOS 或 wisdomdesign CI，记录命令与退出码。 |
 | **IOS-R2-F3** | **medium** | [verification.json](iOS/ai/skill-provider/verification.json:17) 的 `ios-minimal-typecheck` 命令把 iOS 仓相对路径与工作区相对 `-I` 混用，按原文从任一 cwd 都 rc=1（源文件不存在 / no such module）；只有修正路径后才 exit 0。且 README/任务输出对源文件数（3/4/5）说法不一。 | 记录**可原样复制**的命令（明确 cwd、统一路径根），并附实际退出码；统一源文件计数为 4。 |
-| **IOS-R2-F4** | **medium** | 证据引用悬空：33/33 张卡的 `SOURCES.json#<symbol>` 片段在 SOURCES.json 中不存在；3 处 `verification.json#ios-minimal-compile` 指向不存在的 command id（应为 `ios-minimal-typecheck`/`ios-consumer-xcodebuild-release`）。 | 修正 [generate_api_cards.py](iOS/ai/skill-provider/api-cards/generate_api_cards.py:70) 的次引用（指向真正的锚点或删除），修正 provider/capabilities 的 evidenceRefs；在 validator 中增加“引用文件存在且片段可解析”的检查。 |
+| **IOS-R2-F4** | **medium** | 证据引用悬空：33/33 张卡的 `SOURCES.json#<symbol>` 片段在 SOURCES.json 中不存在；3 处 `verification.json#ios-minimal-compile` 指向不存在的 command id（应为 `ios-minimal-typecheck`/`ios-consumer-xcodebuild-release`）。 | 修正 [generate_api_cards.js](iOS/ai/skill-provider/api-cards/generate_api_cards.js:70) 的次引用（指向真正的锚点或删除），修正 provider/capabilities 的 evidenceRefs；在 validator 中增加“引用文件存在且片段可解析”的检查。 |
 | **IOS-R2-F5** | **low** | [GoldenPageMatrixReport.json](iOS/AIStarter/GoldenPageMatrixReport.json:11) 与 [README.md](iOS/AIStarter/README.md:14) 只记录最终修复前的两次构建失败（iPhone Air 711BF16D / PreviewsMacros / `_main`），未记录 18:45 最终 test-runner PTY 失败（CE28D919）；与 [verification.json](iOS/ai/skill-provider/verification.json:41) 的 blocked 证据不是同一次尝试。 | 用最终 attempt 更新报告/README（命令、模拟器 UDID、xcresult 路径、错误、0 断言），或把历史两次失败明确标为“修复前”。 |
 | **IOS-R2-F6** | **low** | provider 快照/打包元数据与当前仓不同步：provider 记录 `c3c32f3` + dirty=true，而 HEAD 为 `64539fe` 且 clean；API 快照 123136bd…→1d3be9d7…，生成器对当前快照直接 exit 1；dist 的 iOS manifest 记录 sources.ios.commit=64539fe 却内嵌 c3c32f3 的 provider；manifest `apiCardFiles=35` 把 index/SOURCES 计成卡（实际 33）。 | 在 provider 中显式区分“快照 commit”与“打包输入 commit”，或在打包时校验两者一致；API 变化时 bump pin 并重生成；修正 `apiCardFiles` 计数为 33（或改为 `apiCardJsonFiles` 并注包含 index/SOURCES）。 |
 | **IOS-R2-F7** | **low** | `GoldenPageMatrixTests` 是 `bundle.unit-test`（[project.pbxproj](iOS/AIStarter/AIStarter.xcodeproj/project.pbxproj:127)），无 `TEST_HOST`/`TEST_TARGET_NAME`，无 app target 依赖，却使用 `XCUIApplication`；即使 PTY 可用，UI 矩阵能否运行仍存疑。 | 将测试 target 改为 UI testing bundle（或明确以逻辑测试方式覆盖可覆盖部分），补 `TEST_TARGET_NAME`/依赖；若继续 blocked，把“结构性未验证”与“沙箱 blocked”分开记录。 |
@@ -216,7 +216,7 @@ t5（iOS Provider）与 t6（AIStarter / 消费侧验证）**不是伪造证据*
 cd <workspace>
 
 # 1) provider 校验（33 cards, status=experimental）
-python3 iOS/ai/skill-provider/validate_provider.py
+python3 iOS/ai/skill-provider/validate_provider.js
 
 # 2) 用仓库 schema-lite 校验真实卡（会报 33 个 ADDITIONAL_PROPERTY: iosLabel）
 node -e '
@@ -255,9 +255,9 @@ xcodebuild test -project iOS/AIStarter/AIStarter.xcodeproj -scheme AIStarter \
 ## Appendix B · 关键证据文件
 
 - Provider 入口：[provider.json](iOS/ai/skill-provider/provider.json)、[capabilities.json](iOS/ai/skill-provider/capabilities.json)、[verification.json](iOS/ai/skill-provider/verification.json)
-- 卡片与生成器：[index.json](iOS/ai/skill-provider/api-cards/index.json)、[generate_api_cards.py](iOS/ai/skill-provider/api-cards/generate_api_cards.py)、[SOURCES.json](iOS/ai/skill-provider/api-cards/SOURCES.json)
-- 校验器：[validate_provider.py](iOS/ai/skill-provider/validate_provider.py)
+- 卡片与生成器：[index.json](iOS/ai/skill-provider/api-cards/index.json)、[generate_api_cards.js](iOS/ai/skill-provider/api-cards/generate_api_cards.js)、[SOURCES.json](iOS/ai/skill-provider/api-cards/SOURCES.json)
+- 校验器：[validate_provider.js](iOS/ai/skill-provider/validate_provider.js)
 - 消费方：[AIStarterApp.swift](iOS/AIStarter/AIStarter/AIStarterApp.swift)、[TaskListView.swift](iOS/AIStarter/AIStarter/TaskListView.swift)、[APIMinimalExample.swift](iOS/AIStarter/AIStarter/APIMinimalExample.swift)
-- 脚手架与测试：[copy_template.py](iOS/AIStarter/AIStarter/copy_template.py)、[GoldenPageMatrixTests.swift](iOS/AIStarter/GoldenPageMatrixTests/GoldenPageMatrixTests.swift)、[GoldenPageMatrixReport.json](iOS/AIStarter/GoldenPageMatrixReport.json)
+- 脚手架与测试：[copy_template.js](iOS/AIStarter/AIStarter/copy_template.js)、[GoldenPageMatrixTests.swift](iOS/AIStarter/GoldenPageMatrixTests/GoldenPageMatrixTests.swift)、[GoldenPageMatrixReport.json](iOS/AIStarter/GoldenPageMatrixReport.json)
 - 契约：[api-card.schema.json](wisdomdesign/ai/skill/provider/api-card.schema.json)、[status-policy.md](wisdomdesign/ai/skill/provider/status-policy.md)、[baseline.json](wisdomdesign/ai/skill/m0/baseline.json)、[golden-matrix.json](wisdomdesign/ai/skill/evaluation/golden-matrix.json)
 - 旧 UI 结果：`iOS/.build/ai-starter-t6.xcresult`（PTY 错误可复现）；本轮：`iOS/.build/dd-ai-starter-test/Logs/Test/Test-AIStarter-2026.11.22_10-15-50-+0800.xcresult`

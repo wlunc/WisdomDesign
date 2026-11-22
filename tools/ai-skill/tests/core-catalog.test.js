@@ -10,7 +10,7 @@ const { spawnSync } = require('child_process');
 
 const TOOL_ROOT = path.resolve(__dirname, '..');
 const DESIGN_ROOT = path.resolve(TOOL_ROOT, '..', '..');
-const EXTRACTOR = path.join(TOOL_ROOT, 'lib', 'extract-design.rb');
+const EXTRACTOR = path.join(TOOL_ROOT, 'lib', 'extract-design.js');
 const GENERATOR = path.join(TOOL_ROOT, 'lib', 'generate-core-catalog.js');
 const CONTRACT_GLOB = path.join(DESIGN_ROOT, 'contracts', 'WD*.yaml');
 
@@ -19,7 +19,7 @@ function run(command, args, options = {}) {
 }
 
 function extract() {
-  const result = run('ruby', [EXTRACTOR]);
+  const result = run('node', [EXTRACTOR]);
   assert.strictEqual(result.status, 0, `extractor failed: ${result.stderr}`);
   return JSON.parse(result.stdout);
 }
@@ -39,13 +39,14 @@ function copyDesignIntoTemp(files) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ai-skill-extract-'));
   const design = path.join(root, 'wisdomdesign');
   fs.mkdirSync(path.join(design, 'tools', 'ai-skill', 'lib'), { recursive: true });
-  fs.copyFileSync(EXTRACTOR, path.join(design, 'tools', 'ai-skill', 'lib', 'extract-design.rb'));
+  fs.copyFileSync(EXTRACTOR, path.join(design, 'tools', 'ai-skill', 'lib', 'extract-design.js'));
+  fs.copyFileSync(path.join(TOOL_ROOT, 'lib', 'simple-yaml.js'), path.join(design, 'tools', 'ai-skill', 'lib', 'simple-yaml.js'));
   for (const [relative, content] of Object.entries(files)) {
     const target = path.join(design, relative);
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, content);
   }
-  return { root, design, extractor: path.join(design, 'tools', 'ai-skill', 'lib', 'extract-design.rb') };
+  return { root, design, extractor: path.join(design, 'tools', 'ai-skill', 'lib', 'extract-design.js') };
 }
 
 function minimalSourceOverrides() {
@@ -150,7 +151,7 @@ test('fails on duplicate component id', () => {
   const duplicate = componentBlock(files[buttonFile], 'Button').replace('# 1 · Button', '# 2 · Button');
   files[buttonFile] += `\n${duplicate}\n`;
   const temp = copyDesignIntoTemp(files);
-  const result = run('ruby', [temp.extractor], { cwd: temp.root });
+  const result = run('node', [temp.extractor], { cwd: temp.root });
   assert.notStrictEqual(result.status, 0, 'duplicate id must fail');
   assert.match(result.stderr, /规格重复 WDButton|缺少正式章节/);
   fs.rmSync(temp.root, { recursive: true, force: true });
@@ -161,7 +162,7 @@ test('fails on missing formal section', () => {
   const withoutSection5 = componentBlock(files['docs/specs/01-basic.md'], 'Button').replace(/^### 5\. 状态[\s\S]*?(?=^### 6\. 布局)/m, '');
   files['docs/specs/01-basic.md'] = replaceComponentBlock(files['docs/specs/01-basic.md'], 'Button', withoutSection5);
   const temp = copyDesignIntoTemp(files);
-  const result = run('ruby', [temp.extractor], { cwd: temp.root });
+  const result = run('node', [temp.extractor], { cwd: temp.root });
   assert.notStrictEqual(result.status, 0, 'missing section must fail');
   assert.match(result.stderr, /缺少正式章节 5/);
   fs.rmSync(temp.root, { recursive: true, force: true });
@@ -172,7 +173,7 @@ test('fails on missing purpose counterexample', () => {
   const block = componentBlock(files['docs/specs/01-basic.md'], 'Button').replace(/^- \*\*不要用\*\*：.*$/m, '- **用**：只留用途\n');
   files['docs/specs/01-basic.md'] = replaceComponentBlock(files['docs/specs/01-basic.md'], 'Button', block);
   const temp = copyDesignIntoTemp(files);
-  const result = run('ruby', [temp.extractor], { cwd: temp.root });
+  const result = run('node', [temp.extractor], { cwd: temp.root });
   assert.notStrictEqual(result.status, 0, 'missing counterexample must fail');
   assert.match(result.stderr, /缺少反例/);
   fs.rmSync(temp.root, { recursive: true, force: true });
@@ -185,7 +186,7 @@ test('fails on unknown overlay component and unknown combination reference', () 
     schemaVersion: '1.0', component: 'WDSearchField', combinesWith: ['WDNotReal']
   });
   const temp = copyDesignIntoTemp(files);
-  const result = run('ruby', [temp.extractor], { cwd: temp.root });
+  const result = run('node', [temp.extractor], { cwd: temp.root });
   assert.notStrictEqual(result.status, 0, 'unknown overlay references must fail');
   assert.match(result.stderr, /未知组件 overlay WDUnknown/);
   assert.match(result.stderr, /未知组合引用 WDNotReal/);

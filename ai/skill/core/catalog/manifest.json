@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "generator": "tools/ai-skill/lib/generate-core-catalog.js",
   "generatorVersion": "1.0",
-  "banner": "GENERATED FILE - DO NOT EDIT.\nSource: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.rb.\nRegenerate with: ruby tools/ai-skill/lib/extract-design.rb | node tools/ai-skill/lib/generate-core-catalog.js --out <dir>\nNo platform API claims are included.",
+  "banner": "GENERATED FILE - DO NOT EDIT.\nSource: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.js.\nRegenerate with: node tools/ai-skill/lib/extract-design.js | node tools/ai-skill/lib/generate-core-catalog.js --out <dir>\nNo platform API claims are included.",
   "policy": {
     "specs": "用途、反例、状态、内容与无障碍结论唯一来自 docs/specs/01-basic.md、02-advanced.md、03-patterns.md。",
     "contracts": "参数、槽位、默认值与枚举唯一来自 contracts/WD*.yaml。",

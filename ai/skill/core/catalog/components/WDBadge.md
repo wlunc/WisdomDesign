@@ -1,6 +1,6 @@
 <!-- GENERATED FILE - DO NOT EDIT. -->
-<!-- Source: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.rb. -->
-<!-- Regenerate with: ruby tools/ai-skill/lib/extract-design.rb | node tools/ai-skill/lib/generate-core-catalog.js --out <dir> -->
+<!-- Source: wisdomdesign design truth sources via tools/ai-skill/lib/extract-design.js. -->
+<!-- Regenerate with: node tools/ai-skill/lib/extract-design.js | node tools/ai-skill/lib/generate-core-catalog.js --out <dir> -->
 <!-- No platform API claims are included. -->
 
 # WDBadge 语义卡

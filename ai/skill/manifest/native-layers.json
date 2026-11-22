@@ -60,7 +60,7 @@
     "all-template-compile": {
       "owner": "iOS+android",
       "status": "blocked",
-      "command": "platform template compile: iOS copy_template.py + consumer build; android :demo:assembleRelease",
+      "command": "platform template compile: iOS copy_template.js + consumer build; android :demo:assembleRelease",
       "statusNote": "iOS template copy is verified; android template compile is blocked (see android-native-compile).",
       "evidence": [
         { "repo": "iOS", "kind": "json", "path": "ai/skill-provider/verification.json", "anchor": "/commands/1" },

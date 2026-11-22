@@ -14,7 +14,7 @@
 | `node tools/ai-skill/tests/governance-selftest.js` | 0 | **23** 项 M6 治理自检通过（含状态一致性断言） |
 | `node tools/ai-skill/cli.js test` | 0 | M0 契约 + M1 目录 + M1 运行时 + M1 构建（含打包布局 runtime、超预算负例） |
 | `node tools/ai-skill/cli.js build` + `check` | 0 / 0 | 52 文件；manifest schema-valid；check 与临时重建逐字节一致 |
-| `python3 tools/ai-skill/package.py`（连续两次，full） | 0 / 0 | 四包 53/98/80/125 文件；两次 `checksums.json` 逐字节一致 |
+| `node tools/ai-skill/package.js`（连续两次，full） | 0 / 0 | 四包 53/98/80/125 文件；两次 `checksums.json` 逐字节一致 |
 | `node tools/ai-skill/tests/dist-package.test.js` | 0 | **119** 项四包审计通过（manifest schema / 计数 / 逐文件哈希 / ZIP / 包内 runtime / 预算 / 死引用 / 包集完整性） |
 | `node tools/ai-skill/ci/release-gate.js` | 0 | 四包 candidate validated（workspace-snapshot） |
 | `ruby tools/contracts-check.rb` | 0 | 37 组件契约真源门禁通过 |
@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | 分层 CI（PR / 变更范围 / 原生深度 / 发布门禁） | 已落地且**单仓可运行** | `.github/workflows/ai-skill-ci.yml` 5 job；`ci/route-changes.js`（PR 文件列表 + `--require-paths`）、`ci/check-native-layers.js`、`ci/release-gate.js`；route/event/native-layer 用例通过 |
 | PR 变更路由 | 已修复 | `pull_request.changed_files` 是数量而非文件列表；CI 用 `git diff --name-only origin/<base>...HEAD` 生成 `--paths-file`，空列表 exit 2；REST `files[]`、push `commits[]` 亦有用例 |
-| 单仓 checkout 可运行 | 已修复（R12） | 无同级 iOS/android、无预生成 catalog/dist 的 /tmp 干净副本实测：m4-ci 63/63、contract 25、governance OK、`cli.js test` 全过、`cli.js build/check` 0、`package.py --platforms core` 两次一致、`dist-package --platforms core` 32/32、release-gate 0；详见 §4 |
+| 单仓 checkout 可运行 | 已修复（R12） | 无同级 iOS/android、无预生成 catalog/dist 的 /tmp 干净副本实测：m4-ci 63/63、contract 25、governance OK、`cli.js test` 全过、`cli.js build/check` 0、`package.js --platforms core` 两次一致、`dist-package --platforms core` 32/32、release-gate 0；详见 §4 |
 | check 不改真源、不自动提交 | 已落地 | `check-no-mutation` 指纹前后一致；CI 实际执行 `cli.js check`；workflow 无 commit/push 步骤 |
 | Token / Contract / Provider / 模板不兼容失败 | 已落地（guard 层） | token/contract/provider-schema/manifest-schema/skill-version/template/provider-incompatible 用例通过 |
 | dirty snapshot 不冒充 release | 已落地（schema + guard 双层） | 三仓 dirty+release 均被 schema 拒绝（`dirty-{wisdomdesign,ios,android}-release`）；Core-only 包只记录实际存在的来源，不伪造平台 commit |
@@ -56,13 +56,13 @@
 | `node tools/ai-skill/tests/governance-selftest.js` | 0 | M6 GOVERNANCE SELFTEST OK |
 | `node tools/ai-skill/cli.js test` | 0 | 契约 25 + 目录 8 + 运行时 12 + 构建 11 |
 | `node tools/ai-skill/cli.js build` + `check` | 0 / 0 | 52 文件；manifest schema-valid；check OK |
-| `python3 tools/ai-skill/package.py --platforms core` ×2 | 0 / 0 | core-only 53 文件；两次 checksums 逐字节一致 |
+| `node tools/ai-skill/package.js --platforms core` ×2 | 0 / 0 | core-only 53 文件；两次 checksums 逐字节一致 |
 | `node tools/ai-skill/tests/dist-package.test.js --platforms core` | 0 | 32/32 |
 | `node tools/ai-skill/ci/release-gate.js` | 0 | core-only candidate validated |
 | `node tools/ai-skill/ci/check-native-layers.js --plan …` | 0 | 登记通过；平台证据 external-owned（不判死） |
-| `python3 tools/ai-skill/package.py`（默认 full，无平台仓） | 1 | 明确提示平台来源缺失 + checkout / `--*-root` / `--platforms core` |
+| `node tools/ai-skill/package.js`（默认 full，无平台仓） | 1 | 明确提示平台来源缺失 + checkout / `--*-root` / `--platforms core` |
 
-单仓 + 显式平台根（模拟 CI full）：`package.py --platforms core,ios,android --ios-root … --android-root …` 生成四包；dist-package 119/119；L2 `--strict-evidence` 全部指针解析。
+单仓 + 显式平台根（模拟 CI full）：`package.js --platforms core,ios,android --ios-root … --android-root …` 生成四包；dist-package 119/119；L2 `--strict-evidence` 全部指针解析。
 
 ## 5. 历史发现：M0 manifest schema 的 dirty→snapshot 约束（已修复，保留记录）
 
@@ -81,4 +81,4 @@
 
 ## 7. 写入边界（R12 修订）
 
-R8/R12 修改：`.github/workflows/ai-skill-ci.yml`、`tools/ai-skill/{cli.js,package.py,lib/manifest.js,lib/write-manifest.js,ci/*,tests/*,README.md}`、`ai/skill/manifest/manifest.schema.json`、`AIOptimize/{02-SKILL-BUILD-PIPELINE,04-M4-CI-Verification,04-M4-CI-Compatibility-Contract,FIXES-t8,FIXES-t12}.md` 与测试生成的 `tools/ai-skill/reports/m4-ci-result.json`。未修改设计真源、iOS / Android 平台源码或 API/ABI 基线；iOS 既有未提交修改保持隔离。
+R8/R12 修改：`.github/workflows/ai-skill-ci.yml`、`tools/ai-skill/{cli.js,package.js,lib/manifest.js,lib/write-manifest.js,ci/*,tests/*,README.md}`、`ai/skill/manifest/manifest.schema.json`、`AIOptimize/{02-SKILL-BUILD-PIPELINE,04-M4-CI-Verification,04-M4-CI-Compatibility-Contract,FIXES-t8,FIXES-t12}.md` 与测试生成的 `tools/ai-skill/reports/m4-ci-result.json`。未修改设计真源、iOS / Android 平台源码或 API/ABI 基线；iOS 既有未提交修改保持隔离。

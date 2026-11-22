@@ -13,13 +13,13 @@
 | # | 复核项 | 结论 | 关键证据 | 备注 |
 | --- | --- | --- | --- | --- |
 | 1 | 四包（Core/iOS/Android/All）scope 隔离 | **通过** | 四包 ZIP 顶层与 `platforms/` 目录互斥；iOS 42/42、Android 26/26 文件与源字节一致；All 同时含双端且复用 Core | 见 §2.1 |
-| 2 | 同一工作区两次重跑 SHA-256 | **通过（同机、同工具链）** | 两次 `package.py` 退出码 0，4 个 ZIP 哈希完全一致，`checksums.json` 两次 diff 为空 | 见 §2.2 |
+| 2 | 同一工作区两次重跑 SHA-256 | **通过（同机、同工具链）** | 两次 `package.js` 退出码 0，4 个 ZIP 哈希完全一致，`checksums.json` 两次 diff 为空 | 见 §2.2 |
 | 3 | 交付时 `dist` 是否可由当前源复现 | **不通过（复核开始时已陈旧）** | 原始 4 个 ZIP 哈希 ≠ 重建值；原始 manifest 记录 iOS `c3c32f3`，当前 HEAD `64539fe`；android provider 文件在打包后 18:48 仍有修改 | 见 §2.2 |
 | 4 | ZIP 条目与路径安全 | **通过（手工审计）** | 50/92/76/118 条目；无绝对路径、`..`、反斜杠、NUL、重复项；固定 2020-01-01、0644、deflate；解包字节与磁盘一致 | 条目按完整源路径排序，android/all 有 1 处文件名序反转（确定性不受影响） |
 | 5 | checksums 与逐文件 hash | **整包通过；逐文件不完整** | `checksums.json` 4 个 SHA-256 均匹配 ZIP；每个包 manifest 都缺 `LICENSE-NOTICE.txt` 哈希；平台包 `manifest.json` 的自哈希是复制前 Core manifest 的旧哈希 | 见 §2.4 |
 | 6 | manifest 是否符合 M0 冻结 schema | **不通过** | 4 个包 manifest 对 `manifest.schema.json` 分别报 26/24/24/25 个错误（缺 version/contents/versions/status/verification/reproducibility 等） | 见 §2.5 |
 | 7 | CI 分层与无自动提交 | **结构通过；门禁功能部分不通过** | 4 个 job、3 段内联 JS 语法通过、`permissions: contents: read`、无 git commit/push 命令；但 L2 为 no-op，L3 无法运行 | 见 §3 |
-| 8 | 变更范围路由 | **部分通过** | push payload 路由正确；pull_request payload 无文件列表（changed_files 是数量）→ 只输出 `structure-baseline`；`package.py` 变更未命中打包层 | 见 §3.2 |
+| 8 | 变更范围路由 | **部分通过** | push payload 路由正确；pull_request payload 无文件列表（changed_files 是数量）→ 只输出 `structure-baseline`；`package.js` 变更未命中打包层 | 见 §3.2 |
 | 9 | M4 CI 负向测试 | **通过（39/39）** | `node tools/ai-skill/tests/m4-ci.test.js` exit 0，重跑后报告字节不变 | 但负向用例是 fixture 层，未作用于真实包 manifest |
 | 10 | 死链审计 | **实际无死链；自动证据无效** | 独立审计：92 个 md、46 条链接、0 死链（AIOptimize 与 ai/skill 全树）；`m4-ci.test.js` 的正则匹配 0 条链接却报通过 | 见 §3.4 |
 | 11 | M5 readiness gate | **通过** | `--check-readiness` exit 2；恰好 5 个 blocker，无 CLI_MISSING/PACKAGE_MISSING | 见 §4.1 |
@@ -49,8 +49,8 @@
 
 | 命令 | 退出码 | 结果摘要 |
 | --- | --- | --- |
-| `python3 tools/ai-skill/package.py`（第 1 次） | 0 | 生成四包；新 checksums 见 §2.2 |
-| `python3 tools/ai-skill/package.py`（第 2 次） | 0 | 四包 SHA-256 与第 1 次完全一致；两次 checksums diff 为空 |
+| `node tools/ai-skill/package.js`（第 1 次） | 0 | 生成四包；新 checksums 见 §2.2 |
+| `node tools/ai-skill/package.js`（第 2 次） | 0 | 四包 SHA-256 与第 1 次完全一致；两次 checksums diff 为空 |
 | `node tools/ai-skill/cli.js check` | 0 | 49 files match reproducible rebuild |
 | `node tools/ai-skill/cli.js build --out /tmp/wd-core-a --allow-outside-root` ×2 | 0 / 0 | 两次构建 `diff -r` 无差异（Core 确定性） |
 | `node tools/ai-skill/tests/m4-ci.test.js` | 0 | 39 PASS / 0 FAIL；重跑前后报告文件 SHA-256 同为 `4f8a878d…cc5b` |
@@ -84,7 +84,7 @@
 
 ---
 
-## 2. 打包复核（package.py / dist，E1+E2）
+## 2. 打包复核（package.js / dist，E1+E2）
 
 ### 2.1 四包 scope 隔离与内容
 
@@ -99,11 +99,11 @@
 
 - **通过**：Core 无平台目录；iOS 无 android 文件、Android 无 ios 文件；All 同时包含双端且平台载荷与各自源一致；Core 在三个平台包中的同名文件与独立 Core 包逐字节相同（仅 `SKILL.md` 因追加平台段落不同）。
 - 平台包 `build-info.json` 仍为 Core 的构建信息（`"scope": "core"`、`"package": "wisdom-page-core"`）；虽不构成跨平台泄漏，但会误导包内容自描述（低）。
-- 平台包 `SKILL.md` 追加了对应平台状态（ios/android: `Effective status: experimental`；All 为双端段落），未出现 verified 字样；平台包 SKILL 大小 5,288 / 5,316 / 5,205 bytes，均 < 6,000 预算，但 `package.py` **追加时不检查预算、manifest 也不记录追加后的 residentBytes**（低）。
+- 平台包 `SKILL.md` 追加了对应平台状态（ios/android: `Effective status: experimental`；All 为双端段落），未出现 verified 字样；平台包 SKILL 大小 5,288 / 5,316 / 5,205 bytes，均 < 6,000 预算，但 `package.js` **追加时不检查预算、manifest 也不记录追加后的 residentBytes**（低）。
 
 ### 2.2 确定性：两次重跑一致；交付快照与当前源不一致
 
-同一工作区连续两次 `package.py` 的 ZIP SHA-256（E1，两次一致）：
+同一工作区连续两次 `package.js` 的 ZIP SHA-256（E1，两次一致）：
 
 | ZIP | 复核开始时原始值 | 重建后（两次一致） |
 | --- | --- | --- |
@@ -117,10 +117,10 @@
 
 1. 复核开始时原始 Core manifest 的 `sources.ios.commit` = `c3c32f3…`；当前 iOS HEAD = `64539fe…`（提交时间 2026-11-22 09:56），重建后 manifest 记录 `64539fe…`。
 2. 原始 manifest 中 android `platforms/android/verification.json` 哈希 = `2ffe0d…`；当前 = `f122b1…`，且文件 mtime = 2026-11-21 18:48:38，晚于原 dist 的 18:40。
-3. `package.py` mtime = 18:47:35，原 `dist` 目录 mtime = 18:40，iOS `verification.json` mtime = 18:46:47；即原始包构建于最终打包器与部分平台内容之前。
+3. `package.js` mtime = 18:47:35，原 `dist` 目录 mtime = 18:40，iOS `verification.json` mtime = 18:46:47；即原始包构建于最终打包器与部分平台内容之前。
 4. 原始与当前 `SKILL.md` 哈希相同（5fe74d… / 16b5af… / 3271cf… / 2605fc…），说明主要差异来自 sources 字段与平台内容，而非 Core 渲染逻辑。
 
-**结论**：`package.py` 对“同一输入”是确定性的（E1）；但复核开始时仓内的 `dist` 是**陈旧 dirty snapshot**，不能由当前源复现。`dist` 为未跟踪生成物、manifest 只记录 commit+dirty（无 contentHash），因此这种陈旧在包内不可见。重建后当前 `dist` 已与当前源一致（仍应视为 generated，不是提交证据）。
+**结论**：`package.js` 对“同一输入”是确定性的（E1）；但复核开始时仓内的 `dist` 是**陈旧 dirty snapshot**，不能由当前源复现。`dist` 为未跟踪生成物、manifest 只记录 commit+dirty（无 contentHash），因此这种陈旧在包内不可见。重建后当前 `dist` 已与当前源一致（仍应视为 generated，不是提交证据）。
 
 ### 2.3 ZIP 条目、路径安全与固定元数据
 
@@ -194,16 +194,16 @@
 
 | 场景 | 输出 |
 | --- | --- |
-| push payload `commits[].modified = ["iOS/Sources/X.swift","tools/ai-skill/package.py"]` | `ios-native-compile,ios-snapshot-ui,structure-full,reproducibility,all-template-compile` |
+| push payload `commits[].modified = ["iOS/Sources/X.swift","tools/ai-skill/package.js"]` | `ios-native-compile,ios-snapshot-ui,structure-full,reproducibility,all-template-compile` |
 | pull_request payload（典型：`pull_request.changed_files` 为数量，无文件列表） | `requiredLayers=["structure-baseline"]`，`changedPaths=0`，`nativeRequired=false` |
-| `planFor(["tools/ai-skill/package.py"])` | `structure-full,reproducibility,all-template-compile`（**没有** `clean-unpack/checksum-verify`） |
+| `planFor(["tools/ai-skill/package.js"])` | `structure-full,reproducibility,all-template-compile`（**没有** `clean-unpack/checksum-verify`） |
 | `planFor(["dist/ai-skill/v1.0.0/checksums.json"])` | `clean-unpack,host-load,checksum-verify` |
 | `planFor(["iOS/Sources/X.swift"])` / `planFor(["android/wisdom-ui/api/wisdom-ui.api"])` | 对应原深层（测试通过） |
 
 结论：
 
 1. GitHub 的 `pull_request` webhook 不携带变更文件列表，`pull_request.changed_files` 是数量；代码仅在它是数组时收集，因此**主触发器 PR 上路由退化为 baseline**。现有测试只调用 `planFor()`，没有覆盖事件解析，掩盖了这个问题。若要让 PR 路由生效，需要显式拉取 PR files API 或改为 push 侧计算。
-2. 路由规则 `packaging-manifest` 匹配 `tools/ai-skill/(lib/package|cli)`，而实际打包器是 `tools/ai-skill/package.py`；该变更被 `builder-runtime` 捕获，导致打包层（干净解包/checksum/宿主加载）不被声明。
+2. 路由规则 `packaging-manifest` 匹配 `tools/ai-skill/(lib/package|cli)`，而实际打包器是 `tools/ai-skill/package.js`；该变更被 `builder-runtime` 捕获，导致打包层（干净解包/checksum/宿主加载）不被声明。
 
 ### 3.3 L2/L3：声明大于实现，release gate 实际不可运行
 
@@ -241,7 +241,7 @@
 | 包结构、死链、路径安全 | m4-ci 的对应检查为 fixture/失效实现；**无真实包检查** |
 | 可复现 `check` | **未跑** `cli.js check`；workflow 没有构建/比较步骤 |
 | SKILL.md 常驻预算 | 仅在 `cli.js build` 内检查；CI 不构建，**未覆盖** |
-| 打包器 / manifest 变更 → 干净解包、checksum | **无** Python/package.py/ZIP/checksums 步骤，也无 `dist-package` 用例 |
+| 打包器 / manifest 变更 → 干净解包、checksum | **无** Python/package.js/ZIP/checksums 步骤，也无 `dist-package` 用例 |
 | 干净环境安装 / 宿主加载 | **无**；文档也明确未执行 |
 
 因此 M4-5 的“分层”只在结构层成立；“check 不改真源、不自动提交”仍是模拟合同而非 CI 实际执行的 `cli.js check`。M4 出口“四类产物可复现、可校验、可按声明方式加载”目前只有“可生成 + 同输入重复打包一致 + 手工 ZIP 安全”被验证。
@@ -349,12 +349,12 @@
 **P0（在把 M4 标为完成/发布前必须处理）**
 
 1. **release gate 与真实包对齐**：把 gate 指向 `dist/ai-skill/v1.0.0/*/manifest.json` 或新增顶层 manifest；统一 package manifest 与 `ai/skill/manifest/manifest.schema.json`（补 version/contents/versions/status/verification/reproducibility，sources 改为 repositories+design 结构），或明确废弃该 schema 并给 gate 一套真实可校验的规则；gate 要真正读取 `checksums.json` 并校验 ZIP。
-2. **新增 dist-package 测试**（M4 契约 §6 已提出，至今未做）：解包四包，校验 ZIP 路径安全、固定元数据、逐文件 SHA-256（含 LICENSE-NOTICE 与 manifest 自哈希）、checksums、scope 隔离、SKILL 预算、evidence refs/死链；接入 CI，并在 CI 中执行两次 `package.py` 比对哈希 + `cli.js check`。
+2. **新增 dist-package 测试**（M4 契约 §6 已提出，至今未做）：解包四包，校验 ZIP 路径安全、固定元数据、逐文件 SHA-256（含 LICENSE-NOTICE 与 manifest 自哈希）、checksums、scope 隔离、SKILL 预算、evidence refs/死链；接入 CI，并在 CI 中执行两次 `package.js` 比对哈希 + `cli.js check`。
 3. **重新生成交付 dist**：当前已由本复核重建并与当前源一致；后续任何 iOS/android provider 变更后必须重打包。manifest 增加可审计的 `contentHash`（至少平台载荷/打包输入），不要只靠 `dirty` 布尔值。
 
 **P1（M4 出口与 CI 声明可信性）**
 
-4. 修复 `route-changes.js` 的 PR 集成（用 PR files API 或只依赖 push 计算）；修正 packaging 规则以匹配 `tools/ai-skill/package.py`；为事件解析添加 `collectChangedPaths()` 测试。
+4. 修复 `route-changes.js` 的 PR 集成（用 PR files API 或只依赖 push 计算）；修正 packaging 规则以匹配 `tools/ai-skill/package.js`；为事件解析添加 `collectChangedPaths()` 测试。
 5. L2 要么实现“报告引用存在性”检查，要么改名/改文档为“仅声明责任”；L3 要么实现，要么在契约中明确“未实现/不可运行”，避免“校验 checksums/报告”类夸大。
 6. 修复 m4-ci 死链正则并扩大扫描到 `ai/skill/core/**`、dist 包内文档；把真实 ZIP/manifest 路径与引用纳入 path audit；给 `dead-link-audit` 添加“至少匹配 N 条链接”或已知样例自检，防止空跑通过。
 7. 刷新过期文档与治理当前状态：04-M4 两份文档、05 §4/§6、README、final-acceptance、coverage-model；同时清理 m4-ci 测试中的过期说明文字。
@@ -362,7 +362,7 @@
 
 **P2（质量与证据卫生）**
 
-9. 在 tools/ai-skill/README 中记录 `package.py` 的用法与产物目录；如按 02 §4.3 需要 `dist/.../reports/`，补充生成逻辑或修改设计文档。
+9. 在 tools/ai-skill/README 中记录 `package.js` 的用法与产物目录；如按 02 §4.3 需要 `dist/.../reports/`，补充生成逻辑或修改设计文档。
 10. 平台包追加 SKILL 后检查 6,000 字节预算并在 manifest 记录 residentBytes；平台包 build-info 改为平台 scope。
 11. M5 `--results` 被拒时避免重写 run-manifest；readiness 增加包哈希/版本校验；05 报告的证据表改用 `t11-post-t9.plan.json` 并注明两个 plan 的时序。
 12. 死链/anchor 校验：如果发布说明依赖 anchor，补充 heading slug 检查；当前 M0 约定只校验文件存在。
@@ -409,9 +409,9 @@
 
 ```bash
 # 1) 打包确定性（两次比对 checksums）
-python3 tools/ai-skill/package.py
+node tools/ai-skill/package.js
 cp dist/ai-skill/v1.0.0/checksums.json /tmp/run1.json
-python3 tools/ai-skill/package.py
+node tools/ai-skill/package.js
 diff /tmp/run1.json dist/ai-skill/v1.0.0/checksums.json   # 期望无输出
 
 # 2) 真实包 manifest schema

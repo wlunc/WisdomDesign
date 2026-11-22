@@ -86,7 +86,7 @@
 | M1 Core 生成器 / 37 语义卡 / 正式校验器 | 已实施并通过复跑（用途/反例/状态/内容/无障碍结论 + 逐行 sourceRefs；`node tools/ai-skill/cli.js test` 全绿） | 语义卡不再只覆盖 §1；行号由 `tests/core-catalog.test.js` 逐条回读断言；死引用与预算依据见 `tools/ai-skill/README.md` |
 | M2 iOS Provider / API 卡 / 黄金页面 | Provider 与 33 张 API 卡已建立（10/37 组件 + 5 Foundation 入口）；原生编译通过；快照/UI 矩阵 blocked | 未跑通 `xcodebuild test`（PTY 沙箱 exit 65），无 UI 矩阵通过结论；证据见 `iOS/ai/skill-provider/verification.json` |
 | M3 Android Provider / API 卡 / 黄金页面 | Provider 与 17 张 API 卡已建立（11 组件 + 6 Foundation 入口）；模板静态检查通过；原生编译 blocked | 缺 `:demo` consumer 模块与 `activity-compose` 依赖；Gradle/ABI/截图均未执行；证据见 `android/ai/skill-provider/verification.json` |
-| M4 四类目录包 / ZIP / checksums / 宿主加载 | 四包 + ZIP + checksums 已生成，manifest schema 0 错、逐文件哈希/ZIP/包内 runtime 可自动校验；宿主加载未执行 | `package.py` + `tests/dist-package.test.js`；无干净环境加载报告（D3 仍只声明通用目录包） |
+| M4 四类目录包 / ZIP / checksums / 宿主加载 | 四包 + ZIP + checksums 已生成，manifest schema 0 错、逐文件哈希/ZIP/包内 runtime 可自动校验；宿主加载未执行 | `package.js` + `tests/dist-package.test.js`；无干净环境加载报告（D3 仍只声明通用目录包） |
 | M5 AI 对照评测 / 设计评审 | harness 完成，真实评测未开始（observation-only） | readiness 5 个 blocker（模型/宿主/工具未 pin、两端原生命令未 pin）；无 results、无 Token/diff/设计评分数据 |
 | 真机 / 设备矩阵 | 未验证 | 各端负责人未执行；不得省略不写 |
 | iOS 既有 5 个 dirty 文件 | 保持隔离 | 基线 `m0/baseline.json` 已记录；不覆盖、不混入构建输入 |

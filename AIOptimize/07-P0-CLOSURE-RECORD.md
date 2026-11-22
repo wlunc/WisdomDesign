@@ -54,14 +54,14 @@
 
 ## 4. dist 已按最新 Provider 重建（确定性成立）
 
-两次 `package.py` checksums 一致：`639232eeb51d7dbfbccad9e28f27d558d6f66799fbcafe3aeeff579391aa50da`。
+两次 `package.js` checksums 一致：`36087f133d09048d4e060ae0c9f65e3fda672d3bfee42ed532d48ca170a5e6e1`。
 
 | 包 | ZIP SHA-256 | 文件数 |
 | --- | --- | --- |
-| core | `94747a1bcaae3233b67d3732f8d4cef000824e754e635648e164620a06162aaa` | 53 |
-| ios | `b285aab9d66a4e3f9f3ab5a5dff85645337c5133e2872e61f7e8096683c5d343` | 98 |
-| android | `3296fb27ea788e5104caf99c6372ef9a1d20d48ecf0782baf9c0a915183d5096` | 80 |
-| all | `c47920e7eb84078fc6bce9c50a24cb7f6923b06ecf2b02b3a6aa894fd2a8b75b` | 125 |
+| core | `ed3e0ede6774ac6ba3d061e3e7ffc54dc38bad30933f87dd505dc431d6f0c7bb` | 53 |
+| ios | `1b1d970c03c0987626f32480a5b64367c9e270c6cbafbd5002317e688f848087` | 98 |
+| android | `131a1d9eb116b4459b9f0ea7b1ab0b5d74083792cbb8e12c6e2a4109fd9dfec7` | 80 |
+| all | `0d5fd5a216ddebb6ccf165dbe5639816017cfbfd0fa19fbd5ba7b0ec65f23dc2` | 125 |
 
 > 更早的 `71014646…`、`1f5274af…` 等哈希对应更早快照；当前有效哈希以本表与 `dist/ai-skill/v1.0.0/checksums.json` 为准。
 
@@ -69,12 +69,19 @@
 
 | 项 | 状态 | 需要的条件 |
 | --- | --- | --- |
-| P0-3 Android 原生闭环 | partial | native compile 已过；UI 矩阵被沙箱 AVD snapshot 锁阻断，另需 fontScale/IME/返回/TalkBack、ABI 基线更新与真机验证 |
+| P0-3 Android 原生闭环 | **paused（用户决定）** | native compile 已过；平台尚未完成，暂停继续 UI 矩阵/ABI/fontScale/TalkBack/IME；Provider 保持 experimental/规划态 |
 | P0-4 iOS UI 矩阵/library gate | blocked | 非 PTY/sandbox 环境 |
 | P0-5 宿主加载 | not-run | 确定目标 AI 宿主 |
 | P0-6 M5 真实评测 | not-run | pin 模型/宿主/工具/预算 |
 
-## 6. 结论
+## 6. 脚本语言统一为 JavaScript（2026-11-22）
+
+- 迁移完成：`package.py` → `package.js`；`extract-design.rb` → `extract-design.js`；iOS `validate_provider.py`/`generate_api_cards.py` → `.js`；AIStarter `copy_template.py` → `.js`。
+- 新增零依赖 `lib/simple-yaml.js`（契约 YAML 子集）与 `lib/zip.js`（确定性 ZIP），替代 Python zipfile/PyYAML/Ruby Psych。
+- 新增 AI Skill 流水线内已无 `.py/.rb`；原仓既有 `token-build`/PWA Node 工具与 `contracts-check.rb` 不在本次统一范围。
+- 回归：`cli.js test` 11/11、contract 25、m4-ci 63、dist-package 119/119、iOS validator 33 卡、两次 full 打包 checksums 一致。
+
+## 7. 结论
 
 - P0-1/P0-2 已关闭；P0-3 的 native compile 前置阻断已解除，但 M3 仍未达到完整出口。
 - 06 报告的裁决 **B（存在阻断项）仍成立**：M2/M3/M4/M5/M6 出口未全部闭合。

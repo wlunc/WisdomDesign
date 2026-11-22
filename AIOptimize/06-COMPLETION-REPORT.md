@@ -107,7 +107,7 @@
 ### 1.5 只读边界与写操作透明度
 
 - 所有复核报告都声明“未修改实现/契约/测试/平台源码”；复核者新增的唯一内容写入是各自报告文件。
-- 允许的生成物重跑：R4 与 R8/R12 按任务授权重建 `dist/ai-skill`（生成物，未跟踪）；R2/R7 重跑 xcodebuild 产生 `iOS/.build/**`（gitignored）；R3 重跑 android validator 后 26 个 provider 文件逐字节一致；R11 在 `/tmp` 沙箱运行 generator；R13 在 `/tmp` 复现单仓并重跑 `package.py` 两次（dist 哈希与 R12 一致）。
+- 允许的生成物重跑：R4 与 R8/R12 按任务授权重建 `dist/ai-skill`（生成物，未跟踪）；R2/R7 重跑 xcodebuild 产生 `iOS/.build/**`（gitignored）；R3 重跑 android validator 后 26 个 provider 文件逐字节一致；R11 在 `/tmp` 沙箱运行 generator；R13 在 `/tmp` 复现单仓并重跑 `package.js` 两次（dist 哈希与 R12 一致）。
 - **原始交付 dist 已被重建覆盖**，原始 ZIP 哈希与 manifest 关键字段仅存于 R4 §1.3/§2.2 的记录；最终 dist 与当前 HEAD/provider 一致（R13 §5；本报告 §附录 B 复算）。
 - 本报告只新增 `wisdomdesign/AIOptimize/06-COMPLETION-REPORT.md` 一个文件。
 
@@ -123,7 +123,7 @@
 | **M1 Core MVP** | t2、t3、t4 | 提取器、37 语义卡、Page Spec 校验器、get-component、SKILL.md、确定性 build/check | cli test 25+8+12+11 全过；check 52 files；两次 build 逐字节一致；dist-package 119/119；四包内 runtime 六类退出码正确 | **verified** | **通过**（按 M1 出口：37 映射完整、Core 工具测试通过；不含第三方 JSON Schema 全量校验） |
 | **M2 iOS 切片** | t5、t6 | iOS Provider、33 张 API 卡、AIStarter 消费方、黄金页面模板、脚手架、iOS 包 | validate_provider 0（33 cards，status 重算 experimental，coverage 10/37）；33/33 schema 0 违规；Release build 0；typecheck 0；UI matrix 65（0 断言）；library gate not-run | **partial** | **未通过**：消费侧编译成立，但规定 UI 矩阵 blocked、library gate not-run；无宿主/真机/设计评审 |
 | **M3 Android 切片** | t7、t8 | Android Provider、17 张 API 卡、Compose 黄金模板、模板 manifest | 17/17 schema 0 违规；validator WROTE 17；check-template 22/22；`:demo` not found exit 1；native compile blocked；runtimeMatrix 11 键 not-run | **blocked** | **未通过**：未达 example-compiled；无编译/截图/UI/TalkBack/IME/返回证据 |
-| **M4 打包与宿主验收** | t9、t10 | 四类目录包、确定性 ZIP/checksums、files.json/build-info、dist-package 测试、5 层 CI、release-gate、native-layer 登记 | package.py ×2 checksums 71014646… 一致；dist-package 119/119；release-gate 0；L2 strict 7 层；m4-ci 63；单仓 core-only 32/32 | **partial** | **未通过**：打包/CI 主体成立；宿主加载未执行；full CI 模式 `cli.js check` 条件性失败 |
+| **M4 打包与宿主验收** | t9、t10 | 四类目录包、确定性 ZIP/checksums、files.json/build-info、dist-package 测试、5 层 CI、release-gate、native-layer 登记 | package.js ×2 checksums 71014646… 一致；dist-package 119/119；release-gate 0；L2 strict 7 层；m4-ci 63；单仓 core-only 32/32 | **partial** | **未通过**：打包/CI 主体成立；宿主加载未执行；full CI 模式 `cli.js check` 条件性失败 |
 | **M5 AI 对照评测** | t11 | 固定任务集、三臂、readiness gate、run-manifest、observation report、设计评审模板 | readiness exit 2（5 blockers）；24 单元 not-executed；comparisons 全 null；claims=[]；`--results` 拒绝写入；selftest 16 | **not-run** | **未开始**：模型/宿主/工具/原生命令未 pin；无任何真实结果 |
 | **M6 扩量与治理** | t12 | 覆盖模型、治理自检、变更触发、发布治理建议 | governance 23 PASS；coverage 设计语义 37、iOS discovered 10、Android discovered 11；04/05/README 状态刷新 | **partial** | **未通过**：仅 M2/M3 纵向切片覆盖；无扩量、趋势监控与发布批准；治理仍为建议稿 |
 
@@ -246,7 +246,7 @@
 | 打包确定性 | 两次重跑四 ZIP 一致；但交付 dist 在复核开始时已陈旧（原始 a99b/e811/3af0/4624 ≠ 重建 36d6/9690/f774/d682；iOS manifest c3c32f3 vs HEAD 64539fe） | R8 按当前 HEAD/provider 重打包；R12 再终态打包 | 最终 836f/364c/99e3/85ff，两次一致（R13 §5；本报告复算） | **已关闭** |
 | ZIP/路径安全 | 50/92/76/118 条目；无绝对路径/`..`/反斜杠/NUL/重复；固定元数据 | 保持并纳入 dist-package 测试 | 119/119（R13） | **已关闭** |
 | 逐文件哈希/manifest | 缺 LICENSE-NOTICE；平台包 manifest 自哈希错误；4 个 manifest 对 M0 schema 26/24/24/25 错 | R8 单一 manifest 生成器 + schema 校验 + files.json/checksums | 5 个 manifest 0 错、fileCount/LICENSE/自哈希自洽（R9/R13） | **已关闭** |
-| CI 结构/路由 | 4 job、无自动提交；PR 路由退化为 baseline；`package.py` 变更未命中 | R8 重写 5 层 CI + `--paths-file/--require-paths` | 单仓/三仓路由通过（R13） | **已关闭** |
+| CI 结构/路由 | 4 job、无自动提交；PR 路由退化为 baseline；`package.js` 变更未命中 | R8 重写 5 层 CI + `--paths-file/--require-paths` | 单仓/三仓路由通过（R13） | **已关闭** |
 | L2/L3 | L2 no-op；L3 路径不存在且真实 manifest schema 失败 | R8 新增 native-layers 7 层与 release-gate；R12 单仓适配 | L2 strict 7 层、release-gate 0（R13） | **已关闭** |
 | 死链审计 | 正则失效（46 条真实链接匹配 0） | R8 修正正则+下限；R12 增加 internal/cross-repo/escape 分类 | workspace 269 md/47+6/0 dead；单仓 16 md/47+6/0 dead（R13） | **已关闭** |
 | 单仓 CI 可运行性（R9 新增） | cli build/test/package/m4-ci 依赖同级平台仓与预生成 catalog，标准单仓 checkout 失败 | R12 增加根参数/自举/分类；默认 full 缺平台仓 exit 1 提示 | 单仓 core-only 全链路通过（R13 §1.2） | **已关闭（full 模式除外）** |
@@ -259,7 +259,7 @@
 | --- | --- | --- | --- |
 | R1-F8 | medium（流程） | M0 出口批准未记录；`CONTRACT-STATUS` 仍 frozen-for-review | 不得写“M0 已批准”；需 captain 记录 |
 | R7-R1 | low | iOS scaffold 的 verification command 含 `<workspace-relative-destination>` 占位符，字面执行 exit 2 | 6 类场景已替代复验；命令不能原样复制 |
-| R7-R2 | low | iOS validator 未实际接入 CI（exempt-registered）；`package.py` 仍复制静态 status | 审计/打包路径不强制重算 |
+| R7-R2 | low | iOS validator 未实际接入 CI（exempt-registered）；`package.js` 仍复制静态 status | 审计/打包路径不强制重算 |
 | R7-R3 | info | iOS UI matrix blocked、library gate not-run | 无 UI/原生通过结论 |
 | R7-R4 | info | R7 时 dist 仍为旧 provider（9f26 vs 9ac9、apiCardFiles 35） | 已由 R8 重打包解决；本报告抽查 dist provider=源；`verification.distAudit` 仍保留旧审计字段（low，证据卫生） |
 | R7-R5 | low | SNAPSHOT 时间口径、FIXES-t6 dirty hash 表述 | 文档卫生 |
@@ -279,7 +279,7 @@
 ### 3.7 真实性判定
 
 - **未发现伪造**：M5 所有未执行项显式 not-executed、`--results` 拒绝写入；原生/UI 均未写 passed；ZIP 与 checksums 每次都可用 SHA-256 复算；provider 状态未自认证 verified（iOS/Android 都是 experimental，且 iOS 由 validator 重算、负例可拒绝注入）。
-- **发现过“子集校验冒充全量通过”与“过期证据”**：R2 的 33/33 卡 `iosLabel` 违反 schema，而 `validate_provider.py` 报 passed（只查 required）；R3 的 validator 报 “WROTE 23”（双计）；R1 的 manifest 声称与冻结 schema 脱节；R4 的交付 dist 陈旧、04 报告数字过期。这些是**证据质量/完整性缺陷，不是故意伪造**，并且都已在 R6/R8/R10/R12 修复，由 R7/R9/R11/R13 复验或测试覆盖。
+- **发现过“子集校验冒充全量通过”与“过期证据”**：R2 的 33/33 卡 `iosLabel` 违反 schema，而 `validate_provider.js` 报 passed（只查 required）；R3 的 validator 报 “WROTE 23”（双计）；R1 的 manifest 声称与冻结 schema 脱节；R4 的交付 dist 陈旧、04 报告数字过期。这些是**证据质量/完整性缺陷，不是故意伪造**，并且都已在 R6/R8/R10/R12 修复，由 R7/R9/R11/R13 复验或测试覆盖。
 - **教训**：本项目的主要风险不是“数据造假”，而是“构建/静态检查/子集校验通过被误读为原生、UI、宿主或评测通过”。本报告因此在第 4 节逐项列出未执行与阻塞项。
 
 ---
@@ -361,7 +361,7 @@
 | R6/R10 | iOS/Android provider 交付物（允许范围） | 否（未改平台 tracked 源/ABI） |
 | R7/R11 | 各自复验报告；R7 重跑 xcodebuild（gitignored） | 否 |
 | R8/R12 | wisdomdesign 实现/文档、dist 重打包 | 否（未改平台源码/API/ABI） |
-| R9/R13 | 各自复验报告；R9/R13 重跑 package.py（生成物） | 否 |
+| R9/R13 | 各自复验报告；R9/R13 重跑 package.js（生成物） | 否 |
 | R5（本报告） | 仅本文件 | 否 |
 
 ### 5.5 结论
@@ -400,7 +400,7 @@
 
 **P1（发布前应处理）**
 
-7. iOS validator 真正接入 CI（解除 exempt），`package.py` 调用 validator 而非复制静态 status；刷新 `verification.distAudit` 到当前 dist。
+7. iOS validator 真正接入 CI（解除 exempt），`package.js` 调用 validator 而非复制静态 status；刷新 `verification.distAudit` 到当前 dist。
 8. Android validator 拆“只读校验/生成器”，或在文档明确 generator+validator；`componentCoverage` 拆分 component/foundation；加强 T15 调用点检查。
 9. 证据卫生：修 `FIXES-t12:59`/`FIXES-t8:31` 的 44 internal；统一 269 md 口径；SNAPSHOT 时间口径；`computedAt` 语义。
 10. 引入第三方 JSON Schema 校验（或 meta-schema 校验），保留现有负例套件。
@@ -448,7 +448,7 @@
 | R1 | get-component（源码布局/未找到/用法） | 0/3/2 | 命中/不编造/拒绝 |
 | R1 | get-component（打包布局） | **2** | 默认路径 ENOENT / overlay escape（F1） |
 | R1 | 冻结 manifest schema 校验实际产物 | — | 15/26/24/24/25 错（F2） |
-| R2 | validate_provider.py | 0 | 33 cards, status=experimental |
+| R2 | validate_provider.js | 0 | 33 cards, status=experimental |
 | R2 | schema-lite 校验 33 卡 | 0 | 33/33 ADDITIONAL_PROPERTY iosLabel（F1） |
 | R2 | 基线卡片重放 vs 仓库 | 0 | diff rc=0；当前 HEAD 重放 1（防漂移） |
 | R2 | xcodebuild Release | 0 | BUILD SUCCEEDED |
@@ -460,14 +460,14 @@
 | R3 | Kotlin 最小复现（缺/加 import） | 1/0 | unresolved reference / 通过 |
 | R3 | javap WindowInsets | 0 | systemBars 为 static getter |
 | R3 | git status / ABI sha256 | 0 | tracked 空；ABI 06b24043… |
-| R4 | package.py ×2 | 0/0 | 四 ZIP 哈希一致（重建值） |
+| R4 | package.js ×2 | 0/0 | 四 ZIP 哈希一致（重建值） |
 | R4 | m4-ci.test.js | 0 | 39 PASS（当时） |
 | R4 | eval --check-readiness | 2 | ready=false，5 blockers |
 | R4 | eval --dry-run（/tmp） | 2 | 24 cells，not-executed |
 | R4 | eval --results fake（/tmp） | 2 | 拒绝写入 |
 | R4 | eval run.selftest | 0 | 16 PASS |
 | R4 | release-gate（旧路径） | 1 | manifest missing / schema invalid |
-| R7 | validate_provider.py | 0 | 33 cards，recomputed experimental，stale，10/37 |
+| R7 | validate_provider.js | 0 | 33 cards，recomputed experimental，stale，10/37 |
 | R7 | schema-lite 33 卡 + provider/capabilities | 0 | 0 违规/0 错误 |
 | R7 | 负例 iosLabel/verified/悬空 pointer/悬空 command | 1 | 全部拒绝 |
 | R7 | 基线重放/当前 HEAD 重放 | 0/1 | 33 卡逐字节一致 / pin 拒绝 |
@@ -475,7 +475,7 @@
 | R7 | library gate | 未运行 | status=not-run |
 | R9 | dist-package.test.js | 0 | 118/118（当时） |
 | R9 | m4-ci.test.js | 0 | 61 PASS（当时） |
-| R9 | package.py ×2 | 0/0 | checksums 332ee1fc… 一致 |
+| R9 | package.js ×2 | 0/0 | checksums 332ee1fc… 一致 |
 | R9 | 干净单仓 cli build/test/package/m4-ci | 1 | 单仓不可运行（blocking） |
 | R11 | schema-lite 17 卡 | 0 | 0 违规 |
 | R11 | validator（/tmp）×2 | 0/0 | WROTE 17；27 文件逐字节一致 |
@@ -485,10 +485,10 @@
 | R13 | m4-ci.test.js | 0 | 63 PASS；269/47/6/0 dead |
 | R13 | contract-selftest / governance | 0/0 | 25 PASS / 23 PASS |
 | R13 | cli.js test / check | 0/0 | 25+8+12+11；52 files |
-| R13 | package.py ×2 | 0/0 | checksums 71014646… 一致 |
+| R13 | package.js ×2 | 0/0 | checksums 71014646… 一致 |
 | R13 | release-gate / native-layers strict | 0/0 | 四包 validated / 7 层 |
 | R13 | 单仓 m4-ci / cli build / cli check / dist-package / release-gate | 0 | 63 / 52 files / 52 files / 32/32 / 0 |
-| R13 | 单仓默认 full package.py | 1 | 清晰提示三种修复方式 |
+| R13 | 单仓默认 full package.js | 1 | 清晰提示三种修复方式 |
 | R13 | full 显式根 build → check | 0 → **1** | build-info.json 差异（条件性阻断） |
 
 ## 附录 B · 最终状态与哈希（R5 只读复算）

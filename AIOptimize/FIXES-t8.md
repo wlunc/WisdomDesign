@@ -13,7 +13,7 @@ R1/R4 指出的打包态运行时、manifest 契约脱节、单套 manifest、CI
 | --- | --- |
 | 打包态运行时 | 四包内 `get-component.js` / `validate-spec.js` 均可直接运行（默认 catalog 与 overlay 均不逃逸；错误与用法均非零退出） |
 | manifest | 核心 + 四包 manifest 对 M0 `manifest.schema.json` **0 错**；`contents.fileCount` = 包内真实文件数；`LICENSE-NOTICE.txt` 纳入哈希；平台包 manifest 自哈希由 `checksums.json` 正确发布 |
-| 单套 manifest | `tools/ai-skill/lib/manifest.js` 是唯一生成器，`cli.js build` 与 `package.py`（经 `lib/write-manifest.js`）共用，写入前用 `schema-lite` 校验，违规即非零退出 |
+| 单套 manifest | `tools/ai-skill/lib/manifest.js` 是唯一生成器，`cli.js build` 与 `package.js`（经 `lib/write-manifest.js`）共用，写入前用 `schema-lite` 校验，违规即非零退出 |
 | CI | PR 使用 `git diff` 文件列表（`--require-paths`，空列表失败）；新增打包/可复现层与 `dist-package` 审计；L2 校验原生层登记与证据指针；L3 指向真实 `dist/ai-skill/v1.0.0`；死链正则修复（46 → 50 条内部链接真实匹配，0 死链，并有最小链接数下限） |
 | 治理 | final-acceptance / coverage-model / ai README / AIOptimize README / 04-M4 两份 / 05-M5 / CONTRACT-STATUS 不再称 M1–M5 未实施；05 改用 `t11-post-t9.plan.json` |
 | 交付 dist | 依 R6/R10 当前 HEAD 与修复后 provider 重打包，前后哈希见 §4 |
@@ -23,7 +23,7 @@ R1/R4 指出的打包态运行时、manifest 契约脱节、单套 manifest、CI
 | 发现 | 处置 | 证据 |
 | --- | --- | --- |
 | **F1** 打包态 get-component 不可用 | `runtime/get-component.js` 默认 catalog 自适应（`<root>/catalog` 优先、回退 `core/catalog`）；overlay 引用按 `ai/skill/` 前缀去掉后只在 Skill 包内解析，越界即 `exit 2`；Core 包携带 `component-overlays/`（检索元数据）使打包与源码布局的关键词/别名行为一致；新增“在构建出的包内执行 runtime”测试 | `tests/runtime.test.js`（打包布局用例）、`tests/dist-package.test.js`（四包 runtime 六种退出码） |
-| **F2** manifest schema 未被消费、计数/哈希缺口 | 新增 `lib/manifest.js`：生成并校验 schema、`contents.fileCount` 取真实文件数、`files.json` 覆盖全部非自指文件（含 `LICENSE-NOTICE.txt`）、`checksums.json` 发布 `manifest.json`/`files.json` 哈希；`package.py` 改写 | 四包 manifest schema 0 错；dist-package R8 时 118 项、R12 后 119 项通过 |
+| **F2** manifest schema 未被消费、计数/哈希缺口 | 新增 `lib/manifest.js`：生成并校验 schema、`contents.fileCount` 取真实文件数、`files.json` 覆盖全部非自指文件（含 `LICENSE-NOTICE.txt`）、`checksums.json` 发布 `manifest.json`/`files.json` 哈希；`package.js` 改写 | 四包 manifest schema 0 错；dist-package R8 时 118 项、R12 后 119 项通过 |
 | **F3** Provider/API 卡省略证据字段可绕过 verified | provider.schema 增加 effective/declared=verified → 强制 `evidenceRefs` 非空 + `computedAtBuild=true`；api-card 增加 example-compiled/template-verified → 强制 `compilation` 存在、`executed=true`、`exitCode=0`（template-verified 另需 `matrixRef`）；新增省略字段负例；修正 api-card `$id` | `tests/contract-fixtures.test.js`（25 PASS）、`tests/m4-ci.test.js` |
 | **F4** 语义卡 sourceRefs 行号系统性错误 | `extract-design.rb` 改用绝对行号（`section[:lines]` 的 0-based index + 1），每条 bullet/note 附 `lineText`；移除重复 `when` 死代码；新增逐条回读断言（37 组件 × 全部 refs） | `tests/core-catalog.test.js` "F4" 用例；WDButton 由 :12/:14 修正为 :17/:18 |
 | **F5** 状态/内容/无障碍结论未提取 | 提取 §5 状态（表格→`状态=…; 视觉=…`）、§7 内容、§10 无障碍，逐条带 `sourceRef`+`lineText`；卡片新增三段并纳入来源追溯 | `tests/core-catalog.test.js` 断言三段存在；WDButton 卡可见 §5/§7/§10 |
@@ -36,10 +36,10 @@ R1/R4 指出的打包态运行时、manifest 契约脱节、单套 manifest、CI
 
 ## 2. R4 复核项处置
 
-- **PR 路由失效**：`ci/route-changes.js` 新增 `--paths-file` 与 `--require-paths`；解析 REST `files[]`、`pull_request.changed_files`（数量时不再误当列表）、push `commits[]`；packaging 规则改为匹配 `tools/ai-skill/package.py` / `lib/manifest.js` / `lib/write-manifest.js`；新增 route/event 用例。
+- **PR 路由失效**：`ci/route-changes.js` 新增 `--paths-file` 与 `--require-paths`；解析 REST `files[]`、`pull_request.changed_files`（数量时不再误当列表）、push `commits[]`；packaging 规则改为匹配 `tools/ai-skill/package.js` / `lib/manifest.js` / `lib/write-manifest.js`；新增 route/event 用例。
 - **L2 no-op**：新增 `ai/skill/manifest/native-layers.json` 登记 7 个原生层（owner/command/status/evidence JSON pointer）与 `ci/check-native-layers.js`；未登记或证据不可解析即 `exit 1`；本仓不执行 xcodebuild/gradle、不声明原生通过（`--strict-evidence` 本地校验平台仓证据存在）。
 - **L3 指向不存在的 manifest**：新增 `ci/release-gate.js --dist dist/ai-skill/v1.0.0`，校验真实四包 manifest schema、文件计数、reportRef/checksumsRef 存在、zip/manifest/files.json 哈希、dirty→snapshot、verified→四 flag。
-- **CI 未覆盖 runtime/预算/复现/打包**：workflow 重写为 L0（含 `cli.js test` = runtime+budget）、L1（真实文件列表路由）、L2（原生层登记）、`package-repro`（build+check、两次 package.py checksums diff、dist-package 审计）、L3（显式批准的 release-gate）。
+- **CI 未覆盖 runtime/预算/复现/打包**：workflow 重写为 L0（含 `cli.js test` = runtime+budget）、L1（真实文件列表路由）、L2（原生层登记）、`package-repro`（build+check、两次 package.js checksums diff、dist-package 审计）、L3（显式批准的 release-gate）。
 - **死链正则空跑**：正则改为 `/\[[^\]]*\]\(([^)]+)\)/g`，递归扫描并加 `dead-link-audit-not-empty`（≥40 内部链接、≥90 md）下限。
 - **manifest 完整性 / 交付 dist 陈旧**：见 §1 F2 与 §4。
 - **平台包 build-info 仍是 core**：manifest 生成器为每个包写 `build-info.json`（package/scope/platforms/residentBytes/inputs）；平台包 SKILL 追加后检查预算。
@@ -54,8 +54,8 @@ R1/R4 指出的打包态运行时、manifest 契约脱节、单套 manifest、CI
 - `ai/skill/manifest/native-layers.json`（新）、`ai/skill/manifest/package-exemptions.json`（新）
 - `ai/skill/governance/final-acceptance.md`、`ai/skill/governance/coverage-model.json`、`ai/skill/CONTRACT-STATUS.md`
 - `tools/ai-skill/lib/manifest.js`（新）、`tools/ai-skill/lib/write-manifest.js`（新）
-- `tools/ai-skill/lib/extract-design.rb`、`tools/ai-skill/lib/generate-core-catalog.js`
-- `tools/ai-skill/cli.js`、`tools/ai-skill/package.py`
+- `tools/ai-skill/lib/extract-design.js`、`tools/ai-skill/lib/generate-core-catalog.js`
+- `tools/ai-skill/cli.js`、`tools/ai-skill/package.js`
 - `tools/ai-skill/ci/route-changes.js`、`tools/ai-skill/ci/check-native-layers.js`（新）、`tools/ai-skill/ci/release-gate.js`（新）
 - `tools/ai-skill/tests/{contract-fixtures,core-catalog,runtime,build,m4-ci,governance-selftest}.js`、`tools/ai-skill/tests/dist-package.test.js`（新）
 - `tools/ai-skill/README.md`
@@ -76,7 +76,7 @@ R1/R4 指出的打包态运行时、manifest 契约脱节、单套 manifest、CI
 | `node tools/ai-skill/cli.js test` | 0 | M0 契约 25 + M1 目录 8 + M1 运行时 12 + M1 构建 11 全过 |
 | `node tools/ai-skill/cli.js build` | 0 | 52 文件，resident 5,389 B，manifest schema-valid |
 | `node tools/ai-skill/cli.js check` | 0 | 52 文件匹配临时重建（测试写报告/评测结果后仍通过） |
-| `python3 tools/ai-skill/package.py` ×2 | 0 / 0 | 两次 `checksums.json` 逐字节一致（diff 空） |
+| `node tools/ai-skill/package.js` ×2 | 0 / 0 | 两次 `checksums.json` 逐字节一致（diff 空） |
 | `node tools/ai-skill/tests/dist-package.test.js` | 0 | 118/118 通过（R8 时；R12 后 119/119） |
 | `node tools/ai-skill/ci/release-gate.js` | 0 | 四包候选校验通过（workspace-snapshot） |
 | `node tools/ai-skill/tests/m4-ci.test.js` | 0 | 61/61 通过（R8 时；R12 后 63/63）；truthFingerprint R8 值 `2eef9f399184…`，R12 当前值 `c303ee83e3f5dda86af1b9869d3c19d18f34cee04ae946a934c5f40e1680c0ab`（范围排除生成 catalog/dist） |

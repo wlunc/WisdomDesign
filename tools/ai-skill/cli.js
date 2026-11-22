@@ -5,7 +5,7 @@
 //   SKILL.md, catalog/, page-spec/, runtime/, component-overlays/,
 //   build-info.json, files.json, manifest.json
 // manifest.json / files.json / build-info.json are produced by lib/manifest.js, the
-// same generator the M4 packager (tools/ai-skill/package.py) uses, and are validated
+// same generator the M4 packager (tools/ai-skill/package.js) uses, and are validated
 // against ai/skill/manifest/manifest.schema.json before the build is accepted.
 const fs = require('fs');
 const path = require('path');

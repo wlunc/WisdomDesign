@@ -31,7 +31,7 @@ workflow 触发：`pull_request` 与 `push: main`，带 `paths-ignore` 过滤与
 | L1 范围路由 | `change-scope-routing` | 所有相关 PR | 执行 `tools/ai-skill/ci/route-changes.js` 输出 JSON，声明每个变更类需补跑哪层 | 不把文档 PR 标成原生已测 |
 | L2 原生深度 | `native-depth` | 仅 iOS/Android Provider、API、模板、黄金页面变更 | `ci/check-native-layers.js`：每个必跑原生层必须在 `ai/skill/manifest/native-layers.json` 登记（owner/command/status/evidence）；单仓 checkout 只校验登记并标记平台证据 external-owned；提供 `--ios-root/--android-root`（或 full 模式）时才按平台仓 `verification.json` 的 JSON pointer 做严格校验 | 本 job 不跑 xcodebuild / gradle，不写平台仓，不声明原生通过 |
 | L3 发布门禁 | `release-gate` | 仅 `workflow_dispatch` 且输入 `release=true`，且前面 job 全绿 | `ci/release-gate.js --dist dist/ai-skill/v1.0.0`：校验 artifact 中实际存在的包集（core-only 或 full）——manifest schema、contents.fileCount=实际、reportRef/checksumsRef 存在、zip/manifest/files.json 哈希、dirty→snapshot、verified→四 flag、checksums 与目录包集一致 | 默认不运行；没有显式批准不发布 |
-| 打包 / 可复现层 | `package-repro` | 所有相关 PR / push | 默认 core-only：`cli.js build`+`check`、`package.py --platforms core` 连续两次 `checksums.json` 逐字节一致、`dist-package.test.js --platforms core`；配置平台仓变量并 checkout 时切 full（`--platforms core,ios,android` + `--ios-root/--android-root` + 严格 L2 证据） | 不执行宿主加载；平台原生命令不在此层 |
+| 打包 / 可复现层 | `package-repro` | 所有相关 PR / push | 默认 core-only：`cli.js build`+`check`、`package.js --platforms core` 连续两次 `checksums.json` 逐字节一致、`dist-package.test.js --platforms core`；配置平台仓变量并 checkout 时切 full（`--platforms core,ios,android` + `--ios-root/--android-root` + 严格 L2 证据） | 不执行宿主加载；平台原生命令不在此层 |
 
 增量的 `route-changes.js` 在 `tools/ai-skill/ci/`，只读 GitHub event payload + `--paths-file` 文件列表，按 M0 契约的“变更→必跑”表输出需补跑的层。PR 事件本身不含文件列表（`pull_request.changed_files` 是数量），CI 用 `git diff --name-only origin/<base>...HEAD` 生成列表并加 `--require-paths`，空列表直接失败，不再退化为 baseline。pure-doc PR 只会得到 `nativeRequired: false` 与提醒，不会伪报原生测试。
 
@@ -85,4 +85,4 @@ workflow 触发：`pull_request` 与 `push: main`，带 `paths-ignore` 过滤与
 ## 6. 与上游包任务的接口
 
 - `dist-package` 用例组已落地（`tools/ai-skill/tests/dist-package.test.js`）：从生成包内读取 manifest / files.json / checksums，审计 schema、文件计数、逐文件哈希、ZIP 元数据/CRC/路径安全、scope 隔离、包内 runtime 退出码、SKILL 预算与死引用，并已接入 CI `package-repro` job。
-- 本契约的后续修改不得引入第二套 manifest 格式：`tools/ai-skill/lib/manifest.js` 是唯一生成器，`cli.js` 与 `package.py` 共用。
+- 本契约的后续修改不得引入第二套 manifest 格式：`tools/ai-skill/lib/manifest.js` 是唯一生成器，`cli.js` 与 `package.js` 共用。

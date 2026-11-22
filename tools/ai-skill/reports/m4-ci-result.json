@@ -271,7 +271,7 @@
     {
       "id": "route-packaging-layer",
       "status": "passed",
-      "detail": "package.py change requires clean-unpack/checksum layers"
+      "detail": "package.js change requires clean-unpack/checksum layers"
     },
     {
       "id": "route-manifest-writer",
@@ -321,10 +321,10 @@
     {
       "id": "check-no-mutation",
       "status": "passed",
-      "detail": "truth fingerprint unchanged 117edaf6bc26 == 117edaf6bc26"
+      "detail": "truth fingerprint unchanged a622e86435b7 == a622e86435b7"
     }
   ],
-  "truthFingerprint": "117edaf6bc263e8418ecf18ac542edcb96a602e17b3f5588fc7249f3990d8fa0",
+  "truthFingerprint": "a622e86435b7adf9e851a8896661b025e9805649b07c77b350b5c480eb3a5180",
   "internalLinkCount": 74,
   "externalLinkCount": 0,
   "markdownFilesAudited": 272

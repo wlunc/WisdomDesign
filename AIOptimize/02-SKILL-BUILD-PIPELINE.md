@@ -259,7 +259,7 @@ dist/ai-skill/<skill-version>/
 ```
 
 - **没有 `reports/` 目录**：机器报告落 `tools/ai-skill/reports/m4-ci-result.json`（CI artifact）、每包 `build-info.json` 与 `files.json`、以及顶层 `checksums.json`；不存在 `build-report/verification-report/evaluation-report` 这些历史设计稿文件。
-- **单仓 core-only**：标准 checkout 没有同级 iOS / android 时，`python3 tools/ai-skill/package.py --platforms core` 只产出 Core 包，manifest 只记录 wisdomdesign 来源（不伪造平台 commit）。
+- **单仓 core-only**：标准 checkout 没有同级 iOS / android 时，`node tools/ai-skill/package.js --platforms core` 只产出 Core 包，manifest 只记录 wisdomdesign 来源（不伪造平台 commit）。
 - **full**：`--platforms core,ios,android` 且平台仓通过 `--ios-root/--android-root` 或 `WISDOMDESIGN_*_ROOT` 或同级目录提供；缺失时以清晰非零退出提示，不静默降级。
 
 每个可加载包都有独立 `SKILL.md`、`manifest.json` 和 `files.json`。All 包复用 Core 和平台包内容，不形成第五份真源。
@@ -677,7 +677,7 @@ loading / content / empty / error
 
 ## 11. CLI 契约（与 R12 实现对齐）
 
-实际命令（`wisdomdesign/tools/ai-skill/`）；**不存在** `pack` / `verify-templates` / `evaluate` 子命令——打包在 `package.py`，模板验证属平台仓 CI，评测在 `eval/run.js`。
+实际命令（`wisdomdesign/tools/ai-skill/`）；**不存在** `pack` / `verify-templates` / `evaluate` 子命令——打包在 `package.js`，模板验证属平台仓 CI，评测在 `eval/run.js`。
 
 ```bash
 # Core 包：设计真源 -> 目录包（平台仓仅作来源出处，可选）
@@ -690,8 +690,8 @@ node tools/ai-skill/cli.js check
 node tools/ai-skill/cli.js test
 
 # 确定性四类包 + ZIP + checksums（与 cli.js 共用 lib/manifest.js）
-python3 tools/ai-skill/package.py --platforms core                 # 单仓 checkout
-python3 tools/ai-skill/package.py --platforms core,ios,android \
+node tools/ai-skill/package.js --platforms core                 # 单仓 checkout
+node tools/ai-skill/package.js --platforms core,ios,android \
   --ios-root ../iOS --android-root ../android                     # full
 
 # 已构建包审计（manifest schema / 文件计数 / 哈希 / ZIP / 包内 runtime / 预算）
@@ -710,7 +710,7 @@ node tools/ai-skill/eval/run.js --report
 要求：
 
 - 无参数不隐式写其它仓；未提供平台仓时 Core 构建/打包仍可完成，full 打包以清晰非零退出提示 checkout / `--*-root`，不再假设三仓同级；
-- CLI `build/check/test` 只负责 Core；平台载荷打包在 `package.py`，模板验证在平台仓 CI，评测在 `eval/run.js`；
+- CLI `build/check/test` 只负责 Core；平台载荷打包在 `package.js`，模板验证在平台仓 CI，评测在 `eval/run.js`；
 - 路径来自参数、环境变量（`WISDOMDESIGN_IOS_ROOT` / `WISDOMDESIGN_ANDROID_ROOT`）或同级 workspace 布局；
 - 所有失败以非零退出码返回；
 - 机器报告输出 JSON，人类摘要不替代原始报告；
@@ -733,7 +733,7 @@ node tools/ai-skill/eval/run.js --report
 - 可复现 `check`；
 - 来源、版本和 coverage 报告；
 - `SKILL.md` 常驻预算检查；
-- 打包/复现层默认 **core-only**（`package.py --platforms core`）；只有显式 checkout 平台仓（`--ios-root/--android-root`）时才跑 full 打包。
+- 打包/复现层默认 **core-only**（`package.js --platforms core`）；只有显式 checkout 平台仓（`--ios-root/--android-root`）时才跑 full 打包。
 
 ### 12.2 按输入范围触发
 
@@ -843,7 +843,7 @@ M0 冻结任务集和指标定义；首次评测只建立基线，不预设必�
 必须同时满足：
 
 1. Core、iOS、Android 生成包可从各自真源重建；
-2. `cli.js build / check / test` 与 `package.py --platforms ...`、`dist-package.test.js` 有可运行证据（`pack` 子命令不存在，打包器即 `package.py`）；
+2. `cli.js build / check / test` 与 `package.js --platforms ...`、`dist-package.test.js` 有可运行证据（`pack` 子命令不存在，打包器即 `package.js`）；
 3. 至少一个 iOS 和一个 Android 黄金页面在消费侧通过各自规定验证；
 4. 不支持能力会显式失败或降级；
 5. 生成包可被目标宿主实际加载；
