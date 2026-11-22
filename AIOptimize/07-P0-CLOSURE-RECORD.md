@@ -70,9 +70,19 @@
 | 项 | 状态 | 需要的条件 |
 | --- | --- | --- |
 | P0-3 Android 原生闭环 | **paused（用户决定）** | native compile 已过；平台尚未完成，暂停继续 UI 矩阵/ABI/fontScale/TalkBack/IME；Provider 保持 experimental/规划态 |
-| P0-4 iOS UI 矩阵/library gate | blocked | 非 PTY/sandbox 环境 |
+| P0-4 iOS UI 矩阵/library gate | attempted / blocked | 已跑 `Scripts/ci.sh pr`：格式 212 文件通过、build-for-testing 通过；测试执行仍因 CoreSimulator `DTServiceHub/lockdown` 连接失败而挂起（exit 65，0 测试执行）。需健康模拟器环境 |
 | P0-5 宿主加载 | not-run | 确定目标 AI 宿主 |
 | P0-6 M5 真实评测 | not-run | pin 模型/宿主/工具/预算 |
+
+### 5.1 P0-4 尝试记录（2026-11-22）
+
+- 修复格式门禁范围：`Scripts/check-format.sh` 不再把 `AIStarter/**` 与 `ai/skill-provider/templates/**` 当库源码检查（它们是消费方/模板，不是 WisdomUI 库）。
+- `Scripts/ci.sh pr` 实测：
+  - PR-0 格式：212 files，`check-format: OK`；
+  - PR-1a `build-for-testing`：通过（2.7s）；
+  - PR-1b 测试：失败 exit 65。日志显示模拟器 `DTServiceHubClient failed to bless service hub` / `localDeviceConnectionWithError`，随后 `xctest encountered an error (The test runner hung before establishing connection)`；0 测试执行。
+- 尝试过 iPhone Air 26.5 与 iPhone 15 Pro 17.5、重启 CoreSimulator 服务；`simctl spawn` 正常，但 `xctest` 仍无法连接测试宿主。
+- 结论：library gate 与 UI 矩阵均被宿主机 CoreSimulator 服务阻断，未取得通过证据；不改测试代码来绕过。
 
 ## 6. 脚本语言统一为 JavaScript（2026-11-22）
 
