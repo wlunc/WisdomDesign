@@ -78,6 +78,48 @@ function runGenerator(tempCatalog) {
 function listTree(root) {
   return manifestLib.listFiles(root, '');
 }
+// Package identity lives here so Core and the platform packages never drift.
+// The name encodes the package scope: an agent seeing "wisdom-page-ios" knows it
+// carries SwiftUI evidence, and "wisdom-page-design" knows it must stop before
+// generating native code. Same-name packages would silently compete for one rank.
+const SKILL_IDENTITY = {
+  core: {
+    name: 'wisdom-page-design',
+    scope: 'design semantics only. No platform API, no native template, no code generation.',
+    description: 'WisdomDesign 页面设计 Skill（仅设计语义）：37 组件用途与反例检索、Page Spec 编写与结构校验、跨端页面交接。适合设计与需求评审；不包含任何 SwiftUI/Compose API，需要写代码时请改用 wisdom-page-ios。',
+  },
+  ios: {
+    name: 'wisdom-page-ios',
+    scope: 'design semantics + iOS SwiftUI public API cards, golden template and scaffolder. Android is not included.',
+    description: 'WisdomDesign iOS 开发 Skill：37 组件设计语义 + 79 张真实 SwiftUI API 卡（签名/调用形态）+ 黄金页面模板与脚手架 + iOS 能力画像。用于 SwiftUI 页面实现；编译与 UI 验证仍需在 Xcode 工程内执行。',
+  },
+  android: {
+    name: 'wisdom-page-android',
+    scope: 'design semantics + Android Compose public API cards and template. Android implementation is paused; treat as experimental.',
+    description: 'WisdomDesign Android 开发 Skill（实验/暂停）：37 组件设计语义 + 17 张 Compose API 卡 + Compose 黄金模板。Android 组件库尚未完成，原生编译与 UI 矩阵未验证；仅在明确知道限制时使用。',
+  },
+  all: {
+    name: 'wisdom-page',
+    scope: 'design semantics + iOS and Android payloads. Route by task; never mix platform APIs.',
+    description: 'WisdomDesign 跨端页面 Skill：37 组件语义、Page Spec 校验，附 iOS（79 张）与 Android（17 张）API 卡与黄金模板。用于双端设计与代码生成；不宣称未经编译/UI 矩阵验证的通过结论。',
+  },
+};
+
+function skillIdentity(packageKey) {
+  const identity = SKILL_IDENTITY[packageKey];
+  if (!identity) throw new Error('unknown package identity: ' + packageKey);
+  return identity;
+}
+
+function renderTemplate(template, packageKey) {
+  const identity = skillIdentity(packageKey);
+  return template
+    .replace('{{BUDGET_BYTES}}', String(RESIDENT_BUDGET_BYTES))
+    .replace('{{SKILL_NAME}}', identity.name)
+    .replace('{{SKILL_DESCRIPTION}}', identity.description)
+    .replace('{{SKILL_SCOPE}}', identity.scope);
+}
+
 function cleanOut(out) {
   fs.mkdirSync(out, { recursive: true });
   for (const entry of fs.readdirSync(out)) fs.rmSync(path.join(out, entry), { recursive: true, force: true });
@@ -88,7 +130,7 @@ function renderInto(out, templatePath = TEMPLATE, repoRoots = {}) {
   runGenerator(catalogSource);
 
   const template = normalize(fs.readFileSync(templatePath, 'utf8'));
-  const skill = template.replace('{{BUDGET_BYTES}}', String(RESIDENT_BUDGET_BYTES));
+  const skill = renderTemplate(template, 'core');
   const skillBytes = Buffer.byteLength(skill, 'utf8');
   if (skillBytes > RESIDENT_BUDGET_BYTES) throw new Error('resident SKILL.md exceeds budget: ' + skillBytes + ' > ' + RESIDENT_BUDGET_BYTES);
   writeFile(out, 'SKILL.md', skill);
@@ -169,5 +211,8 @@ function main() {
   else if (args.command === 'check') check(args);
   else test();
 }
-try { main(); }
-catch (error) { console.error('cli failed: ' + error.message); process.exit(1); }
+module.exports = { SKILL_IDENTITY, skillIdentity, renderTemplate };
+if (require.main === module) {
+  try { main(); }
+  catch (error) { console.error('cli failed: ' + error.message); process.exit(1); }
+}

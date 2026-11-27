@@ -124,6 +124,27 @@ test('component overlay retrieval metadata ships inside the package', () => {
   assert.ok(withOverlay.length > 0);
 });
 
+test('SKILL.md carries a valid frontmatter identity with declared scope', () => {
+  // DSH and compatible hosts ignore a SKILL.md without YAML frontmatter
+  // (name + description) or with a non-kebab-case name. The scope line must
+  // also differ per package, otherwise design-only and code-capable packages
+  // look identical to the agent.
+  const skill = fs.readFileSync(path.join(DEFAULT_PKG, 'SKILL.md'), 'utf8');
+  assert.ok(skill.startsWith('---\n'), 'SKILL.md must start with YAML frontmatter');
+  const end = skill.indexOf('\n---\n', 4);
+  assert.ok(end > 0, 'frontmatter must be closed');
+  const frontmatter = skill.slice(4, end);
+  const name = /^name: (.+)$/m.exec(frontmatter);
+  const description = /^description: (.+)$/m.exec(frontmatter);
+  assert.ok(name, 'frontmatter missing name');
+  assert.ok(description && description[1].trim().length > 20, 'frontmatter missing description');
+  assert.match(name[1].trim(), /^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'skill name must be kebab-case');
+  assert.ok(skill.includes('**This package:'), 'SKILL.md must declare the package scope');
+  for (const placeholder of ['{{SKILL_NAME}}', '{{SKILL_DESCRIPTION}}', '{{SKILL_SCOPE}}', '{{BUDGET_BYTES}}']) {
+    assert.ok(!skill.includes(placeholder), 'unrendered template placeholder: ' + placeholder);
+  }
+});
+
 test('CLI usage errors exit non-zero instead of silently using defaults', () => {
   const missingOut = run('build', ['--out']);
   assert.strictEqual(missingOut.status, 2, 'build --out without a value must be a usage error');

@@ -321,10 +321,10 @@
     {
       "id": "check-no-mutation",
       "status": "passed",
-      "detail": "truth fingerprint unchanged c6828dd12a39 == c6828dd12a39"
+      "detail": "truth fingerprint unchanged fb5d715ac189 == fb5d715ac189"
     }
   ],
-  "truthFingerprint": "c6828dd12a39f58db79f80a4b1c37f468a7b6168da7a3f262e8ddf94150f0607",
+  "truthFingerprint": "fb5d715ac18986ca461c277f96bf912b24ddb683055c8f388d80808c22360772",
   "internalLinkCount": 77,
   "externalLinkCount": 0,
   "markdownFilesAudited": 269

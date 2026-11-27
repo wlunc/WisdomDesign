@@ -7,6 +7,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const { writeZip } = require('./lib/zip');
+const { skillIdentity, renderTemplate } = require('./cli.js');
 
 const DESIGN = path.resolve(__dirname, '..', '..');
 const REPO = path.dirname(DESIGN);
@@ -20,6 +21,7 @@ const PLATFORM_NAMES = ['ios', 'android'];
 const PLATFORM_REPO_DIR = { ios: 'iOS', android: 'android' };
 const PLATFORM_ENV = { ios: 'WISDOMDESIGN_IOS_ROOT', android: 'WISDOMDESIGN_ANDROID_ROOT' };
 const PROVIDER_SUBDIR = 'ai/skill-provider';
+const AI_ROOT = path.join(DESIGN, 'ai', 'skill');
 // Provider sources contain two kinds of files the runtime never uses:
 //  1. build/validation tooling (card generator, provider validator, template checker)
 //  2. generation-time provenance docs (FIXES-*.md, SNAPSHOT.md)
@@ -133,12 +135,20 @@ function writeManifest(pkgRoot, packageName, platforms, args) {
   if (manifest.contents.fileCount !== actual) die(packageName + ': manifest.contents.fileCount ' + manifest.contents.fileCount + ' != actual ' + actual);
   return manifest;
 }
-function appendPlatformSkill(pkgRoot, title, lines) {
-  const file = path.join(pkgRoot, 'SKILL.md');
-  fs.appendFileSync(file, '\n## ' + title + '\n\n' + lines.join('\n') + '\n');
-  const size = fs.statSync(file).size;
-  if (size > RESIDENT_BUDGET_BYTES) die(path.basename(pkgRoot) + ': SKILL.md exceeds resident budget ' + size + ' > ' + RESIDENT_BUDGET_BYTES);
-  return size;
+// Re-render SKILL.md for a package identity instead of appending a paragraph:
+// the frontmatter name/description/scope must match what the package actually
+// contains, otherwise an agent cannot tell design-only from iOS-capable.
+// Re-rendering also keeps the resident budget check on the final artifact.
+function renderSkillFor(pkgRoot, packageKey, extraSections) {
+  const template = fs.readFileSync(path.join(AI_ROOT, 'SKILL.md.template'), 'utf8').replace(/\r\n/g, '\n');
+  let skill = renderTemplate(template, packageKey);
+  for (const section of extraSections || []) {
+    skill = skill.trimEnd() + '\n\n## ' + section.title + '\n\n' + section.lines.join('\n') + '\n';
+  }
+  const bytes = Buffer.byteLength(skill, 'utf8');
+  if (bytes > RESIDENT_BUDGET_BYTES) die(path.basename(pkgRoot) + ': SKILL.md exceeds resident budget ' + bytes + ' > ' + RESIDENT_BUDGET_BYTES);
+  fs.writeFileSync(path.join(pkgRoot, 'SKILL.md'), skill);
+  return bytes;
 }
 function zipPackage(pkgRoot, outPath) {
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -169,20 +179,26 @@ function main() {
     copyTree(path.join(root, PROVIDER_SUBDIR), path.join(pkg, 'platforms', platform), { exclude: PROVIDER_EXCLUDE });
     const status = readJson(path.join(root, PROVIDER_SUBDIR, 'provider.json'), {}).status || {};
     const effective = status && typeof status === 'object' ? (status.effective || 'spec-only') : String(status);
-    appendPlatformSkill(pkg, 'Platform: ' + platform, [
-      'Provider and API cards are under platforms/' + platform + '/.',
-      'Effective status: ' + effective + '.',
-    ]);
+    renderSkillFor(pkg, platform, [{
+      title: 'Platform: ' + platform,
+      lines: [
+        'Provider and API cards are under platforms/' + platform + '/.',
+        'Effective status: ' + effective + '.',
+      ],
+    }]);
     packages[platform] = pkg;
   }
   if (args.wanted.includes('ios') && args.wanted.includes('android')) {
     const allpkg = path.join(STAGING, 'wisdom-page-all');
     fs.cpSync(core, allpkg, { recursive: true });
     for (const platform of args.wanted) copyTree(path.join(requirePlatformRoot(platform, args), PROVIDER_SUBDIR), path.join(allpkg, 'platforms', platform), { exclude: PROVIDER_EXCLUDE });
-    appendPlatformSkill(allpkg, 'Platforms: ios, android', [
-      'Use platforms/<id>/ provider data per task; do not mix platform APIs.',
-      'Each platform keeps its own evidence; never mechanically translate one platform into another.',
-    ]);
+    renderSkillFor(allpkg, 'all', [{
+      title: 'Platforms: ' + args.wanted.join(', '),
+      lines: [
+        'Use platforms/<id>/ provider data per task; do not mix platform APIs.',
+        'Each platform keeps its own evidence; never mechanically translate one platform into another.',
+      ],
+    }]);
     packages.all = allpkg;
   }
   for (const pkg of Object.values(packages)) fs.writeFileSync(path.join(pkg, 'LICENSE-NOTICE.txt'), LICENSE_TEXT);

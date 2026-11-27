@@ -140,7 +140,41 @@ node ~/.dsh/skills/wisdom-page/platforms/ios/tools/scaffold.js \
 
 确定性：连续三次 `package.js` 产出相同 `checksums.json`（`0983ead7…`）。
 
-## 8. 卸载
+## 8. 包身份分离（2026-11-27）
+
+### 问题
+
+四个包文件名不同，但 `SKILL.md` 的 `name` 全是 `wisdom-page`。宿主按名字建索引：同名会互相覆盖或按 rank 竞争，且从名字看不出这个包能不能写 Swift 代码。
+
+### 修复
+
+身份集中在 `tools/ai-skill/cli.js` 的 `SKILL_IDENTITY`；`package.js` 用同一份模板重新渲染，而不是追加段落。
+
+| 包 | name | 常驻字节 | 文件 |
+| --- | --- | --- | --- |
+| core | `wisdom-page-design` | 5,796 | 53 |
+| ios | `wisdom-page-ios` | 5,908 | 141 |
+| android | `wisdom-page-android` | 5,923 | 78 |
+| all | `wisdom-page` | 5,959 | 166 |
+
+模板新增 `{{SKILL_NAME}}` / `{{SKILL_DESCRIPTION}}` / `{{SKILL_SCOPE}}` 占位符，正文首行声明 `**This package: …**`，让「只有设计语义」与「能写 SwiftUI」在文本层面可分辨。
+
+### 回归
+
+新增 `build.test.js` 断言：frontmatter 存在、name 为 kebab-case、必须声明 scope、不得残留模板占位符。
+
+### 实际安装
+
+```bash
+node tools/ai-skill/package.js --platforms core,ios
+rm -rf ~/.dsh/skills/wisdom-page
+cp -R dist/ai-skill/v1.0.0/wisdom-page-ios ~/.dsh/skills/wisdom-page-ios
+```
+
+结果：`wisdom-page-ios`（141 文件 / 304,921 B）被 DSH 发现并加载，`resourceBase` 指向 `~/.dsh/skills/wisdom-page-ios`。旧的同名 `wisdom-page` 已移除，避免两个包竞争同一 rank。
+
+## 9. 卸载
+
 
 ```bash
 rm -rf ~/.dsh/skills/wisdom-page
