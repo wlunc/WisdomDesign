@@ -87,7 +87,29 @@ node ~/.dsh/skills/wisdom-page/runtime/validate-spec.js \
   --file ~/.dsh/skills/wisdom-page/page-spec/examples/task-list.valid.json
 ```
 
-## 6. 卸载
+## 6. 2026-11-27 升级（证据刷新 + 卡覆盖 + 包内脚手架）
+
+| 项 | 升级前 | 升级后 |
+| --- | --- | --- |
+| iOS API 卡 | 33 张，10/37 组件 | **79 张，36/37 组件**（仅 WDAssigneePicker 无卡） |
+| 覆盖的 overlay 修饰符 | 无 | `View.wdSheet` / `wdAlert` / `wdActionSheet` / `wdToast` |
+| UI 矩阵 | 5 状态 × 2 字体 = 10 组，曾 blocked | **5 状态 × 2 字体 × 2 外观 = 20 组，全部通过** |
+| library gate | not-run | **通过**（400/400 测试、API 零 diff、覆盖率门槛） |
+| 包内脚手架 | 无（需手工 cp） | `platforms/ios/tools/scaffold.js` |
+| 快照状态 | stale（钉在 c3c32f3） | **current**（重钉到 ce8f39d，Xcode 27.2） |
+| 安装包 | 125 文件 / 684 KB | **172 文件 / 900 KB** |
+
+端点验证（安装路径下）：
+
+```bash
+node ~/.dsh/skills/wisdom-page/runtime/get-component.js --id WDCard --json   # exit 0
+node ~/.dsh/skills/wisdom-page/runtime/validate-spec.js \
+  --file ~/.dsh/skills/wisdom-page/page-spec/examples/task-list.valid.json   # exit 0
+node ~/.dsh/skills/wisdom-page/platforms/ios/tools/scaffold.js \
+  --page task-list --workspace /tmp/x --as ProfileScreen.swift               # exit 0
+```
+
+## 7. 卸载
 
 ```bash
 rm -rf ~/.dsh/skills/wisdom-page

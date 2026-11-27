@@ -1,39 +1,38 @@
 {
   "schemaVersion": "1.0",
-  "capturedAt": "2026-11-21T18:13:26+08:00",
+  "capturedAt": "2026-11-27T20:00:00+08:00",
   "captureMethod": "git rev-parse HEAD; git status --short; SHA-256 over NUL-separated relative path and file digest lines",
   "repositories": {
     "wisdomdesign": {
       "path": "wisdomdesign",
-      "commit": "b2c05d9f15d63cfa49948347f8c2b211cd7bde9e",
+      "commit": "0a675853621ebae5a3bf52b4fc816baf365fd7d9",
       "branch": "main",
       "dirty": false,
       "dirtyFiles": [],
-      "trackedContentHash": null,
-      "note": "Baseline commit before M0 contract files were created; new contract files are the current deliverable."
+      "trackedContentHash": "29a9de24e6ea14befd3073c30ed99099097d37c12f8cae5ad9c5867829746773"
     },
     "ios": {
       "path": "iOS",
-      "commit": "c3c32f3c81f66444abd10614acfc0095f80aebd6",
+      "commit": "ce8f39dce51b4d53c9ed870f29f1c68efd15ed8f",
       "branch": "main",
-      "dirty": true,
-      "trackedContentHash": "2b531363126fca19b716637db1703ad0bc01c354e1baa3b08df81a0969884a1d",
-      "dirtyFiles": [
-        "Sources/WisdomUI/Components/Composites/WDToolbar/WDToolbar.swift",
-        "Sources/WisdomUI/Components/Composites/WDToolbar/WDToolbarTooltip.swift",
-        "Sources/WisdomUI/Components/Primitives/WDAvatar/WDAvatar.swift",
-        "Sources/WisdomUI/Components/Primitives/WDCard/WDCard.swift",
-        "Tests/WisdomUITests/Components/WDCardTests.swift"
-      ],
-      "isolation": "Do not overwrite, stage, revert, or include these edits in Skill build inputs."
+      "dirty": false,
+      "dirtyFiles": [],
+      "trackedContentHash": "e4397bba7d64adde20670069001e60c294656247fd698662d3e8ea1565267a7f",
+      "apiSnapshotSha256": "58fb3291f1180552994c9c0ae81331d81adcdea50b0572e8a5837628164c4ce1",
+      "toolchain": {
+        "xcode": "27.2",
+        "build": "27B52",
+        "swift": "6.4.2",
+        "sdk": "iphonesimulator27.2"
+      }
     },
     "android": {
       "path": "android",
-      "commit": "3656d6ff8ae83cfd07166dd7fe85db489ef61110",
+      "commit": "43248cbc90dd82d07f6ef2c4517fda34ad621a97",
       "branch": "main",
       "dirty": false,
-      "trackedContentHash": "1614a84bdd66a6488427fec83546d4593249cff260ffb969f026c25265adbdfa",
-      "dirtyFiles": []
+      "dirtyFiles": [],
+      "trackedContentHash": "1b200547c48602d7888b644be1ef3bcf37c1d31e5f7907831ed5a4b347cf89ad"
     }
   },
   "designSources": {
@@ -45,7 +44,9 @@
     "specTreeHash": "f13f74a3c8e714e8290fe2f3574710ff4fb509b57ad9198c1ee117d5ac9d52da"
   },
   "limitations": [
-    "No native compile, snapshot, UI, device, or host-load verification was executed by this contract task.",
-    "D1 approval is represented by the task assignment to freeze M0 contracts; final independent review remains separate."
-  ]
+    "No native compile, snapshot, UI, or device verification is executed by the contract task itself.",
+    "iOS UI matrix and library gate are recorded separately in iOS/ai/skill-provider/verification.json.",
+    "Android M3 is paused by user decision; its provider remains experimental."
+  ],
+  "rebaselineNote": "Re-pinned on 2026-11-27 after Xcode 27.2 upgraded the toolchain and the previous baseline commit (c3c32f3) was superseded. The old dirty files no longer exist; the worktree was committed clean first."
 }

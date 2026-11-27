@@ -47,7 +47,7 @@ Write a Page Brief first: user intent, navigation skeleton, content pattern, pri
 
 ## 6. Scaffold and business modification boundary
 
-Templates are copied deterministically to a caller-specified project path and refuse overwrite by default; the model changes only business data, state, copy, actions, and component composition. Never auto-modify dependencies, signing, navigation, build scripts, or component-library source. The Core package has no scaffold template; single-platform scaffolding comes from the matching Provider.
+Platform packages ship a scaffolder: `platforms/<id>/tools/scaffold.js --list`, then `--page <id> --workspace <dir> --as <FileName>.swift`. Run it before editing so the model never retypes the skeleton (it refuses overwrite and path escape). The model changes only business data, state, copy, actions and composition; never auto-modify dependencies, signing, navigation, build scripts or library source.
 
 ## 7. Verification loop
 
