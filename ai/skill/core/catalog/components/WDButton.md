@@ -19,30 +19,7 @@ Contract: `contracts/WDButton.yaml` (sha256 `d24658c03c13ece3a9bb026e43a4385c1e1
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:13`
-- `docs/specs/01-basic.md:15`
-- `docs/specs/01-basic.md:19`
-- `docs/specs/01-basic.md:17`
-- `docs/specs/01-basic.md:18`
-- `docs/specs/01-basic.md:64`
-- `docs/specs/01-basic.md:68`
-- `docs/specs/01-basic.md:69`
-- `docs/specs/01-basic.md:70`
-- `docs/specs/01-basic.md:71`
-- `docs/specs/01-basic.md:72`
-- `docs/specs/01-basic.md:73`
-- `docs/specs/01-basic.md:82`
-- `docs/specs/01-basic.md:84`
-- `docs/specs/01-basic.md:85`
-- `docs/specs/01-basic.md:86`
-- `docs/specs/01-basic.md:87`
-- `docs/specs/01-basic.md:109`
-- `docs/specs/01-basic.md:111`
-- `docs/specs/01-basic.md:112`
-- `docs/specs/01-basic.md:113`
-- `docs/specs/01-basic.md:114`
-- `docs/specs/01-basic.md:115`
-- `docs/specs/01-basic.md:116`
+- `docs/specs/01-basic.md:13,15,17,18,19,64,68,69,70,71,72,73,82,84,85,86,87,109,111,112,113,114,115,116`
 
 ## 状态（来自正式规格 §5）
 

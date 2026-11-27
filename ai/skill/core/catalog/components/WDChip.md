@@ -16,24 +16,7 @@ Contract: `contracts/WDChip.yaml` (sha256 `e39ea876f02aad39968c24a6be0a759135a9e
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:935`
-- `docs/specs/01-basic.md:937`
-- `docs/specs/01-basic.md:943`
-- `docs/specs/01-basic.md:966`
-- `docs/specs/01-basic.md:970`
-- `docs/specs/01-basic.md:971`
-- `docs/specs/01-basic.md:972`
-- `docs/specs/01-basic.md:973`
-- `docs/specs/01-basic.md:982`
-- `docs/specs/01-basic.md:984`
-- `docs/specs/01-basic.md:985`
-- `docs/specs/01-basic.md:986`
-- `docs/specs/01-basic.md:1002`
-- `docs/specs/01-basic.md:1004`
-- `docs/specs/01-basic.md:1005`
-- `docs/specs/01-basic.md:1006`
-- `docs/specs/01-basic.md:1007`
-- `docs/specs/01-basic.md:1008`
+- `docs/specs/01-basic.md:935,937,943,966,970,971,972,973,982,984,985,986,1002,1004,1005,1006,1007,1008`
 
 ## 状态（来自正式规格 §5）
 

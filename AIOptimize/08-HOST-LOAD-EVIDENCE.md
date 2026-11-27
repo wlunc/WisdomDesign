@@ -109,7 +109,38 @@ node ~/.dsh/skills/wisdom-page/platforms/ios/tools/scaffold.js \
   --page task-list --workspace /tmp/x --as ProfileScreen.swift               # exit 0
 ```
 
-## 7. 卸载
+## 7. 体积精简（2026-11-27）
+
+先纠正一个统计口径：`du -sh` 报 900 KB 是按 4 KB 块计 172 个小文件；**真实字节是 478 KB**。
+
+精简后：
+
+| 项 | 前 | 后 | 变化 |
+|---|---|---|---|
+| all 包真实字节 | 478,378 | **357,846** | −120,532 (−25%) |
+| all 包文件数 | 172 | **166** | −6 |
+| all 包 ZIP | — | 184,721 | — |
+| core 包 | — | 199,761 / 53 文件 | — |
+| ios 包 | — | 309,158 / 141 文件 | — |
+| android 包 | — | 248,481 / 78 文件 | — |
+| SKILL.md（常驻） | 5,924 | 5,924 | 不变 |
+
+两项改动：
+
+1. **构建工具不再进包**（−90,576 B）
+   `api-cards/generate_api_cards.js`、`validate_provider.js`、`tools/validate-provider.js`、`tools/check-template.js` 是生成与校验脚本，消费侧从不执行。白名单式排除（`PROVIDER_EXCLUDE`），保留 `tools/scaffold.js`。
+2. **语义卡来源追溯去重**（−18,756 B）
+   原格式每条 sourceRef 占一行（单卡最多 20+ 行），而结论条目本身已带 `path:line`。改为按文件分组、行号逗号连接：`docs/specs/01-basic.md:1557,1559,1561,...`。
+
+**未做**（需要你确认后才动）：
+
+- `catalog/manifest.json`（26 KB）里的 `sources` 45 条哈希：审计用，运行时不读；
+- `files.json`（19 KB）逐文件哈希：发布校验用；
+- 语义卡正文（100 KB）：设计阶段需要完整反例，压缩会削弱判断依据。
+
+确定性：连续三次 `package.js` 产出相同 `checksums.json`（`0983ead7…`）。
+
+## 8. 卸载
 
 ```bash
 rm -rf ~/.dsh/skills/wisdom-page

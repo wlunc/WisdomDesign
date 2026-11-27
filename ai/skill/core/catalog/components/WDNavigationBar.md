@@ -18,25 +18,7 @@ Contract: `contracts/WDNavigationBar.yaml` (sha256 `ed51c696550b86ecf1dffe2bbec9
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1247`
-- `docs/specs/02-advanced.md:1249`
-- `docs/specs/02-advanced.md:1252`
-- `docs/specs/02-advanced.md:1251`
-- `docs/specs/02-advanced.md:1281`
-- `docs/specs/02-advanced.md:1285`
-- `docs/specs/02-advanced.md:1286`
-- `docs/specs/02-advanced.md:1287`
-- `docs/specs/02-advanced.md:1288`
-- `docs/specs/02-advanced.md:1297`
-- `docs/specs/02-advanced.md:1299`
-- `docs/specs/02-advanced.md:1300`
-- `docs/specs/02-advanced.md:1301`
-- `docs/specs/02-advanced.md:1321`
-- `docs/specs/02-advanced.md:1323`
-- `docs/specs/02-advanced.md:1324`
-- `docs/specs/02-advanced.md:1325`
-- `docs/specs/02-advanced.md:1326`
-- `docs/specs/02-advanced.md:1327`
+- `docs/specs/02-advanced.md:1247,1249,1251,1252,1281,1285,1286,1287,1288,1297,1299,1300,1301,1321,1323,1324,1325,1326,1327`
 
 ## 状态（来自正式规格 §5）
 

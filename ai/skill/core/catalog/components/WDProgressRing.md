@@ -18,23 +18,7 @@ Contract: `contracts/WDProgressRing.yaml` (sha256 `9df7760a1c90b040558955524391d
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1465`
-- `docs/specs/01-basic.md:1467`
-- `docs/specs/01-basic.md:1470`
-- `docs/specs/01-basic.md:1469`
-- `docs/specs/01-basic.md:1493`
-- `docs/specs/01-basic.md:1497`
-- `docs/specs/01-basic.md:1498`
-- `docs/specs/01-basic.md:1499`
-- `docs/specs/01-basic.md:1508`
-- `docs/specs/01-basic.md:1510`
-- `docs/specs/01-basic.md:1511`
-- `docs/specs/01-basic.md:1512`
-- `docs/specs/01-basic.md:1528`
-- `docs/specs/01-basic.md:1530`
-- `docs/specs/01-basic.md:1531`
-- `docs/specs/01-basic.md:1532`
-- `docs/specs/01-basic.md:1533`
+- `docs/specs/01-basic.md:1465,1467,1469,1470,1493,1497,1498,1499,1508,1510,1511,1512,1528,1530,1531,1532,1533`
 
 ## 状态（来自正式规格 §5）
 

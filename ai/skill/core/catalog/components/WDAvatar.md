@@ -18,34 +18,7 @@ Contract: `contracts/WDAvatar.yaml` (sha256 `28acd147633188be1f9a1b233f3129d1664
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1115`
-- `docs/specs/01-basic.md:1117`
-- `docs/specs/01-basic.md:1120`
-- `docs/specs/01-basic.md:1119`
-- `docs/specs/01-basic.md:1145`
-- `docs/specs/01-basic.md:1149`
-- `docs/specs/01-basic.md:1150`
-- `docs/specs/01-basic.md:1151`
-- `docs/specs/01-basic.md:1159`
-- `docs/specs/01-basic.md:1161`
-- `docs/specs/01-basic.md:1162`
-- `docs/specs/01-basic.md:1163`
-- `docs/specs/01-basic.md:1165`
-- `docs/specs/01-basic.md:1167`
-- `docs/specs/01-basic.md:1171`
-- `docs/specs/01-basic.md:1172`
-- `docs/specs/01-basic.md:1173`
-- `docs/specs/01-basic.md:1174`
-- `docs/specs/01-basic.md:1176`
-- `docs/specs/01-basic.md:1177`
-- `docs/specs/01-basic.md:1178`
-- `docs/specs/01-basic.md:1179`
-- `docs/specs/01-basic.md:1180`
-- `docs/specs/01-basic.md:1194`
-- `docs/specs/01-basic.md:1196`
-- `docs/specs/01-basic.md:1197`
-- `docs/specs/01-basic.md:1198`
-- `docs/specs/01-basic.md:1199`
+- `docs/specs/01-basic.md:1115,1117,1119,1120,1145,1149,1150,1151,1159,1161,1162,1163,1165,1167,1171,1172,1173,1174,1176,1177,1178,1179,1180,1194,1196,1197,1198,1199`
 
 ## 状态（来自正式规格 §5）
 

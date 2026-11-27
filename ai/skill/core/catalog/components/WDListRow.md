@@ -18,24 +18,7 @@ Contract: `contracts/WDListRow.yaml` (sha256 `a82d8d65e9f008a0adf8f82f91a35efede
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1692`
-- `docs/specs/01-basic.md:1694`
-- `docs/specs/01-basic.md:1697`
-- `docs/specs/01-basic.md:1696`
-- `docs/specs/01-basic.md:1727`
-- `docs/specs/01-basic.md:1731`
-- `docs/specs/01-basic.md:1732`
-- `docs/specs/01-basic.md:1733`
-- `docs/specs/01-basic.md:1734`
-- `docs/specs/01-basic.md:1748`
-- `docs/specs/01-basic.md:1750`
-- `docs/specs/01-basic.md:1751`
-- `docs/specs/01-basic.md:1769`
-- `docs/specs/01-basic.md:1771`
-- `docs/specs/01-basic.md:1772`
-- `docs/specs/01-basic.md:1773`
-- `docs/specs/01-basic.md:1774`
-- `docs/specs/01-basic.md:1775`
+- `docs/specs/01-basic.md:1692,1694,1696,1697,1727,1731,1732,1733,1734,1748,1750,1751,1769,1771,1772,1773,1774,1775`
 
 ## 状态（来自正式规格 §5）
 

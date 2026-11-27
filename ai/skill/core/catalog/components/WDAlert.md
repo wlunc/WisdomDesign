@@ -18,26 +18,7 @@ Contract: `contracts/WDAlert.yaml` (sha256 `4c11e751e3b1f46f2b9b67963b95b01609c5
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:430`
-- `docs/specs/02-advanced.md:432`
-- `docs/specs/02-advanced.md:437`
-- `docs/specs/02-advanced.md:434`
-- `docs/specs/02-advanced.md:435`
-- `docs/specs/02-advanced.md:469`
-- `docs/specs/02-advanced.md:473`
-- `docs/specs/02-advanced.md:474`
-- `docs/specs/02-advanced.md:475`
-- `docs/specs/02-advanced.md:483`
-- `docs/specs/02-advanced.md:485`
-- `docs/specs/02-advanced.md:486`
-- `docs/specs/02-advanced.md:487`
-- `docs/specs/02-advanced.md:488`
-- `docs/specs/02-advanced.md:508`
-- `docs/specs/02-advanced.md:510`
-- `docs/specs/02-advanced.md:511`
-- `docs/specs/02-advanced.md:512`
-- `docs/specs/02-advanced.md:513`
-- `docs/specs/02-advanced.md:514`
+- `docs/specs/02-advanced.md:430,432,434,435,437,469,473,474,475,483,485,486,487,488,508,510,511,512,513,514`
 
 ## 状态（来自正式规格 §5）
 

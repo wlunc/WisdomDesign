@@ -18,27 +18,7 @@ Contract: `contracts/WDCard.yaml` (sha256 `6e12256c34c52689c625fff3172698dcae829
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1557`
-- `docs/specs/01-basic.md:1559`
-- `docs/specs/01-basic.md:1564`
-- `docs/specs/01-basic.md:1561`
-- `docs/specs/01-basic.md:1562`
-- `docs/specs/01-basic.md:1618`
-- `docs/specs/01-basic.md:1622`
-- `docs/specs/01-basic.md:1623`
-- `docs/specs/01-basic.md:1624`
-- `docs/specs/01-basic.md:1625`
-- `docs/specs/01-basic.md:1626`
-- `docs/specs/01-basic.md:1628`
-- `docs/specs/01-basic.md:1638`
-- `docs/specs/01-basic.md:1640`
-- `docs/specs/01-basic.md:1641`
-- `docs/specs/01-basic.md:1642`
-- `docs/specs/01-basic.md:1657`
-- `docs/specs/01-basic.md:1659`
-- `docs/specs/01-basic.md:1660`
-- `docs/specs/01-basic.md:1661`
-- `docs/specs/01-basic.md:1662`
+- `docs/specs/01-basic.md:1557,1559,1561,1562,1564,1618,1622,1623,1624,1625,1626,1628,1638,1640,1641,1642,1657,1659,1660,1661,1662`
 
 ## 状态（来自正式规格 §5）
 

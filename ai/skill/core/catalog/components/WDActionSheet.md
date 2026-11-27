@@ -18,24 +18,7 @@ Contract: `contracts/WDActionSheet.yaml` (sha256 `9e21e96912a4859c39e782efe163e6
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:653`
-- `docs/specs/02-advanced.md:655`
-- `docs/specs/02-advanced.md:658`
-- `docs/specs/02-advanced.md:657`
-- `docs/specs/02-advanced.md:689`
-- `docs/specs/02-advanced.md:693`
-- `docs/specs/02-advanced.md:694`
-- `docs/specs/02-advanced.md:695`
-- `docs/specs/02-advanced.md:696`
-- `docs/specs/02-advanced.md:704`
-- `docs/specs/02-advanced.md:706`
-- `docs/specs/02-advanced.md:707`
-- `docs/specs/02-advanced.md:708`
-- `docs/specs/02-advanced.md:723`
-- `docs/specs/02-advanced.md:725`
-- `docs/specs/02-advanced.md:726`
-- `docs/specs/02-advanced.md:727`
-- `docs/specs/02-advanced.md:728`
+- `docs/specs/02-advanced.md:653,655,657,658,689,693,694,695,696,704,706,707,708,723,725,726,727,728`
 
 ## 状态（来自正式规格 §5）
 

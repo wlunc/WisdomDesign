@@ -18,21 +18,7 @@ Contract: `contracts/WDBadge.yaml` (sha256 `2c5e0c0ce26ad5d3568e100dab59d03efcb0
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1031`
-- `docs/specs/01-basic.md:1033`
-- `docs/specs/01-basic.md:1036`
-- `docs/specs/01-basic.md:1035`
-- `docs/specs/01-basic.md:1063`
-- `docs/specs/01-basic.md:1065`
-- `docs/specs/01-basic.md:1066`
-- `docs/specs/01-basic.md:1074`
-- `docs/specs/01-basic.md:1076`
-- `docs/specs/01-basic.md:1077`
-- `docs/specs/01-basic.md:1088`
-- `docs/specs/01-basic.md:1090`
-- `docs/specs/01-basic.md:1091`
-- `docs/specs/01-basic.md:1092`
-- `docs/specs/01-basic.md:1093`
+- `docs/specs/01-basic.md:1031,1033,1035,1036,1063,1065,1066,1074,1076,1077,1088,1090,1091,1092,1093`
 
 ## 状态（来自正式规格 §5）
 

@@ -18,26 +18,7 @@ Contract: `contracts/WDToolbar.yaml` (sha256 `73b58dc7c76142ede662be365ce2662fb4
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1452`
-- `docs/specs/02-advanced.md:1454`
-- `docs/specs/02-advanced.md:1457`
-- `docs/specs/02-advanced.md:1456`
-- `docs/specs/02-advanced.md:1482`
-- `docs/specs/02-advanced.md:1486`
-- `docs/specs/02-advanced.md:1487`
-- `docs/specs/02-advanced.md:1488`
-- `docs/specs/02-advanced.md:1489`
-- `docs/specs/02-advanced.md:1498`
-- `docs/specs/02-advanced.md:1500`
-- `docs/specs/02-advanced.md:1501`
-- `docs/specs/02-advanced.md:1502`
-- `docs/specs/02-advanced.md:1541`
-- `docs/specs/02-advanced.md:1543`
-- `docs/specs/02-advanced.md:1544`
-- `docs/specs/02-advanced.md:1545`
-- `docs/specs/02-advanced.md:1546`
-- `docs/specs/02-advanced.md:1547`
-- `docs/specs/02-advanced.md:1548`
+- `docs/specs/02-advanced.md:1452,1454,1456,1457,1482,1486,1487,1488,1489,1498,1500,1501,1502,1541,1543,1544,1545,1546,1547,1548`
 
 ## 状态（来自正式规格 §5）
 

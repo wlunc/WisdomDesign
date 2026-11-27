@@ -18,16 +18,7 @@ Contract: `contracts/WDDivider.yaml` (sha256 `3505f4ae6ecd91c75c710f3d953d569d65
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1304`
-- `docs/specs/01-basic.md:1306`
-- `docs/specs/01-basic.md:1309`
-- `docs/specs/01-basic.md:1308`
-- `docs/specs/01-basic.md:1326`
-- `docs/specs/01-basic.md:1328`
-- `docs/specs/01-basic.md:1336`
-- `docs/specs/01-basic.md:1338`
-- `docs/specs/01-basic.md:1348`
-- `docs/specs/01-basic.md:1350`
+- `docs/specs/01-basic.md:1304,1306,1308,1309,1326,1328,1336,1338,1348,1350`
 
 ## 状态（来自正式规格 §5）
 

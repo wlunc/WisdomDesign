@@ -106,6 +106,18 @@ function sourceRefs(component) {
   return refs;
 }
 
+// `docs/specs/01-basic.md:1557,1559,1564` — grouped by path, lines ascending, deduped.
+function groupedSourceRefs(component) {
+  const byPath = new Map();
+  for (const ref of sourceRefs(component)) {
+    if (!byPath.has(ref.path)) byPath.set(ref.path, new Set());
+    byPath.get(ref.path).add(ref.line);
+  }
+  return [...byPath.entries()]
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .map(([file, lines]) => file + ':' + [...lines].sort((a, b) => a - b).join(','));
+}
+
 function conclusionBlock(title, block) {
   const lines = [`## ${title}`, ''];
   if (!block || !Array.isArray(block.items) || block.items.length === 0) {
@@ -132,7 +144,10 @@ function card(component) {
     '',
     '## 来源追溯',
     '',
-    ...sourceRefs(component).map((ref) => `- \`${ref.path}:${ref.line}\``),
+    // One line per source file with comma-separated line numbers. The previous
+    // one-bullet-per-ref format was pure duplication: every conclusion item
+    // already carries its `path:line` inline, so the block only repeated them.
+    ...groupedSourceRefs(component).map((line) => `- \`${line}\``),
     '',
     ...conclusionBlock('状态（来自正式规格 §5）', (component.conclusions || {}).states),
     ...conclusionBlock('内容（来自正式规格 §7）', (component.conclusions || {}).content),

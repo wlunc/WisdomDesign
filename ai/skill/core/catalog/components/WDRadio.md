@@ -18,25 +18,7 @@ Contract: `contracts/WDRadio.yaml` (sha256 `d3961d208e652e194ccfa11b317f1647a4dd
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:656`
-- `docs/specs/01-basic.md:658`
-- `docs/specs/01-basic.md:661`
-- `docs/specs/01-basic.md:660`
-- `docs/specs/01-basic.md:683`
-- `docs/specs/01-basic.md:687`
-- `docs/specs/01-basic.md:688`
-- `docs/specs/01-basic.md:689`
-- `docs/specs/01-basic.md:690`
-- `docs/specs/01-basic.md:698`
-- `docs/specs/01-basic.md:700`
-- `docs/specs/01-basic.md:701`
-- `docs/specs/01-basic.md:702`
-- `docs/specs/01-basic.md:716`
-- `docs/specs/01-basic.md:718`
-- `docs/specs/01-basic.md:719`
-- `docs/specs/01-basic.md:720`
-- `docs/specs/01-basic.md:721`
-- `docs/specs/01-basic.md:722`
+- `docs/specs/01-basic.md:656,658,660,661,683,687,688,689,690,698,700,701,702,716,718,719,720,721,722`
 
 ## 状态（来自正式规格 §5）
 

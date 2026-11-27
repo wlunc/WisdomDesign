@@ -18,25 +18,7 @@ Contract: `contracts/WDStepper.yaml` (sha256 `6b97e2e356b41faa3c27bfe36bf5b6b2b3
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:844`
-- `docs/specs/01-basic.md:846`
-- `docs/specs/01-basic.md:849`
-- `docs/specs/01-basic.md:848`
-- `docs/specs/01-basic.md:872`
-- `docs/specs/01-basic.md:876`
-- `docs/specs/01-basic.md:877`
-- `docs/specs/01-basic.md:878`
-- `docs/specs/01-basic.md:879`
-- `docs/specs/01-basic.md:880`
-- `docs/specs/01-basic.md:888`
-- `docs/specs/01-basic.md:890`
-- `docs/specs/01-basic.md:891`
-- `docs/specs/01-basic.md:906`
-- `docs/specs/01-basic.md:908`
-- `docs/specs/01-basic.md:909`
-- `docs/specs/01-basic.md:910`
-- `docs/specs/01-basic.md:911`
-- `docs/specs/01-basic.md:912`
+- `docs/specs/01-basic.md:844,846,848,849,872,876,877,878,879,880,888,890,891,906,908,909,910,911,912`
 
 ## 状态（来自正式规格 §5）
 

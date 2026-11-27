@@ -211,7 +211,7 @@
     {
       "id": "dead-link-audit",
       "status": "passed",
-      "detail": "273 md files audited, 77 internal links, 6 cross-repo links (0 not verifiable in this checkout), 0 external links"
+      "detail": "269 md files audited, 77 internal links, 6 cross-repo links (0 not verifiable in this checkout), 0 external links"
     },
     {
       "id": "dead-link-cross-repo-classification",
@@ -226,7 +226,7 @@
     {
       "id": "dead-link-audit-not-empty",
       "status": "passed",
-      "detail": "link audit saw 77 internal links across 273 md files"
+      "detail": "link audit saw 77 internal links across 269 md files"
     },
     {
       "id": "route-doc-only",
@@ -327,5 +327,5 @@
   "truthFingerprint": "c6828dd12a39f58db79f80a4b1c37f468a7b6168da7a3f262e8ddf94150f0607",
   "internalLinkCount": 77,
   "externalLinkCount": 0,
-  "markdownFilesAudited": 273
+  "markdownFilesAudited": 269
 }

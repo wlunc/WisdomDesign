@@ -18,21 +18,7 @@ Contract: `contracts/WDIconButton.yaml` (sha256 `53b2b74751ff58236070246f167d36c
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:143`
-- `docs/specs/01-basic.md:145`
-- `docs/specs/01-basic.md:148`
-- `docs/specs/01-basic.md:147`
-- `docs/specs/01-basic.md:173`
-- `docs/specs/01-basic.md:175`
-- `docs/specs/01-basic.md:176`
-- `docs/specs/01-basic.md:183`
-- `docs/specs/01-basic.md:185`
-- `docs/specs/01-basic.md:186`
-- `docs/specs/01-basic.md:198`
-- `docs/specs/01-basic.md:200`
-- `docs/specs/01-basic.md:201`
-- `docs/specs/01-basic.md:202`
-- `docs/specs/01-basic.md:203`
+- `docs/specs/01-basic.md:143,145,147,148,173,175,176,183,185,186,198,200,201,202,203`
 
 ## 状态（来自正式规格 §5）
 

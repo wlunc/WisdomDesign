@@ -18,26 +18,7 @@ Contract: `contracts/WDAssigneePicker.yaml` (sha256 `637def1210eb5678009b4f0f40d
 
 ## 来源追溯
 
-- `docs/specs/03-patterns.md:379`
-- `docs/specs/03-patterns.md:381`
-- `docs/specs/03-patterns.md:384`
-- `docs/specs/03-patterns.md:383`
-- `docs/specs/03-patterns.md:418`
-- `docs/specs/03-patterns.md:422`
-- `docs/specs/03-patterns.md:423`
-- `docs/specs/03-patterns.md:424`
-- `docs/specs/03-patterns.md:425`
-- `docs/specs/03-patterns.md:426`
-- `docs/specs/03-patterns.md:435`
-- `docs/specs/03-patterns.md:437`
-- `docs/specs/03-patterns.md:438`
-- `docs/specs/03-patterns.md:439`
-- `docs/specs/03-patterns.md:456`
-- `docs/specs/03-patterns.md:458`
-- `docs/specs/03-patterns.md:459`
-- `docs/specs/03-patterns.md:460`
-- `docs/specs/03-patterns.md:461`
-- `docs/specs/03-patterns.md:462`
+- `docs/specs/03-patterns.md:379,381,383,384,418,422,423,424,425,426,435,437,438,439,456,458,459,460,461,462`
 
 ## 状态（来自正式规格 §5）
 

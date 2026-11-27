@@ -18,27 +18,7 @@ Contract: `contracts/WDDatePicker.yaml` (sha256 `b27941cf9ef0513ba24d1049c8b7ac1
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:225`
-- `docs/specs/02-advanced.md:227`
-- `docs/specs/02-advanced.md:230`
-- `docs/specs/02-advanced.md:229`
-- `docs/specs/02-advanced.md:259`
-- `docs/specs/02-advanced.md:263`
-- `docs/specs/02-advanced.md:264`
-- `docs/specs/02-advanced.md:265`
-- `docs/specs/02-advanced.md:266`
-- `docs/specs/02-advanced.md:267`
-- `docs/specs/02-advanced.md:268`
-- `docs/specs/02-advanced.md:276`
-- `docs/specs/02-advanced.md:278`
-- `docs/specs/02-advanced.md:279`
-- `docs/specs/02-advanced.md:280`
-- `docs/specs/02-advanced.md:297`
-- `docs/specs/02-advanced.md:299`
-- `docs/specs/02-advanced.md:300`
-- `docs/specs/02-advanced.md:301`
-- `docs/specs/02-advanced.md:302`
-- `docs/specs/02-advanced.md:303`
+- `docs/specs/02-advanced.md:225,227,229,230,259,263,264,265,266,267,268,276,278,279,280,297,299,300,301,302,303`
 
 ## 状态（来自正式规格 §5）
 

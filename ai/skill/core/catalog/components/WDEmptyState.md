@@ -18,22 +18,7 @@ Contract: `contracts/WDEmptyState.yaml` (sha256 `4d4e0cab2875a5a484210f19f4d4597
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:958`
-- `docs/specs/02-advanced.md:960`
-- `docs/specs/02-advanced.md:963`
-- `docs/specs/02-advanced.md:962`
-- `docs/specs/02-advanced.md:997`
-- `docs/specs/02-advanced.md:999`
-- `docs/specs/02-advanced.md:1007`
-- `docs/specs/02-advanced.md:1009`
-- `docs/specs/02-advanced.md:1010`
-- `docs/specs/02-advanced.md:1011`
-- `docs/specs/02-advanced.md:1012`
-- `docs/specs/02-advanced.md:1026`
-- `docs/specs/02-advanced.md:1028`
-- `docs/specs/02-advanced.md:1029`
-- `docs/specs/02-advanced.md:1030`
-- `docs/specs/02-advanced.md:1031`
+- `docs/specs/02-advanced.md:958,960,962,963,997,999,1007,1009,1010,1011,1012,1026,1028,1029,1030,1031`
 
 ## 状态（来自正式规格 §5）
 

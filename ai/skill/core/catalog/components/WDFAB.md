@@ -18,26 +18,7 @@ Contract: `contracts/WDFAB.yaml` (sha256 `7a7d3989af4b1f62b8039cac36e56201164167
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1576`
-- `docs/specs/02-advanced.md:1578`
-- `docs/specs/02-advanced.md:1581`
-- `docs/specs/02-advanced.md:1580`
-- `docs/specs/02-advanced.md:1603`
-- `docs/specs/02-advanced.md:1607`
-- `docs/specs/02-advanced.md:1608`
-- `docs/specs/02-advanced.md:1609`
-- `docs/specs/02-advanced.md:1610`
-- `docs/specs/02-advanced.md:1611`
-- `docs/specs/02-advanced.md:1620`
-- `docs/specs/02-advanced.md:1622`
-- `docs/specs/02-advanced.md:1623`
-- `docs/specs/02-advanced.md:1624`
-- `docs/specs/02-advanced.md:1644`
-- `docs/specs/02-advanced.md:1646`
-- `docs/specs/02-advanced.md:1647`
-- `docs/specs/02-advanced.md:1648`
-- `docs/specs/02-advanced.md:1649`
-- `docs/specs/02-advanced.md:1650`
+- `docs/specs/02-advanced.md:1576,1578,1580,1581,1603,1607,1608,1609,1610,1611,1620,1622,1623,1624,1644,1646,1647,1648,1649,1650`
 
 ## 状态（来自正式规格 §5）
 

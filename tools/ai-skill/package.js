@@ -20,6 +20,21 @@ const PLATFORM_NAMES = ['ios', 'android'];
 const PLATFORM_REPO_DIR = { ios: 'iOS', android: 'android' };
 const PLATFORM_ENV = { ios: 'WISDOMDESIGN_IOS_ROOT', android: 'WISDOMDESIGN_ANDROID_ROOT' };
 const PROVIDER_SUBDIR = 'ai/skill-provider';
+// Provider sources contain two kinds of files the runtime never uses:
+//  1. build/validation tooling (card generator, provider validator, template checker)
+//  2. generation-time provenance docs (FIXES-*.md, SNAPSHOT.md)
+// Shipping them inflates the package for no runtime benefit. The scaffolder is
+// kept because the consumer actually runs it.
+// Keep this list explicit and test it, instead of a broad glob that could
+// silently drop a real runtime file.
+const PROVIDER_EXCLUDE = [
+  'api-cards/generate_api_cards.js',
+  'validate_provider.js',
+  'tools/validate-provider.js',
+  'tools/check-template.js',
+  'FIXES-t6.md',
+  'SNAPSHOT.md',
+];
 const LICENSE_TEXT =
   'GENERATED PACKAGE - DO NOT EDIT.\n' +
   'Built by wisdomdesign/tools/ai-skill/package.js from WisdomDesign truth sources.\n' +
@@ -43,10 +58,12 @@ function tree(root) {
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (error) { if (error.code === 'ENOENT') return fallback; throw error; }
 }
-function copyTree(src, dst) {
+function copyTree(src, dst, options = {}) {
   if (!fs.existsSync(src)) die('missing provider source: ' + src);
+  const exclude = options.exclude || [];
   for (const file of tree(src)) {
-    const rel = path.relative(src, file);
+    const rel = path.relative(src, file).split(path.sep).join('/');
+    if (exclude.includes(rel)) continue;
     const target = path.join(dst, rel);
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.copyFileSync(file, target);
@@ -149,7 +166,7 @@ function main() {
     const root = requirePlatformRoot(platform, args);
     const pkg = path.join(STAGING, 'wisdom-page-' + platform);
     fs.cpSync(core, pkg, { recursive: true });
-    copyTree(path.join(root, PROVIDER_SUBDIR), path.join(pkg, 'platforms', platform));
+    copyTree(path.join(root, PROVIDER_SUBDIR), path.join(pkg, 'platforms', platform), { exclude: PROVIDER_EXCLUDE });
     const status = readJson(path.join(root, PROVIDER_SUBDIR, 'provider.json'), {}).status || {};
     const effective = status && typeof status === 'object' ? (status.effective || 'spec-only') : String(status);
     appendPlatformSkill(pkg, 'Platform: ' + platform, [
@@ -161,7 +178,7 @@ function main() {
   if (args.wanted.includes('ios') && args.wanted.includes('android')) {
     const allpkg = path.join(STAGING, 'wisdom-page-all');
     fs.cpSync(core, allpkg, { recursive: true });
-    for (const platform of args.wanted) copyTree(path.join(requirePlatformRoot(platform, args), PROVIDER_SUBDIR), path.join(allpkg, 'platforms', platform));
+    for (const platform of args.wanted) copyTree(path.join(requirePlatformRoot(platform, args), PROVIDER_SUBDIR), path.join(allpkg, 'platforms', platform), { exclude: PROVIDER_EXCLUDE });
     appendPlatformSkill(allpkg, 'Platforms: ios, android', [
       'Use platforms/<id>/ provider data per task; do not mix platform APIs.',
       'Each platform keeps its own evidence; never mechanically translate one platform into another.',

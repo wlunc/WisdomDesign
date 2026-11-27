@@ -18,25 +18,7 @@ Contract: `contracts/WDSwitch.yaml` (sha256 `7189a1ea57fc81d37f96b4658482df32bdd
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:444`
-- `docs/specs/01-basic.md:446`
-- `docs/specs/01-basic.md:451`
-- `docs/specs/01-basic.md:448`
-- `docs/specs/01-basic.md:449`
-- `docs/specs/01-basic.md:475`
-- `docs/specs/01-basic.md:479`
-- `docs/specs/01-basic.md:480`
-- `docs/specs/01-basic.md:481`
-- `docs/specs/01-basic.md:482`
-- `docs/specs/01-basic.md:490`
-- `docs/specs/01-basic.md:492`
-- `docs/specs/01-basic.md:493`
-- `docs/specs/01-basic.md:514`
-- `docs/specs/01-basic.md:516`
-- `docs/specs/01-basic.md:517`
-- `docs/specs/01-basic.md:518`
-- `docs/specs/01-basic.md:519`
-- `docs/specs/01-basic.md:520`
+- `docs/specs/01-basic.md:444,446,448,449,451,475,479,480,481,482,490,492,493,514,516,517,518,519,520`
 
 ## 状态（来自正式规格 §5）
 

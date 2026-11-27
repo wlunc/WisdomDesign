@@ -18,24 +18,7 @@ Contract: `contracts/WDTabBar.yaml` (sha256 `33ab6fbe23b55293c755168a9863f8b3e1b
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1356`
-- `docs/specs/02-advanced.md:1358`
-- `docs/specs/02-advanced.md:1361`
-- `docs/specs/02-advanced.md:1360`
-- `docs/specs/02-advanced.md:1386`
-- `docs/specs/02-advanced.md:1390`
-- `docs/specs/02-advanced.md:1391`
-- `docs/specs/02-advanced.md:1392`
-- `docs/specs/02-advanced.md:1393`
-- `docs/specs/02-advanced.md:1401`
-- `docs/specs/02-advanced.md:1403`
-- `docs/specs/02-advanced.md:1404`
-- `docs/specs/02-advanced.md:1405`
-- `docs/specs/02-advanced.md:1421`
-- `docs/specs/02-advanced.md:1423`
-- `docs/specs/02-advanced.md:1424`
-- `docs/specs/02-advanced.md:1425`
-- `docs/specs/02-advanced.md:1426`
+- `docs/specs/02-advanced.md:1356,1358,1360,1361,1386,1390,1391,1392,1393,1401,1403,1404,1405,1421,1423,1424,1425,1426`
 
 ## 状态（来自正式规格 §5）
 

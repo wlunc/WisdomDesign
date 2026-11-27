@@ -18,25 +18,7 @@ Contract: `contracts/WDPicker.yaml` (sha256 `ab8df2a53a8bb110ab13f28a45ef28103f2
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:120`
-- `docs/specs/02-advanced.md:122`
-- `docs/specs/02-advanced.md:125`
-- `docs/specs/02-advanced.md:124`
-- `docs/specs/02-advanced.md:155`
-- `docs/specs/02-advanced.md:159`
-- `docs/specs/02-advanced.md:160`
-- `docs/specs/02-advanced.md:161`
-- `docs/specs/02-advanced.md:162`
-- `docs/specs/02-advanced.md:163`
-- `docs/specs/02-advanced.md:171`
-- `docs/specs/02-advanced.md:173`
-- `docs/specs/02-advanced.md:174`
-- `docs/specs/02-advanced.md:175`
-- `docs/specs/02-advanced.md:193`
-- `docs/specs/02-advanced.md:195`
-- `docs/specs/02-advanced.md:196`
-- `docs/specs/02-advanced.md:197`
-- `docs/specs/02-advanced.md:198`
+- `docs/specs/02-advanced.md:120,122,124,125,155,159,160,161,162,163,171,173,174,175,193,195,196,197,198`
 
 ## 状态（来自正式规格 §5）
 

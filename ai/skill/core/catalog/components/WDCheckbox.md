@@ -18,28 +18,7 @@ Contract: `contracts/WDCheckbox.yaml` (sha256 `08d51fd1b73bd7f13f5e0c9dc95dfd69b
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:547`
-- `docs/specs/01-basic.md:549`
-- `docs/specs/01-basic.md:552`
-- `docs/specs/01-basic.md:551`
-- `docs/specs/01-basic.md:581`
-- `docs/specs/01-basic.md:585`
-- `docs/specs/01-basic.md:586`
-- `docs/specs/01-basic.md:587`
-- `docs/specs/01-basic.md:588`
-- `docs/specs/01-basic.md:589`
-- `docs/specs/01-basic.md:590`
-- `docs/specs/01-basic.md:598`
-- `docs/specs/01-basic.md:600`
-- `docs/specs/01-basic.md:601`
-- `docs/specs/01-basic.md:602`
-- `docs/specs/01-basic.md:622`
-- `docs/specs/01-basic.md:624`
-- `docs/specs/01-basic.md:625`
-- `docs/specs/01-basic.md:626`
-- `docs/specs/01-basic.md:627`
-- `docs/specs/01-basic.md:628`
-- `docs/specs/01-basic.md:629`
+- `docs/specs/01-basic.md:547,549,551,552,581,585,586,587,588,589,590,598,600,601,602,622,624,625,626,627,628,629`
 
 ## 状态（来自正式规格 §5）
 

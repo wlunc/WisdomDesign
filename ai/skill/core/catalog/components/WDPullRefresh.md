@@ -18,24 +18,7 @@ Contract: `contracts/WDPullRefresh.yaml` (sha256 `1e64e60292370e9bbe806e8f5cc546
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1140`
-- `docs/specs/02-advanced.md:1142`
-- `docs/specs/02-advanced.md:1145`
-- `docs/specs/02-advanced.md:1144`
-- `docs/specs/02-advanced.md:1175`
-- `docs/specs/02-advanced.md:1179`
-- `docs/specs/02-advanced.md:1180`
-- `docs/specs/02-advanced.md:1181`
-- `docs/specs/02-advanced.md:1182`
-- `docs/specs/02-advanced.md:1190`
-- `docs/specs/02-advanced.md:1192`
-- `docs/specs/02-advanced.md:1193`
-- `docs/specs/02-advanced.md:1194`
-- `docs/specs/02-advanced.md:1214`
-- `docs/specs/02-advanced.md:1216`
-- `docs/specs/02-advanced.md:1217`
-- `docs/specs/02-advanced.md:1218`
-- `docs/specs/02-advanced.md:1219`
+- `docs/specs/02-advanced.md:1140,1142,1144,1145,1175,1179,1180,1181,1182,1190,1192,1193,1194,1214,1216,1217,1218,1219`
 
 ## 状态（来自正式规格 §5）
 

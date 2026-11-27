@@ -18,25 +18,7 @@ Contract: `contracts/WDFormRow.yaml` (sha256 `bbc401c07a7e27cf9a9c5d930d31a30fae
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:331`
-- `docs/specs/02-advanced.md:333`
-- `docs/specs/02-advanced.md:336`
-- `docs/specs/02-advanced.md:335`
-- `docs/specs/02-advanced.md:365`
-- `docs/specs/02-advanced.md:369`
-- `docs/specs/02-advanced.md:370`
-- `docs/specs/02-advanced.md:371`
-- `docs/specs/02-advanced.md:372`
-- `docs/specs/02-advanced.md:381`
-- `docs/specs/02-advanced.md:383`
-- `docs/specs/02-advanced.md:384`
-- `docs/specs/02-advanced.md:385`
-- `docs/specs/02-advanced.md:386`
-- `docs/specs/02-advanced.md:401`
-- `docs/specs/02-advanced.md:403`
-- `docs/specs/02-advanced.md:404`
-- `docs/specs/02-advanced.md:405`
-- `docs/specs/02-advanced.md:406`
+- `docs/specs/02-advanced.md:331,333,335,336,365,369,370,371,372,381,383,384,385,386,401,403,404,405,406`
 
 ## 状态（来自正式规格 §5）
 

@@ -18,24 +18,7 @@ Contract: `contracts/WDBanner.yaml` (sha256 `f44a6e955fe11421b9119d47ff0006fb102
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:858`
-- `docs/specs/02-advanced.md:860`
-- `docs/specs/02-advanced.md:865`
-- `docs/specs/02-advanced.md:862`
-- `docs/specs/02-advanced.md:863`
-- `docs/specs/02-advanced.md:897`
-- `docs/specs/02-advanced.md:901`
-- `docs/specs/02-advanced.md:902`
-- `docs/specs/02-advanced.md:903`
-- `docs/specs/02-advanced.md:911`
-- `docs/specs/02-advanced.md:913`
-- `docs/specs/02-advanced.md:914`
-- `docs/specs/02-advanced.md:915`
-- `docs/specs/02-advanced.md:930`
-- `docs/specs/02-advanced.md:932`
-- `docs/specs/02-advanced.md:933`
-- `docs/specs/02-advanced.md:934`
-- `docs/specs/02-advanced.md:935`
+- `docs/specs/02-advanced.md:858,860,862,863,865,897,901,902,903,911,913,914,915,930,932,933,934,935`
 
 ## 状态（来自正式规格 §5）
 

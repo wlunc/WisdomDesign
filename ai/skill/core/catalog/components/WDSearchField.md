@@ -18,26 +18,7 @@ Contract: `contracts/WDSearchField.yaml` (sha256 `f7faf3335575a4bd67f309a41ce93f
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:336`
-- `docs/specs/01-basic.md:338`
-- `docs/specs/01-basic.md:341`
-- `docs/specs/01-basic.md:340`
-- `docs/specs/01-basic.md:370`
-- `docs/specs/01-basic.md:374`
-- `docs/specs/01-basic.md:375`
-- `docs/specs/01-basic.md:376`
-- `docs/specs/01-basic.md:377`
-- `docs/specs/01-basic.md:378`
-- `docs/specs/01-basic.md:386`
-- `docs/specs/01-basic.md:388`
-- `docs/specs/01-basic.md:389`
-- `docs/specs/01-basic.md:390`
-- `docs/specs/01-basic.md:411`
-- `docs/specs/01-basic.md:413`
-- `docs/specs/01-basic.md:414`
-- `docs/specs/01-basic.md:415`
-- `docs/specs/01-basic.md:416`
-- `docs/specs/01-basic.md:417`
+- `docs/specs/01-basic.md:336,338,340,341,370,374,375,376,377,378,386,388,389,390,411,413,414,415,416,417`
 
 ## 状态（来自正式规格 §5）
 

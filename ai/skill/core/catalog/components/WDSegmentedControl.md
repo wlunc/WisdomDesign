@@ -18,26 +18,7 @@ Contract: `contracts/WDSegmentedControl.yaml` (sha256 `9cfe3787e7536810c2ef177e4
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:13`
-- `docs/specs/02-advanced.md:15`
-- `docs/specs/02-advanced.md:20`
-- `docs/specs/02-advanced.md:17`
-- `docs/specs/02-advanced.md:18`
-- `docs/specs/02-advanced.md:49`
-- `docs/specs/02-advanced.md:53`
-- `docs/specs/02-advanced.md:54`
-- `docs/specs/02-advanced.md:55`
-- `docs/specs/02-advanced.md:56`
-- `docs/specs/02-advanced.md:64`
-- `docs/specs/02-advanced.md:66`
-- `docs/specs/02-advanced.md:67`
-- `docs/specs/02-advanced.md:68`
-- `docs/specs/02-advanced.md:89`
-- `docs/specs/02-advanced.md:91`
-- `docs/specs/02-advanced.md:92`
-- `docs/specs/02-advanced.md:93`
-- `docs/specs/02-advanced.md:94`
-- `docs/specs/02-advanced.md:95`
+- `docs/specs/02-advanced.md:13,15,17,18,20,49,53,54,55,56,64,66,67,68,89,91,92,93,94,95`
 
 ## 状态（来自正式规格 §5）
 

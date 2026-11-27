@@ -18,20 +18,7 @@ Contract: `contracts/WDAvatarStack.yaml` (sha256 `b39f848469f2f4f0bcd9731e977908
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1222`
-- `docs/specs/01-basic.md:1224`
-- `docs/specs/01-basic.md:1227`
-- `docs/specs/01-basic.md:1226`
-- `docs/specs/01-basic.md:1249`
-- `docs/specs/01-basic.md:1251`
-- `docs/specs/01-basic.md:1259`
-- `docs/specs/01-basic.md:1261`
-- `docs/specs/01-basic.md:1262`
-- `docs/specs/01-basic.md:1263`
-- `docs/specs/01-basic.md:1277`
-- `docs/specs/01-basic.md:1279`
-- `docs/specs/01-basic.md:1280`
-- `docs/specs/01-basic.md:1281`
+- `docs/specs/01-basic.md:1222,1224,1226,1227,1249,1251,1259,1261,1262,1263,1277,1279,1280,1281`
 
 ## 状态（来自正式规格 §5）
 

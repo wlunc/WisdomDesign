@@ -18,25 +18,7 @@ Contract: `contracts/WDSlider.yaml` (sha256 `faa8517894c8ddef6dd9cec9e933a50ee9e
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:747`
-- `docs/specs/01-basic.md:749`
-- `docs/specs/01-basic.md:752`
-- `docs/specs/01-basic.md:751`
-- `docs/specs/01-basic.md:776`
-- `docs/specs/01-basic.md:780`
-- `docs/specs/01-basic.md:781`
-- `docs/specs/01-basic.md:782`
-- `docs/specs/01-basic.md:783`
-- `docs/specs/01-basic.md:791`
-- `docs/specs/01-basic.md:793`
-- `docs/specs/01-basic.md:794`
-- `docs/specs/01-basic.md:795`
-- `docs/specs/01-basic.md:812`
-- `docs/specs/01-basic.md:814`
-- `docs/specs/01-basic.md:815`
-- `docs/specs/01-basic.md:816`
-- `docs/specs/01-basic.md:817`
-- `docs/specs/01-basic.md:818`
+- `docs/specs/01-basic.md:747,749,751,752,776,780,781,782,783,791,793,794,795,812,814,815,816,817,818`
 
 ## 状态（来自正式规格 §5）
 

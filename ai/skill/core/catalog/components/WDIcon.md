@@ -18,31 +18,7 @@ Contract: `contracts/WDIcon.yaml` (sha256 `4ef8481cc9f267a6468668a455ef6b5f99e7b
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1894`
-- `docs/specs/01-basic.md:1896`
-- `docs/specs/01-basic.md:1899`
-- `docs/specs/01-basic.md:1898`
-- `docs/specs/01-basic.md:1928`
-- `docs/specs/01-basic.md:1930`
-- `docs/specs/01-basic.md:1931`
-- `docs/specs/01-basic.md:1939`
-- `docs/specs/01-basic.md:1943`
-- `docs/specs/01-basic.md:1944`
-- `docs/specs/01-basic.md:1945`
-- `docs/specs/01-basic.md:1946`
-- `docs/specs/01-basic.md:1947`
-- `docs/specs/01-basic.md:1948`
-- `docs/specs/01-basic.md:1949`
-- `docs/specs/01-basic.md:1950`
-- `docs/specs/01-basic.md:1951`
-- `docs/specs/01-basic.md:1952`
-- `docs/specs/01-basic.md:1953`
-- `docs/specs/01-basic.md:1955`
-- `docs/specs/01-basic.md:1966`
-- `docs/specs/01-basic.md:1968`
-- `docs/specs/01-basic.md:1969`
-- `docs/specs/01-basic.md:1970`
-- `docs/specs/01-basic.md:1971`
+- `docs/specs/01-basic.md:1894,1896,1898,1899,1928,1930,1931,1939,1943,1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1955,1966,1968,1969,1970,1971`
 
 ## 状态（来自正式规格 §5）
 

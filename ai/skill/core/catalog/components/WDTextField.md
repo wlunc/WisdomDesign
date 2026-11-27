@@ -18,27 +18,7 @@ Contract: `contracts/WDTextField.yaml` (sha256 `51d32379d3174ff47ecda45d537e72b1
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:223`
-- `docs/specs/01-basic.md:225`
-- `docs/specs/01-basic.md:228`
-- `docs/specs/01-basic.md:227`
-- `docs/specs/01-basic.md:262`
-- `docs/specs/01-basic.md:266`
-- `docs/specs/01-basic.md:267`
-- `docs/specs/01-basic.md:268`
-- `docs/specs/01-basic.md:269`
-- `docs/specs/01-basic.md:270`
-- `docs/specs/01-basic.md:278`
-- `docs/specs/01-basic.md:280`
-- `docs/specs/01-basic.md:281`
-- `docs/specs/01-basic.md:282`
-- `docs/specs/01-basic.md:283`
-- `docs/specs/01-basic.md:301`
-- `docs/specs/01-basic.md:303`
-- `docs/specs/01-basic.md:304`
-- `docs/specs/01-basic.md:305`
-- `docs/specs/01-basic.md:306`
-- `docs/specs/01-basic.md:307`
+- `docs/specs/01-basic.md:223,225,227,228,262,266,267,268,269,270,278,280,281,282,283,301,303,304,305,306,307`
 
 ## 状态（来自正式规格 §5）
 

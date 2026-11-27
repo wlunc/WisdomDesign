@@ -18,20 +18,7 @@ Contract: `contracts/WDSkeleton.yaml` (sha256 `922227563e2566c6761a954b1130b9b58
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1055`
-- `docs/specs/02-advanced.md:1057`
-- `docs/specs/02-advanced.md:1060`
-- `docs/specs/02-advanced.md:1059`
-- `docs/specs/02-advanced.md:1084`
-- `docs/specs/02-advanced.md:1086`
-- `docs/specs/02-advanced.md:1094`
-- `docs/specs/02-advanced.md:1096`
-- `docs/specs/02-advanced.md:1097`
-- `docs/specs/02-advanced.md:1112`
-- `docs/specs/02-advanced.md:1114`
-- `docs/specs/02-advanced.md:1115`
-- `docs/specs/02-advanced.md:1116`
-- `docs/specs/02-advanced.md:1117`
+- `docs/specs/02-advanced.md:1055,1057,1059,1060,1084,1086,1094,1096,1097,1112,1114,1115,1116,1117`
 
 ## 状态（来自正式规格 §5）
 

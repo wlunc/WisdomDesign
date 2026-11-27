@@ -18,27 +18,7 @@ Contract: `contracts/WDToast.yaml` (sha256 `28d3736c731cd7348574f34790e782eee1fa
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:754`
-- `docs/specs/02-advanced.md:756`
-- `docs/specs/02-advanced.md:761`
-- `docs/specs/02-advanced.md:758`
-- `docs/specs/02-advanced.md:759`
-- `docs/specs/02-advanced.md:787`
-- `docs/specs/02-advanced.md:791`
-- `docs/specs/02-advanced.md:792`
-- `docs/specs/02-advanced.md:793`
-- `docs/specs/02-advanced.md:794`
-- `docs/specs/02-advanced.md:795`
-- `docs/specs/02-advanced.md:803`
-- `docs/specs/02-advanced.md:805`
-- `docs/specs/02-advanced.md:806`
-- `docs/specs/02-advanced.md:807`
-- `docs/specs/02-advanced.md:825`
-- `docs/specs/02-advanced.md:827`
-- `docs/specs/02-advanced.md:828`
-- `docs/specs/02-advanced.md:829`
-- `docs/specs/02-advanced.md:830`
-- `docs/specs/02-advanced.md:831`
+- `docs/specs/02-advanced.md:754,756,758,759,761,787,791,792,793,794,795,803,805,806,807,825,827,828,829,830,831`
 
 ## 状态（来自正式规格 §5）
 

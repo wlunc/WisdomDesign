@@ -18,25 +18,7 @@ Contract: `contracts/WDBottomSheet.yaml` (sha256 `c6182154130b662956f64bd280bb6c
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:542`
-- `docs/specs/02-advanced.md:544`
-- `docs/specs/02-advanced.md:547`
-- `docs/specs/02-advanced.md:546`
-- `docs/specs/02-advanced.md:580`
-- `docs/specs/02-advanced.md:584`
-- `docs/specs/02-advanced.md:585`
-- `docs/specs/02-advanced.md:586`
-- `docs/specs/02-advanced.md:587`
-- `docs/specs/02-advanced.md:596`
-- `docs/specs/02-advanced.md:598`
-- `docs/specs/02-advanced.md:599`
-- `docs/specs/02-advanced.md:600`
-- `docs/specs/02-advanced.md:621`
-- `docs/specs/02-advanced.md:623`
-- `docs/specs/02-advanced.md:624`
-- `docs/specs/02-advanced.md:625`
-- `docs/specs/02-advanced.md:626`
-- `docs/specs/02-advanced.md:627`
+- `docs/specs/02-advanced.md:542,544,546,547,580,584,585,586,587,596,598,599,600,621,623,624,625,626,627`
 
 ## 状态（来自正式规格 §5）
 

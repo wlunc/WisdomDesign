@@ -18,25 +18,7 @@ Contract: `contracts/WDProgressBar.yaml` (sha256 `bfd7dbda63e9896e68a5124be9347d
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1371`
-- `docs/specs/01-basic.md:1373`
-- `docs/specs/01-basic.md:1376`
-- `docs/specs/01-basic.md:1375`
-- `docs/specs/01-basic.md:1400`
-- `docs/specs/01-basic.md:1404`
-- `docs/specs/01-basic.md:1405`
-- `docs/specs/01-basic.md:1406`
-- `docs/specs/01-basic.md:1407`
-- `docs/specs/01-basic.md:1416`
-- `docs/specs/01-basic.md:1418`
-- `docs/specs/01-basic.md:1419`
-- `docs/specs/01-basic.md:1420`
-- `docs/specs/01-basic.md:1436`
-- `docs/specs/01-basic.md:1438`
-- `docs/specs/01-basic.md:1439`
-- `docs/specs/01-basic.md:1440`
-- `docs/specs/01-basic.md:1441`
-- `docs/specs/01-basic.md:1442`
+- `docs/specs/01-basic.md:1371,1373,1375,1376,1400,1404,1405,1406,1407,1416,1418,1419,1420,1436,1438,1439,1440,1441,1442`
 
 ## 状态（来自正式规格 §5）
 
