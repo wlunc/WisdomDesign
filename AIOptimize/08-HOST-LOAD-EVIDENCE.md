@@ -173,6 +173,25 @@ cp -R dist/ai-skill/v1.0.0/wisdom-page-ios ~/.dsh/skills/wisdom-page-ios
 
 结果：`wisdom-page-ios`（141 文件 / 304,921 B）被 DSH 发现并加载，`resourceBase` 指向 `~/.dsh/skills/wisdom-page-ios`。旧的同名 `wisdom-page` 已移除，避免两个包竞争同一 rank。
 
+
+### 四个包全部安装（2026-11-27）
+
+| 目录 | name | 文件 | 真实字节 | 平台载荷 |
+| --- | --- | --- | --- | --- |
+| `wisdom-page-design` | `wisdom-page-design` | 53 | 194,935 | 无（设计语义 + Page Spec + runtime） |
+| `wisdom-page-ios` | `wisdom-page-ios` | 141 | 304,344 | 79 张 SwiftUI 卡 + 模板 + 脚手架 |
+| `wisdom-page-android` | `wisdom-page-android` | 78 | 243,674 | 17 张 Compose 卡 + 模板（experimental / paused） |
+| `wisdom-page` | `wisdom-page` | 166 | 352,990 | 双端 provider |
+
+四者名字不同，可共存，宿主按描述路由：
+
+- 设计分析 / 需求评审 → `wisdom-page-design`
+- SwiftUI 页面实现 → `wisdom-page-ios`
+- 双端交付 → `wisdom-page`
+- Android（暂停，仅明确知道限制时）→ `wisdom-page-android`
+
+端点验证：design 包无 `platforms/` 且 query/validate 均 exit 0；iOS 包 79 卡 + 脚手架存在；Android 包 17 卡、status=experimental；all 包双端目录均在。
+
 ## 9. 卸载
 
 
