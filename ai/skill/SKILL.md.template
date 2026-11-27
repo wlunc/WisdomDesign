@@ -1,3 +1,8 @@
+---
+name: wisdom-page
+description: WisdomDesign 跨端页面设计 Skill：组件语义检索、Page Spec 编写与结构校验、iOS/Android 平台 API 与黄金模板。用于设计分析、组件选择、页面装配与跨端交接；不直接凭空生成原生代码，不宣称未经编译/UI 矩阵验证的通过结论。
+---
+
 <!-- GENERATED FILE - DO NOT EDIT. -->
 <!-- Source: wisdomdesign truth sources via tools/ai-skill/cli.js build. -->
 <!-- Regenerate: node tools/ai-skill/cli.js build --out ai/skill/core/dist/wisdom-page-core -->

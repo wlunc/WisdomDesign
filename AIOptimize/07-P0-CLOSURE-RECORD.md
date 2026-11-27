@@ -71,7 +71,7 @@
 | --- | --- | --- |
 | P0-3 Android 原生闭环 | **paused（用户决定）** | native compile 已过；平台尚未完成，暂停继续 UI 矩阵/ABI/fontScale/TalkBack/IME；Provider 保持 experimental/规划态 |
 | P0-4 iOS UI 矩阵/library gate | **closed（自动矩阵）** | library gate 全绿（400/400 测试、API 零 diff、覆盖率门槛通过）；GoldenPageMatrix 3/3 通过（5 状态 × 默认/AX3，截图附件）。light/dark、对比度、VoiceOver、真机、独立设计评审仍标 not-run |
-| P0-5 宿主加载 | not-run | 确定目标 AI 宿主 |
+| P0-5 宿主加载 | **closed（DSH）** | 已安装到 `~/.dsh/skills/wisdom-page`，宿主真实发现并加载；包内 get-component / validate-spec 在安装路径 exit 0。证据见 [08-HOST-LOAD-EVIDENCE.md](08-HOST-LOAD-EVIDENCE.md)。其他宿主未验证 |
 | P0-6 M5 真实评测 | not-run | pin 模型/宿主/工具/预算 |
 
 ### 5.1 P0-4 记录（2026-11-22，Xcode 27.2）

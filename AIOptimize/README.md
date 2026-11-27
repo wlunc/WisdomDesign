@@ -2,7 +2,7 @@
 
 > **文档性质**：方案与评审记录 + 实施状态跟踪（2026-11-22 按 R8 修复后的仓库事实更新）。
 > **当前交付**：现状评审、跨端架构原则、Skill 生成流水线方案与开发计划，以及 M0–M5 的实施产物（`ai/skill/`、`tools/ai-skill/`、`.github/workflows/`、`dist/ai-skill/`）与独立复核报告（`review/`）。
-> **实施状态**：M0 出口已记录（PASS，带保留项）；M1 Core verified；M2 iOS verified（自动 UI 矩阵 + library gate；light/dark、对比度、VoiceOver、真机、独立设计评审未跑）、M3 Android **paused（用户决定，平台未完成；Provider 保持 experimental/规划态）**、M4 partial、M5 not-run、M6 partial。独立复核裁决仍为 **B（存在阻断项）**；P0-1/P0-2 已关闭，剩余 P0 见 [P0 推进记录](07-P0-CLOSURE-RECORD.md)。未改动设计真源与 iOS / Android API/ABI 基线。
+> **实施状态**：M0 出口已记录（PASS，带保留项）；M1 Core verified；M2 iOS verified（自动 UI 矩阵 + library gate；light/dark、对比度、VoiceOver、真机、独立设计评审未跑）、M3 Android **paused（用户决定，平台未完成；Provider 保持 experimental/规划态）**、M4 partial（打包与 DSH 宿主加载已通过；其他宿主未验证）、M5 not-run、M6 partial。独立复核裁决仍为 **B（存在阻断项）**；P0-1/P0-2 已关闭，剩余 P0 见 [P0 推进记录](07-P0-CLOSURE-RECORD.md)。未改动设计真源与 iOS / Android API/ABI 基线。
 > **用途**：方案评审、实施状态与证据索引；发布仍需显式批准。
 > 日期：2026-11-21（2026-11-22 更新：AI Skill 流水线脚本统一为 JavaScript；Android 暂停、保留规划态）。
 
@@ -15,7 +15,8 @@
 | 5 | [M5 评测报告](05-M5-Evaluation-Report.md) | observation-only 的 readiness 与 harness 证据 | 真实评测未执行；不承诺收益 |
 | 6 | [独立复核](review/) | R1 契约/Core、R2 iOS、R3 Android、R4 打包/CI/M5 | 复核结论与修复映射以各报告为准 |
 | 7 | [完成报告](06-COMPLETION-REPORT.md) | 独立复核汇总与总裁决（B） | 快照 2026-11-22；M2–M5 出口未闭合 |
-| 8 | [P0 推进记录](07-P0-CLOSURE-RECORD.md) | M0 出口、full CI、Android native compile、新 dist 哈希 | P0-1/P0-2 已关闭；P0-3 partial（native compile 过，UI 矩阵待跑）；P0-4–P0-6 待外部条件 |
+| 8 | [P0 推进记录](07-P0-CLOSURE-RECORD.md) | M0 出口、full CI、Android、iOS 门禁、脚本统一、dist 哈希 | P0-1/P0-2/P0-4 已关闭；P0-3 paused；P0-5 已关闭（DSH）；P0-6 待 pin |
+| 9 | [宿主加载证据](08-HOST-LOAD-EVIDENCE.md) | DSH 全局安装、发现、加载与 runtime 验证 | DSH 通过；其他宿主未验证 |
 
 ---
 
