@@ -5,12 +5,9 @@ set -euo pipefail
 
 DIST="$PWD/dist/ai-skill/v1.0.0"
 SKILLS="$HOME/.dsh/skills"
-STAMP="$(date +%Y%m%d-%H%M%S)"
-BACKUP="$SKILLS/.backup-$STAMP"
 
 [ -d "$DIST" ] || { echo "FATAL: dist missing: $DIST"; exit 1; }
 [ -d "$SKILLS" ] || { echo "FATAL: skills dir missing: $SKILLS"; exit 1; }
-mkdir -p "$BACKUP"
 
 PAIRS=(
   "wisdom-page-core:wisdom-page-design"
@@ -27,15 +24,6 @@ for pair in "${PAIRS[@]}"; do
     *) echo "REFUSING unexpected destination name: $dst"; exit 1 ;;
   esac
   [ -d "$DIST/$src" ] || { echo "REFUSING missing package: $DIST/$src"; exit 1; }
-done
-
-echo "== backup =="
-for pair in "${PAIRS[@]}"; do
-  dst="${pair##*:}"
-  if [ -d "$SKILLS/$dst" ]; then
-    cp -R "$SKILLS/$dst" "$BACKUP/$dst"
-    echo "  saved $dst ($(find "$SKILLS/$dst" -type f | wc -l | tr -d ' ') files)"
-  fi
 done
 
 echo "== install =="
@@ -63,4 +51,4 @@ node "$CORE/runtime/resolve-token.js" --path text.tertiary
 node "$CORE/runtime/validate-spec.js" --file "$CORE/page-spec/examples/task-list.valid.json"
 echo "  card sections: $(grep -c '^## ' "$CORE/catalog/components/WDButton.md") (4 titles + anatomy/size/variants)"
 
-echo "== done: $BACKUP holds the previous installs =="
+echo "== done =="
