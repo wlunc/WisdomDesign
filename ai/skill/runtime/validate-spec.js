@@ -147,14 +147,32 @@ function domainError(error) {
   if (keyword === 'enum') return { code: 'INVALID_VALUE', message, suggestion: 'Use a value from the schema enum.' };
   return { code: 'INVALID_FIELD', message, suggestion: 'Correct this field according to page-spec/schema.json.' };
 }
+// Both support files below used to be swallowed by a bare catch: a missing registry and a missing
+// contract digest both degraded to "empty", so the first visible symptom was a misleading
+// UNREGISTERED_EXTENSION (or a silently accepted unknown variant) pointing the reader at their own
+// spec. They are now typed failures: the report says which support file is broken and why.
+function readSupportFile(file, label) {
+  let text;
+  try { text = fs.readFileSync(file, 'utf8'); }
+  catch (error) {
+    return { ok: false, code: error.code === 'ENOENT' ? 'REGISTRY_MISSING' : 'REGISTRY_UNREADABLE', file, label, detail: error.message };
+  }
+  try { return { ok: true, data: JSON.parse(text) }; }
+  catch (error) {
+    return { ok: false, code: 'REGISTRY_CORRUPT', file, label, detail: error.message };
+  }
+}
+
 function loadDigest() {
-  try { return JSON.parse(fs.readFileSync(digestPath(), 'utf8')); }
-  catch (error) { return null; }
+  const result = readSupportFile(digestPath(), 'contract digest');
+  // The digest is an optimisation for rules that need enum/default knowledge; its absence must not
+  // stop a structural verdict, but it must be reported, not hidden.
+  return result.ok ? result.data : { __missing: result };
 }
 
 function loadExtensions() {
-  try { return JSON.parse(fs.readFileSync(path.join(SKILL_ROOT, 'page-spec', 'extensions.json'), 'utf8')); }
-  catch (error) { return { extensions: [] }; }
+  const result = readSupportFile(path.join(SKILL_ROOT, 'page-spec', 'extensions.json'), 'extension registry');
+  return result.ok ? result.data : { extensions: [], __missing: result };
 }
 
 // Emphasis is DERIVED, never declared. A region is primary when it carries the page's own
@@ -186,6 +204,24 @@ function semanticErrors(spec, schemaErrors) {
   const regions = Array.isArray(spec && spec.regions) ? spec.regions : [];
   const digest = loadDigest();
   const extensions = loadExtensions();
+
+  // A broken support file is an environment fault, not a property of the spec. Report it once,
+  // with the file and the underlying reason, and skip the rules that would otherwise produce a
+  // misleading spec-side error from the degraded data.
+  for (const broken of [digest.__missing, extensions.__missing]) {
+    if (!broken) continue;
+    const isMissing = broken.code === 'REGISTRY_MISSING';
+    errors.push({
+      code: broken.code,
+      jsonPath: '/page-spec/' + path.basename(broken.file),
+      message: (isMissing ? 'Support file is missing: ' : 'Support file is unreadable: ') + broken.file + (isMissing ? '' : ' (' + broken.detail + ')'),
+      suggestion: isMissing
+        ? 'The ' + broken.label + ' is not present. The installed skill package is incomplete (reinstall it) or the extension was never registered in the wisdomdesign source repo; do not work around it by editing the spec.'
+        : 'Fix ' + broken.file + ' so it is valid JSON, then re-run. This is not a problem with the Page Spec.',
+    });
+  }
+  const digestOk = !digest.__missing;
+  const extensionsOk = !extensions.__missing;
 
   if (page && page.contentPattern === 'collection' && !states.some(state => state && state.kind === 'empty')) {
     errors.push({ code: 'COLLECTION_MISSING_EMPTY', jsonPath: '/states', message: 'collection pages must include an empty state.', suggestion: 'Add a state with kind empty and describe the empty-state action.' });
@@ -220,7 +256,7 @@ function semanticErrors(spec, schemaErrors) {
   }
 
   // Variant must be something the component contract actually declares.
-  if (digest && digest.components) {
+  if (digestOk && digest.components) {
     regions.forEach((region, index) => {
       if (!region || region.variant === undefined) return;
       const contract = digest.components[region.component];
@@ -244,9 +280,12 @@ function semanticErrors(spec, schemaErrors) {
   }
 
   // Extensions have a registered home; proposed ones are accepted with a visible warning.
-  const registered = new Map((extensions.extensions || []).map(entry => [entry.id, entry]));
+  // Only judge registration against a registry that actually loaded; otherwise every extension
+  // reads as unregistered and the real fault (the file) is never named.
+  const registered = new Map((extensionsOk ? extensions.extensions || [] : []).map(entry => [entry.id, entry]));
+  const registryUnavailable = !extensionsOk;
   regions.forEach((region, index) => {
-    if (!region || !region.extension) return;
+    if (!region || !region.extension || registryUnavailable) return;
     const entry = registered.get(region.extension.id);
     if (!entry) {
       errors.push({ code: 'UNREGISTERED_EXTENSION', jsonPath: '/regions/' + index + '/extension/id', message: 'extension ' + region.extension.id + ' is not registered in page-spec/extensions.json.', suggestion: 'Register the extension (id, basedOn, status, summary) or use a canonical component.' });

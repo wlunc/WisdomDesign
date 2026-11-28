@@ -210,6 +210,54 @@ test('all generated files carry banner or are deterministic JSON with generatedB
   assert.match(readManifest().generatedBy === undefined ? 'tools/ai-skill/lib/manifest.js' : readManifest().generatedBy, /manifest/);
 });
 
+// The single most dangerous failure mode for this pipeline is work that exists only in the working
+// tree: the 1.1 registry was untracked, so a fresh clone would have shipped a 1.1 schema with no
+// registry, and `cli.js check` would still have passed (it compares against a rebuild of the same
+// dirty tree). Only a clean clone proves the package does not depend on untracked files.
+test('a clean clone of the committed tree builds and validates without untracked files', () => {
+  // realpathSync: macOS reports /var/... for tmpdir but /private/var/... on disk, and the builder's
+  // isInside() guard compares unresolved prefixes and would reject its own output.
+  const temp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'ai-skill-clean-clone-')));
+  try {
+    const clone = path.join(temp, 'wisdomdesign');
+    const cloneResult = spawnSync('git', ['clone', '--quiet', '--no-hardlinks', DESIGN_ROOT, clone], { encoding: 'utf8' });
+    assert.strictEqual(cloneResult.status, 0, 'clone failed: ' + cloneResult.stderr);
+    // What a fresh clone holds is what the LAST COMMIT holds, not the working tree. Assert that
+    // commit carries every file the package needs, so this test fails the moment work is left
+    // uncommitted (the E-1 failure) rather than only after a `git clean`.
+    const required = [
+      'ai/skill/page-spec/extensions.json',
+      'ai/skill/page-spec/schema.json',
+      'ai/skill/runtime/render-spec.js',
+      'ai/skill/runtime/resolve-token.js',
+      'ai/skill/REFERENCES.md',
+      'tools/ai-skill/lib/token-index.js',
+    ];
+    for (const file of required) {
+      assert.ok(fs.existsSync(path.join(clone, file)), 'HEAD does not contain ' + file + ' — commit it before it is lost (feedback E-1)');
+    }
+    // `git clone` copies HEAD, so the check above proves the file is committed but not that the
+    // committed CONTENT matches the working tree. Compare the two: a build from a dirty tree can
+    // pass every gate while shipping bytes nobody has committed.
+    const drifted = [];
+    for (const file of required) {
+      const committed = fs.readFileSync(path.join(clone, file));
+      const working = fs.readFileSync(path.join(DESIGN_ROOT, file));
+      if (!committed.equals(working)) drifted.push(file);
+    }
+    assert.deepStrictEqual(drifted, [], 'committed content differs from the working tree; commit before packaging: ' + drifted.join(', '));
+    // Build from the clone using ITS OWN tooling, so nothing is resolved from this working tree.
+    const out = path.join(clone, 'ai', 'skill', 'core', 'dist', 'clean-clone');
+    const build = spawnSync('node', [path.join(clone, 'tools', 'ai-skill', 'cli.js'), 'build', '--out', out], { encoding: 'utf8', cwd: clone });
+    assert.strictEqual(build.status, 0, 'clean clone must build: ' + (build.stderr || build.stdout));
+    const built = path.join(out);
+    assert.ok(fs.existsSync(path.join(built, 'page-spec', 'extensions.json')), 'registry must ship from a clean clone');
+    const validate = spawnSync('node', [path.join(built, 'runtime', 'validate-spec.js'), '--file', path.join(built, 'page-spec', 'examples', 'task-list.valid.json')], { encoding: 'utf8' });
+    assert.strictEqual(validate.status, 0, 'packaged validator must accept its own example from a clean clone: ' + validate.stderr);
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+});
 test('F9: over-budget resident template fails the build (temp template copy only)', () => {
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'core-budget-'));
   const template = path.join(temp, 'SKILL.md.template');

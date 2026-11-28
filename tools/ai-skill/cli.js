@@ -124,6 +124,39 @@ function cleanOut(out) {
   fs.mkdirSync(out, { recursive: true });
   for (const entry of fs.readdirSync(out)) fs.rmSync(path.join(out, entry), { recursive: true, force: true });
 }
+// Build-time integrity of the extension registry. The validator reports a missing or corrupt
+// registry at run time, but that only helps someone who already has a broken package. Checking
+// here means a repository that lost the file cannot produce a package at all (feedback E-1: the
+// registry was untracked, so a fresh clone silently shipped a 1.1 schema with no registry).
+function assertExtensionRegistry(root) {
+  const file = path.join(root, 'page-spec', 'extensions.json');
+  if (!fs.existsSync(file)) throw new Error('page-spec/extensions.json is missing: the extension registry must ship with a 1.1 package');
+  let document;
+  try { document = JSON.parse(fs.readFileSync(file, 'utf8')); }
+  catch (error) { throw new Error('page-spec/extensions.json is not valid JSON: ' + error.message); }
+  if (!Array.isArray(document.extensions)) throw new Error('page-spec/extensions.json must have an extensions array');
+  const seen = new Set();
+  for (const entry of document.extensions) {
+    if (!entry || typeof entry.id !== 'string' || !entry.id) throw new Error('extension entry without an id in page-spec/extensions.json');
+    if (seen.has(entry.id)) throw new Error('duplicate extension id ' + entry.id + ' in page-spec/extensions.json');
+    seen.add(entry.id);
+    if (!entry.basedOn) throw new Error('extension ' + entry.id + ' must declare basedOn');
+    if (!['proposed', 'accepted', 'deprecated'].includes(entry.status)) throw new Error('extension ' + entry.id + ' has an unknown status: ' + entry.status);
+    // reviewRef must resolve inside the package or be explicitly external. An unresolvable
+    // reference is exactly the dangling-pointer defect this registry exists to avoid (E-4).
+    if (entry.reviewRef !== undefined) {
+      if (typeof entry.reviewRef !== 'string' || !entry.reviewRef) throw new Error('extension ' + entry.id + ' has an empty reviewRef');
+      const external = entry.reviewRefExternal === true || /^[a-z]+:\/\//i.test(entry.reviewRef);
+      if (!external) {
+        // Only the path is checked for existence; the anchor is a heading id, not a file segment.
+        const target = path.resolve(root, entry.reviewRef.split('#')[0]);
+        if (!isInside(root, target)) throw new Error('extension ' + entry.id + ' reviewRef escapes the package: ' + entry.reviewRef);
+        if (!fs.existsSync(target)) throw new Error('extension ' + entry.id + ' reviewRef does not resolve inside the package: ' + entry.reviewRef);
+      }
+    }
+  }
+}
+
 function renderInto(out, templatePath = TEMPLATE, repoRoots = {}) {
   cleanOut(out);
   const catalogSource = path.join(out, 'catalog');
@@ -142,6 +175,9 @@ function renderInto(out, templatePath = TEMPLATE, repoRoots = {}) {
       const source = path.join(sourceDir, entry.name);
       if (entry.isDirectory()) copyTree(source, relative);
       else if (entry.isFile()) {
+        // extensions.js is a source-repo registry reader (used by maintainers); the validator reads
+        // extensions.json directly, so shipping it would add an unused script to the package.
+        if (relative === path.join('page-spec', 'extensions.js')) continue;
         let content = normalize(fs.readFileSync(source, 'utf8'));
         if (relative.endsWith('.md') && !content.startsWith('<!-- GENERATED FILE')) {
           content = BANNER_LINES.map(line => '<!-- ' + line + ' -->').join(LF) + LF + LF + content;
@@ -167,6 +203,10 @@ function renderInto(out, templatePath = TEMPLATE, repoRoots = {}) {
   // The copy is byte-identical to tokens/wisdom.tokens.json; manifest.sources.design.tokenHash
   // pins it, and tests assert the two hashes agree, so this copy cannot silently drift.
   writeFile(out, 'tokens/wisdom.tokens.json', fs.readFileSync(path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json'), 'utf8'));
+
+  // Run against the finished package: the registry's reviewRef may point at REFERENCES.md, which is
+  // only written above. Asserting here means what ships is exactly what was checked.
+  assertExtensionRegistry(out);
 
   const manifest = manifestLib.buildManifest(out, { packageName: 'wisdom-page-core', platforms: ['core'], skillVersion: manifestLib.SKILL_VERSION, banner: BANNER_LINES, repoRoots });
   return { out, skillBytes, files: manifest.contents.fileCount };

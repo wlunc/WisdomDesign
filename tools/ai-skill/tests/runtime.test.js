@@ -228,6 +228,54 @@ test('render_spec token resolution agrees with the build-time token index', () =
     }
   }
 });
+// A missing or corrupt support file used to degrade to "empty" and surface as a spec-side
+// UNREGISTERED_EXTENSION, sending the reader to fix a spec that was fine (feedback E-3).
+test('a broken extension registry is reported as a registry fault, not a spec error', () => {
+  const temp = path.join(os.tmpdir(), 'skill-registry-probe');
+  fs.rmSync(temp, { recursive: true, force: true });
+  // Copy the package so the real install is never touched.
+  fs.cpSync(SKILL_ROOT.replace(/\/ai\/skill$/, '') + '/ai/skill/core/dist/wisdom-page-core', temp, { recursive: true });
+  const validator = path.join(temp, 'runtime', 'validate-spec.js');
+  const registry = path.join(temp, 'page-spec', 'extensions.json');
+  const probe = path.join(os.tmpdir(), 'registry-probe-spec.json');
+  const spec = JSON.parse(fs.readFileSync(path.join(SKILL_ROOT, VALID_SPECS[0]), 'utf8'));
+  spec.regions.push({ id: 'seg', kind: 'actions', component: 'WDSegmentedControl', extension: { id: 'WDStateSegment', basedOn: 'WDSegmentedControl' } });
+  fs.writeFileSync(probe, JSON.stringify(spec));
+  try {
+    const keep = fs.readFileSync(registry, 'utf8');
+    fs.rmSync(registry);
+    const missing = JSON.parse(run('node', [validator, '--file', probe, '--json']).stdout);
+    assert.ok(missing.errors.some(error => error.code === 'REGISTRY_MISSING'), 'missing registry must be named: ' + JSON.stringify(missing.errors));
+    assert.ok(!missing.errors.some(error => error.code === 'UNREGISTERED_EXTENSION'), 'the reader must not be sent to fix their spec');
+    fs.writeFileSync(registry, '{broken');
+    const corrupt = JSON.parse(run('node', [validator, '--file', probe, '--json']).stdout);
+    assert.ok(corrupt.errors.some(error => error.code === 'REGISTRY_CORRUPT'), 'corrupt registry must be named');
+    fs.writeFileSync(registry, keep);
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+    fs.rmSync(probe, { force: true });
+  }
+});
+test('a missing contract digest is reported, and unknown-variant checking is not silently skipped', () => {
+  const temp = path.join(os.tmpdir(), 'skill-digest-probe');
+  fs.rmSync(temp, { recursive: true, force: true });
+  fs.cpSync(SKILL_ROOT.replace(/\/ai\/skill$/, '') + '/ai/skill/core/dist/wisdom-page-core', temp, { recursive: true });
+  const validator = path.join(temp, 'runtime', 'validate-spec.js');
+  const digest = path.join(temp, 'catalog', 'contracts-digest.json');
+  const probe = path.join(os.tmpdir(), 'digest-probe-spec.json');
+  const spec = JSON.parse(fs.readFileSync(path.join(SKILL_ROOT, VALID_SPECS[1]), 'utf8'));
+  spec.regions.push({ id: 'loud', kind: 'actions', component: 'WDButton', variant: 'loud' });
+  fs.writeFileSync(probe, JSON.stringify(spec));
+  try {
+    fs.rmSync(digest);
+    const report = JSON.parse(run('node', [validator, '--file', probe, '--json']).stdout);
+    assert.ok(report.errors.some(error => error.code === 'REGISTRY_MISSING'), 'missing digest must be reported, not hidden');
+    assert.strictEqual(report.valid, false, 'a spec validated against a degraded package must not read as clean');
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+    fs.rmSync(probe, { force: true });
+  }
+});
 test('render_spec refuses a malformed spec instead of emitting a broken page', () => {
   const temp = path.join(os.tmpdir(), 'render-broken.json');
   fs.writeFileSync(temp, '{not json');

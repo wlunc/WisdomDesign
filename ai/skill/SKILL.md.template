@@ -35,7 +35,7 @@ Load on demand (`package:`): page-spec/{schema,extensions}.json, page-spec/examp
 
 Forbidden as normative sources: design/gallery/**, docs/02-components.md, review or audit narratives, platform internal symbols, uncompiled signature guesses.
 
-Source priority, conflict order and the `source-repo:` list live in `package: REFERENCES.md` — load it before citing a spec line. Never retype a visual number: resolve it with runtime/resolve-token.js.
+Source priority, conflict order and the `source-repo:` list live in `package: REFERENCES.md` — load it before citing a spec line. Never retype a visual number: resolve it with runtime/resolve-token.js. Extension registry: `page-spec/extensions.json` is build output — never edit it in place; register in the source repo (see REFERENCES.md).
 
 ## 4. Page Brief and Page Spec
 

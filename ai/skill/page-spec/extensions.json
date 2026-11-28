@@ -1,14 +1,27 @@
 {
   "schemaVersion": "1.0",
-  "note": "regions[].extension.id 必须在这里登记。未登记 → UNREGISTERED_EXTENSION 硬错；proposed → 通过 + warning；accepted → 通过无 warning；deprecated → 通过 + warning（引导迁移）。",
+  "note": "regions[].extension.id 必须在这里登记。未登记 → UNREGISTERED_EXTENSION 硬错；proposed → 通过 + warning；accepted → 通过无 warning；deprecated → 通过 + warning（引导迁移）。本文件是构建产物：随 `cli.js build` 从 wisdomdesign 源仓整目录拷贝并覆盖，请勿直接改包内副本；登记变更请提交至源仓 `ai/skill/page-spec/extensions.json`。",
+  "reviewRefSemantics": {
+    "reviewRef": "包内相对路径（相对 skill 包根，可带 #anchor）。构建时断言必须能在包内解析，解析不到即构建失败。不得写源仓或使用者仓的相对路径。",
+    "reviewRefExternal": "true 时 reviewRef 是外部 URL（http/https），不参与包内解析断言。",
+    "proposalSource": "提出该扩展的外部仓与路径。显式声明 repo，避免把别的仓的相对路径伪装成本仓引用。"
+  },
   "extensions": [
     {
       "id": "WDStateSegment",
       "basedOn": "WDSegmentedControl",
       "status": "proposed",
       "summary": "三档状态控件（充足 / 少量 / 没了）：写库、有副作用、可撤销，选中态用状态色，不是视图切换。",
-      "why": "WDSegmentedControl 的语义是「切视图，内容在同一页内替换」，语义不兼容；用 kind:'custom' 绕过会让语义规则失效。",
-      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+      "why": "WDSegmentedControl 的语义是「切视图，内容在同一页内替换」，语义不兼容；用 kind:'custom' 绕过会让语义规则失效（1.1 已删除该值）。",
+      "reviewRef": "REFERENCES.md#已知未裁定项截至-2026-11-28",
+      "proposalSource": {
+        "repo": "HOH",
+        "path": "WisdomRedesign/02-design-gap.md",
+        "anchors": [
+          "§3.2"
+        ],
+        "assessment": "assessment-design.md §2"
+      }
     },
     {
       "id": "WDTabActionSlot",
@@ -16,7 +29,14 @@
       "status": "proposed",
       "summary": "Tab 栏中间的动作位：点击不切页，语义是 button 不是 tab。",
       "why": "WDTabBar 的每个 item 都是页面切换；用 WDFAB 会压住列表行尾的操作。",
-      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+      "reviewRef": "REFERENCES.md#已知未裁定项截至-2026-11-28",
+      "proposalSource": {
+        "repo": "HOH",
+        "path": "WisdomRedesign/02-design-gap.md",
+        "anchors": [
+          "§3.3"
+        ]
+      }
     },
     {
       "id": "WDTimeline",
@@ -24,7 +44,14 @@
       "status": "proposed",
       "summary": "操作时间线：按时间排列的不可变事件流，行间有连接线。",
       "why": "37 个组件里没有时间线；用 WDListRow 会丢掉「时间连续」这一语义。",
-      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+      "reviewRef": "REFERENCES.md#已知未裁定项截至-2026-11-28",
+      "proposalSource": {
+        "repo": "HOH",
+        "path": "WisdomRedesign/02-design-gap.md",
+        "anchors": [
+          "§4.2"
+        ]
+      }
     }
   ]
 }
