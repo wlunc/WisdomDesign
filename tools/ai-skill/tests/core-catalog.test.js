@@ -41,6 +41,9 @@ function copyDesignIntoTemp(files) {
   fs.mkdirSync(path.join(design, 'tools', 'ai-skill', 'lib'), { recursive: true });
   fs.copyFileSync(EXTRACTOR, path.join(design, 'tools', 'ai-skill', 'lib', 'extract-design.js'));
   fs.copyFileSync(path.join(TOOL_ROOT, 'lib', 'simple-yaml.js'), path.join(design, 'tools', 'ai-skill', 'lib', 'simple-yaml.js'));
+  // The extractor resolves token names through lib/token-index.js; a fixture tree without it fails
+  // with a module error instead of the assertion the test is actually making.
+  fs.copyFileSync(path.join(TOOL_ROOT, 'lib', 'token-index.js'), path.join(design, 'tools', 'ai-skill', 'lib', 'token-index.js'));
   for (const [relative, content] of Object.entries(files)) {
     const target = path.join(design, relative);
     fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -116,6 +119,52 @@ test('extracts 37 components with traceable purposes and no gallery source', () 
   assert.ok(button.purpose.bullets.some((bullet) => bullet.kind === 'avoid' && bullet.text.includes('WDListRow')));
 });
 
+// P0-1 regression: the card used to carry purpose + state/content/a11y prose and nothing else,
+// which is why a designer could not draw the component without reverse-engineering the gallery.
+test('every card carries anatomy, size and variants with a designer summary', () => {
+  const extract = JSON.parse(spawnSync('node', [EXTRACTOR], { encoding: 'utf8' }).stdout);
+  const missing = extract.components.filter(component => {
+    const visual = component.visual || {};
+    return !visual.anatomy || !visual.size || !visual.variants;
+  }).map(component => component.id);
+  assert.deepStrictEqual(missing, [], 'components without visual sections: ' + missing.join(','));
+  for (const component of extract.components) {
+    for (const key of ['anatomy', 'size', 'variants']) {
+      assert.ok(component.visual[key].items.length > 0, component.id + ' §' + key + ' extracted no rows');
+    }
+  }
+});
+test('every token a visual section names resolves to a real value', () => {
+  const extract = JSON.parse(spawnSync('node', [EXTRACTOR], { encoding: 'utf8' }).stdout);
+  const tokens = JSON.parse(fs.readFileSync(path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json'), 'utf8'));
+  const tokenIndex = require(path.join(TOOL_ROOT, 'lib', 'token-index.js'));
+  const unresolved = [];
+  let checked = 0;
+  for (const component of extract.components) {
+    for (const key of ['anatomy', 'size', 'variants']) {
+      for (const item of component.visual[key].items) {
+        for (const token of item.tokens || []) {
+          checked += 1;
+          assert.ok(token.value !== null && token.value !== undefined, component.id + ' ' + token.name + ' has no value');
+          if (!tokenIndex.resolve(tokens, token.name, 'light')) unresolved.push(component.id + ':' + token.name);
+        }
+      }
+    }
+  }
+  assert.ok(checked > 100, 'expected the visual sections to reference many tokens, saw ' + checked);
+  assert.deepStrictEqual(unresolved, [], 'unresolved tokens: ' + unresolved.join(','));
+});
+// The gate must fire, otherwise a card could quote a token name the token file does not define and
+// nobody would notice until a designer tried to look it up.
+test('an unknown token name fails extraction instead of printing a dead reference', () => {
+  const files = minimalSourceOverrides();
+  const specPath = 'docs/specs/01-basic.md';
+  files[specPath] = files[specPath].replace('`radius.full`', '`radius.not-a-real-token`');
+  const temp = copyDesignIntoTemp(files);
+  const result = spawnSync('node', [temp.extractor], { encoding: 'utf8' });
+  assert.notStrictEqual(result.status, 0, 'extraction must fail on an unresolvable token');
+  assert.match(result.stderr, /令牌无法解析|not-a-real-token/);
+});
 test('F4: every purpose/conclusion sourceRef points at the exact source line', () => {
   const data = extract();
   let checked = 0;
@@ -213,10 +262,12 @@ test('generates deterministic 37-card catalog with traceable cards', () => {
   const firstTree = digestTree(path.join(temp, 'first', 'catalog'));
   const secondTree = digestTree(path.join(temp, 'second', 'catalog'));
   assert.deepStrictEqual(firstTree, secondTree, 'catalog generation must be deterministic');
-  assert.strictEqual(Object.keys(firstTree).length, 39);
+  // 37 cards + catalog.md + manifest.json + contracts-digest.json
+  assert.strictEqual(Object.keys(firstTree).length, 40);
   assert.ok(firstTree['components/WDButton.md']);
   assert.ok(firstTree['catalog.md']);
   assert.ok(firstTree['manifest.json']);
+  assert.ok(firstTree['contracts-digest.json'], 'the contract digest ships so a variant can be validated');
 
   const card = fs.readFileSync(path.join(temp, 'first', 'catalog', 'components', 'WDButton.md'), 'utf8');
   assert.match(card, /用途（来自正式规格 §1）/);

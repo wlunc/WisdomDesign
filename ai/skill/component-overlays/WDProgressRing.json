@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDProgressRing",
+  "searchAliases": [
+    "进度环",
+    "环形进度",
+    "圆环",
+    "progress ring"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "card",
+    "overview"
+  ]
+}

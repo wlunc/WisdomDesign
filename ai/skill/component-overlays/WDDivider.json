@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDDivider",
+  "searchAliases": [
+    "分割线",
+    "分隔线",
+    "横线",
+    "divider"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "collection",
+    "form"
+  ]
+}

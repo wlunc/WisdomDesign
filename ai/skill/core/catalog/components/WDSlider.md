@@ -7,7 +7,7 @@
 
 Component: `WDSlider`
 Spec: `docs/specs/01-basic.md` (number 8)
-Contract: `contracts/WDSlider.yaml` (sha256 `faa8517894c8ddef6dd9cec9e933a50ee9ef1cd588285872e7c1e1feff9fd11c`)
+Contract: `contracts-digest.json#WDSlider` (source `contracts/WDSlider.yaml`, sha256 `faa8517894c8ddef6dd9cec9e933a50ee9ef1cd588285872e7c1e1feff9fd11c`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,29 @@ Contract: `contracts/WDSlider.yaml` (sha256 `faa8517894c8ddef6dd9cec9e933a50ee9e
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:747,749,751,752,776,780,781,782,783,791,793,794,795,812,814,815,816,817,818`
+- `docs/specs/01-basic.md:747,749,751,752,754,756,758,762,763,764,765,766,768,772,773,774,776,780,781,782,783,791,793,794,795,812,814,815,816,817,818`
+
+## 设计者摘要
+
+轨道高 6；手柄 26（白色 + `elevation.1` + 1pt `border.hairline` 描边）；最小宽度 120；手柄与轨道端点的内缩 手柄半径 13，轨道两端各留 13；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 轨道 + 已填充段 + 手柄 + 数值标签四段。轨道与填充用同一条 6pt 高的线，靠颜色区分。（`docs/specs/01-basic.md:756`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=轨道高; 值=6（`docs/specs/01-basic.md:762`）
+- 项=手柄; 值=26（白色 + `elevation.1` + 1pt `border.hairline` 描边）（`elevation.1` = 0 1 2 #0A3C640A ; 0 6 16 #0A3C640F；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/01-basic.md:763`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/01-basic.md:764`）
+- 项=最小宽度; 值=120（`docs/specs/01-basic.md:765`）
+- 项=手柄与轨道端点的内缩; 值=手柄半径 13，轨道两端各留 13（`docs/specs/01-basic.md:766`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=单值; 说明=默认（`docs/specs/01-basic.md:772`）
+- 变体=带刻度; 说明=离散取值，步长按刻度（如提前 1 天 / 2 天 / 1 周），松手吸附（`docs/specs/01-basic.md:773`）
+- 变体=范围; 说明=两个手柄，用于区间（如预算下限到上限）。两端手柄不允许交叉，最小间隔 = 1 步长（`docs/specs/01-basic.md:774`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +71,9 @@ Contract: `contracts/WDSlider.yaml` (sha256 `faa8517894c8ddef6dd9cec9e933a50ee9e
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 滑块, 拖动条, 拖动取值, slider
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form
 
 ## 平台说明
 

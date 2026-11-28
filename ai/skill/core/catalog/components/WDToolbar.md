@@ -7,7 +7,7 @@
 
 Component: `WDToolbar`
 Spec: `docs/specs/02-advanced.md` (number 35)
-Contract: `contracts/WDToolbar.yaml` (sha256 `73b58dc7c76142ede662be365ce2662fb47c1bdb906b5c5002ab4378b479fa8f`)
+Contract: `contracts-digest.json#WDToolbar` (source `contracts/WDToolbar.yaml`, sha256 `73b58dc7c76142ede662be365ce2662fb47c1bdb906b5c5002ab4378b479fa8f`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,30 @@ Contract: `contracts/WDToolbar.yaml` (sha256 `73b58dc7c76142ede662be365ce2662fb4
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1452,1454,1456,1457,1482,1486,1487,1488,1489,1498,1500,1501,1502,1541,1543,1544,1545,1546,1547,1548`
+- `docs/specs/02-advanced.md:1452,1454,1456,1457,1459,1461,1463,1467,1468,1469,1470,1471,1472,1474,1478,1479,1480,1482,1486,1487,1488,1489,1498,1500,1501,1502,1541,1543,1544,1545,1546,1547,1548`
+
+## 设计者摘要
+
+容器高 48；图标按钮 36×36，图标 20；按钮间距 `space.2`（4）；容器内边距 6；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 玻璃胶囊容器 + 若干图标按钮 + 可选分割线 + 可选文字。（`docs/specs/02-advanced.md:1461`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=容器高; 值=48（`docs/specs/02-advanced.md:1467`）
+- 项=图标按钮; 值=36×36，图标 20（`docs/specs/02-advanced.md:1468`）
+- 项=按钮间距; 值=`space.2`（4）（`docs/specs/02-advanced.md:1469`）
+- 项=容器内边距; 值=6（`docs/specs/02-advanced.md:1470`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/02-advanced.md:1471`）
+- 项=分割线; 值=1pt × 24，色 `border.hairline`（`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/02-advanced.md:1472`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=顶部; 位置=导航栏下方; 说明=与当前对象相关的操作（`docs/specs/02-advanced.md:1478`）
+- 变体=底部; 位置=内容上方; 说明=单手可达，用于高频操作（`docs/specs/02-advanced.md:1479`）
+- 变体=键盘上方; 位置=键盘附着; 说明=输入辅助（格式、插入）（`docs/specs/02-advanced.md:1480`）
 
 ## 状态（来自正式规格 §5）
 
@@ -50,9 +73,9 @@ Contract: `contracts/WDToolbar.yaml` (sha256 `73b58dc7c76142ede662be365ce2662fb4
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 工具栏, 操作栏, 底部操作栏, toolbar
+- combinesWith: WDIconButton
+- pageRegions: toolbar
 
 ## 平台说明
 

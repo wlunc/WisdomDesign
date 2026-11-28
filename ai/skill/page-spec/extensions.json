@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "note": "regions[].extension.id 必须在这里登记。未登记 → UNREGISTERED_EXTENSION 硬错；proposed → 通过 + warning；accepted → 通过无 warning；deprecated → 通过 + warning（引导迁移）。",
+  "extensions": [
+    {
+      "id": "WDStateSegment",
+      "basedOn": "WDSegmentedControl",
+      "status": "proposed",
+      "summary": "三档状态控件（充足 / 少量 / 没了）：写库、有副作用、可撤销，选中态用状态色，不是视图切换。",
+      "why": "WDSegmentedControl 的语义是「切视图，内容在同一页内替换」，语义不兼容；用 kind:'custom' 绕过会让语义规则失效。",
+      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+    },
+    {
+      "id": "WDTabActionSlot",
+      "basedOn": "WDIconButton",
+      "status": "proposed",
+      "summary": "Tab 栏中间的动作位：点击不切页，语义是 button 不是 tab。",
+      "why": "WDTabBar 的每个 item 都是页面切换；用 WDFAB 会压住列表行尾的操作。",
+      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+    },
+    {
+      "id": "WDTimeline",
+      "basedOn": "WDListSection",
+      "status": "proposed",
+      "summary": "操作时间线：按时间排列的不可变事件流，行间有连接线。",
+      "why": "37 个组件里没有时间线；用 WDListRow 会丢掉「时间连续」这一语义。",
+      "reviewRef": "SkillFeedback/wisdom-page-design-usage-feedback.md#P0-4"
+    }
+  ]
+}

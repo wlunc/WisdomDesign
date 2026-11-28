@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDIconButton",
+  "searchAliases": [
+    "图标按钮",
+    "纯图标按钮",
+    "icon button"
+  ],
+  "combinesWith": [
+    "WDIcon"
+  ],
+  "pageRegions": [
+    "toolbar",
+    "navigation",
+    "actions"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDSegmentedControl",
+  "searchAliases": [
+    "分段控件",
+    "分段",
+    "视图切换",
+    "segmented control"
+  ],
+  "combinesWith": [
+    "WDChip"
+  ],
+  "pageRegions": [
+    "collection-header",
+    "toolbar"
+  ]
+}

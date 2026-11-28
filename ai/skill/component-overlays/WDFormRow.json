@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDFormRow",
+  "searchAliases": [
+    "表单行",
+    "设置行",
+    "表单项",
+    "form row"
+  ],
+  "combinesWith": [
+    "WDTextField",
+    "WDSwitch",
+    "WDPicker"
+  ],
+  "pageRegions": [
+    "form"
+  ]
+}

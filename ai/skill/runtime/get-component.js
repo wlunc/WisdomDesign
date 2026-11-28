@@ -109,21 +109,41 @@ function summaryLines(text) {
   const segment = start >= 0 && end > start ? lines.slice(start + 1, end) : lines.slice(0, 8);
   return segment.filter(line => line.length <= 300).slice(0, 4);
 }
+// Search must behave the same for Chinese and English. Ranked evidence tiers (highest wins):
+//   id exact 100 / alias exact 60 / alias prefix 45 / specName 40 / alias substring 30 / body 5
+// Body hits alone are a weak signal: they match almost every card for a common word, so they
+// must never outrank an actual alias. Ties resolve through a deterministic, intent-bearing order
+// (alias rank -> pageRegions coverage -> spec order) instead of the alphabetical id, which made
+// `--query 按钮` return nineteen cards all scoring 5 with WDButton missing entirely.
+const ALIAS_EXACT = 60;
+const ALIAS_PREFIX = 45;
+const SPEC_NAME = 40;
+const ALIAS_SUBSTRING = 30;
+const BODY = 5;
 function tokenize(value) {
   return String(value).toLowerCase().match(/[\p{Script=Han}]+|[a-z][a-z0-9_-]*/gu) || [];
 }
+function aliasMatch(aliases, normalized) {
+  let best = 0;
+  for (const alias of aliases) {
+    const value = alias.toLowerCase();
+    if (value === normalized) return ALIAS_EXACT;
+    if (value.startsWith(normalized)) best = Math.max(best, ALIAS_PREFIX);
+    else if (value.includes(normalized)) best = Math.max(best, ALIAS_SUBSTRING);
+  }
+  return best;
+}
 function score(entry, text, terms) {
   if (!terms.length) return 0;
-  const metadata = [entry.id, entry.specName || '', ...(entry.searchAliases || [])].join(' ').toLowerCase();
+  const aliases = entry.searchAliases || [];
   const plainText = stripMarkdown(text).join(' ').toLowerCase();
   let value = 0;
   for (const term of new Set(terms)) {
     const normalized = term.toLowerCase();
     if (entry.id.toLowerCase() === normalized) value += 100;
-    else if (String(entry.specName || '').toLowerCase() === normalized) value += 70;
-    else if ((entry.searchAliases || []).some(alias => alias.toLowerCase() === normalized)) value += 60;
-    else if (metadata.includes(normalized)) value += 40;
-    if (plainText.includes(normalized)) value += 5;
+    else if (String(entry.specName || '').toLowerCase() === normalized) value += SPEC_NAME;
+    else value += aliasMatch(aliases, normalized);
+    if (plainText.includes(normalized)) value += BODY;
   }
   return value;
 }
@@ -139,23 +159,64 @@ function exactResult(root, entry) {
     notice: '本查询只返回设计语义，不包含平台 API；请再从目标 Provider 获取 API 卡。'
   };
 }
+// Why this candidate surfaced. Without it a bounded result list is unreadable: the caller
+// cannot tell an alias match from an incidental mention in body prose.
+function matchReason(entry, terms) {
+  const reasons = [];
+  const aliases = entry.searchAliases || [];
+  for (const term of new Set(terms)) {
+    const normalized = term.toLowerCase();
+    if (entry.id.toLowerCase() === normalized) reasons.push('id:exact');
+    if (String(entry.specName || '').toLowerCase() === normalized) reasons.push('name:exact');
+    const hit = aliasMatch(aliases, normalized);
+    if (hit === ALIAS_EXACT) reasons.push('alias:exact:' + normalized);
+    else if (hit === ALIAS_PREFIX) reasons.push('alias:prefix:' + normalized);
+    else if (hit === ALIAS_SUBSTRING) reasons.push('alias:contains:' + normalized);
+  }
+  return [...new Set(reasons)];
+}
+// Alias evidence outranks an incidental body mention when scores tie. The final tie-break is
+// spec order (the design spec's own component numbering), never the alphabetical id: id order
+// is arbitrary and silently decided which components a caller ever saw.
+function aliasStrength(entry, terms) {
+  const aliases = entry.searchAliases || [];
+  let best = 0;
+  for (const term of new Set(terms)) {
+    const normalized = term.toLowerCase();
+    if (entry.id.toLowerCase() === normalized) return 5;
+    const hit = aliasMatch(aliases, normalized);
+    const tier = hit === ALIAS_EXACT ? 4 : hit === ALIAS_PREFIX ? 3 : hit === ALIAS_SUBSTRING ? 2 : 0;
+    best = Math.max(best, tier);
+  }
+  return best;
+}
 function searchResult(root, entries, query, limit) {
   const terms = tokenize(query);
   const scored = entries.map(entry => {
     let text = '';
     try { text = cardText(root, entry); } catch (error) { text = ''; }
     return { entry, value: score(entry, text, terms) };
-  }).filter(item => item.value > 0).sort((a, b) => b.value - a.value || a.entry.id.localeCompare(b.entry.id));
+  }).filter(item => item.value > 0).sort((a, b) => {
+    if (b.value !== a.value) return b.value - a.value;
+    const strength = aliasStrength(b.entry, terms) - aliasStrength(a.entry, terms);
+    if (strength !== 0) return strength;
+    const order = (a.entry.specNumber || 0) - (b.entry.specNumber || 0);
+    if (order !== 0) return order;
+    return a.entry.id.localeCompare(b.entry.id);
+  });
   const total = scored.length;
   const selected = scored.slice(0, limit);
   return {
     tool: TOOL_NAME, mode: 'keyword', query, found: selected.length > 0, totalCandidates: total, returned: selected.length, limit,
     candidates: selected.map(({ entry }) => ({
       id: entry.id, specName: entry.specName, card: entry.card, purposeSource: entry.purposeSource,
-      overlay: entry.overlay, summary: entry.id + (entry.specName ? ' - ' + entry.specName : '')
+      overlay: entry.overlay, matched: matchReason(entry, terms), summary: entry.id + (entry.specName ? ' - ' + entry.specName : '')
     })),
     truncated: total > selected.length,
-    notice: total > selected.length ? '候选已按上限截断；请缩小关键词。' : '候选按设计语义排序；不包含平台 API。'
+    truncatedBy: total > selected.length ? total - selected.length : 0,
+    notice: total > selected.length
+      ? '候选已按上限截断（还有 ' + (total - selected.length) + ' 条未显示）；请缩小关键词或提高 --limit。'
+      : '候选按别名/名称/正文证据排序；matched 说明了每条入选的理由。不包含平台 API。'
   };
 }
 function notFound(entries, query) {

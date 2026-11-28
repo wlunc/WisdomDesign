@@ -103,7 +103,7 @@
         "path": "contracts/WDActionSheet.yaml",
         "sha256": "9e21e96912a4859c39e782efe163e6693ae0b863698289ddba7715143bc49ab1"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDActionSheet.json"
     },
     {
       "id": "WDAlert",
@@ -119,7 +119,7 @@
         "path": "contracts/WDAlert.yaml",
         "sha256": "4c11e751e3b1f46f2b9b67963b95b01609c5ec1cebd89234725aa6facf8f2498"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDAlert.json"
     },
     {
       "id": "WDAssigneePicker",
@@ -135,7 +135,7 @@
         "path": "contracts/WDAssigneePicker.yaml",
         "sha256": "637def1210eb5678009b4f0f40d45b438e08eb21cf1106ccb6baa5e2cd012033"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDAssigneePicker.json"
     },
     {
       "id": "WDAvatar",
@@ -151,7 +151,7 @@
         "path": "contracts/WDAvatar.yaml",
         "sha256": "28acd147633188be1f9a1b233f3129d1664ae9ec413f184496f1070b74e11866"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDAvatar.json"
     },
     {
       "id": "WDAvatarStack",
@@ -167,7 +167,7 @@
         "path": "contracts/WDAvatarStack.yaml",
         "sha256": "b39f848469f2f4f0bcd9731e977908ee2cbe77f515191e6ea435063dc5c403fc"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDAvatarStack.json"
     },
     {
       "id": "WDBadge",
@@ -183,7 +183,7 @@
         "path": "contracts/WDBadge.yaml",
         "sha256": "2c5e0c0ce26ad5d3568e100dab59d03efcb02f845b3b9042d37103b1c582f860"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDBadge.json"
     },
     {
       "id": "WDBanner",
@@ -199,7 +199,7 @@
         "path": "contracts/WDBanner.yaml",
         "sha256": "f44a6e955fe11421b9119d47ff0006fb102380f214e508a3b30af6e8fc2a1b00"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDBanner.json"
     },
     {
       "id": "WDBottomSheet",
@@ -215,7 +215,7 @@
         "path": "contracts/WDBottomSheet.yaml",
         "sha256": "c6182154130b662956f64bd280bb6c33afbcab72fd6fe066477485bc4e5c47f0"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDBottomSheet.json"
     },
     {
       "id": "WDButton",
@@ -231,7 +231,7 @@
         "path": "contracts/WDButton.yaml",
         "sha256": "d24658c03c13ece3a9bb026e43a4385c1e121c6886d3073b5bf6617d3079176e"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDButton.json"
     },
     {
       "id": "WDCard",
@@ -247,7 +247,7 @@
         "path": "contracts/WDCard.yaml",
         "sha256": "6e12256c34c52689c625fff3172698dcae829f974d9621d5281dfa8fe5a36d1c"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDCard.json"
     },
     {
       "id": "WDCheckbox",
@@ -263,7 +263,7 @@
         "path": "contracts/WDCheckbox.yaml",
         "sha256": "08d51fd1b73bd7f13f5e0c9dc95dfd69b168e2eea19d551e0f5bbb94b712e37e"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDCheckbox.json"
     },
     {
       "id": "WDChip",
@@ -279,7 +279,7 @@
         "path": "contracts/WDChip.yaml",
         "sha256": "e39ea876f02aad39968c24a6be0a759135a9e82d365074a8bb934054410e7ca9"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDChip.json"
     },
     {
       "id": "WDDatePicker",
@@ -295,7 +295,7 @@
         "path": "contracts/WDDatePicker.yaml",
         "sha256": "b27941cf9ef0513ba24d1049c8b7ac1b54b7582b0c285cb4ff695de81341ea8c"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDDatePicker.json"
     },
     {
       "id": "WDDivider",
@@ -311,7 +311,7 @@
         "path": "contracts/WDDivider.yaml",
         "sha256": "3505f4ae6ecd91c75c710f3d953d569d65235c2aa3fb74ffc96c0d4e48e7ba9a"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDDivider.json"
     },
     {
       "id": "WDEmptyState",
@@ -327,7 +327,7 @@
         "path": "contracts/WDEmptyState.yaml",
         "sha256": "4d4e0cab2875a5a484210f19f4d4597449032cbfdf65d861bda39eab215bd43e"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDEmptyState.json"
     },
     {
       "id": "WDFAB",
@@ -343,7 +343,7 @@
         "path": "contracts/WDFAB.yaml",
         "sha256": "7a7d3989af4b1f62b8039cac36e56201164167d8db2b97aaf5eccdd30797231c"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDFAB.json"
     },
     {
       "id": "WDFormRow",
@@ -359,7 +359,7 @@
         "path": "contracts/WDFormRow.yaml",
         "sha256": "bbc401c07a7e27cf9a9c5d930d31a30faecbffe286c5e0af2166896bda2df94f"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDFormRow.json"
     },
     {
       "id": "WDIcon",
@@ -375,7 +375,7 @@
         "path": "contracts/WDIcon.yaml",
         "sha256": "4ef8481cc9f267a6468668a455ef6b5f99e7b828b5e69930a7e160a9dfb7f634"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDIcon.json"
     },
     {
       "id": "WDIconButton",
@@ -391,7 +391,7 @@
         "path": "contracts/WDIconButton.yaml",
         "sha256": "53b2b74751ff58236070246f167d36c36f88a9de5bde0820794f1d7cbafffbe1"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDIconButton.json"
     },
     {
       "id": "WDListRow",
@@ -407,7 +407,7 @@
         "path": "contracts/WDListRow.yaml",
         "sha256": "a82d8d65e9f008a0adf8f82f91a35efede855b812fd790cd98586643c5badcd1"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDListRow.json"
     },
     {
       "id": "WDListSection",
@@ -423,7 +423,7 @@
         "path": "contracts/WDListSection.yaml",
         "sha256": "46e730dbde13fb474b219a9747b6fa3a76829f9897555383ff77f264d9befef7"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDListSection.json"
     },
     {
       "id": "WDNavigationBar",
@@ -439,7 +439,7 @@
         "path": "contracts/WDNavigationBar.yaml",
         "sha256": "ed51c696550b86ecf1dffe2bbec9d43f4ca058bb645646e234e105783fd0a2e9"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDNavigationBar.json"
     },
     {
       "id": "WDPicker",
@@ -455,7 +455,7 @@
         "path": "contracts/WDPicker.yaml",
         "sha256": "ab8df2a53a8bb110ab13f28a45ef28103f20835f5e3fa8e9cc2652c740d6a7e6"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDPicker.json"
     },
     {
       "id": "WDProgressBar",
@@ -471,7 +471,7 @@
         "path": "contracts/WDProgressBar.yaml",
         "sha256": "bfd7dbda63e9896e68a5124be9347d85b2f444fccf3f7ce3af87ae4ac5b97ae8"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDProgressBar.json"
     },
     {
       "id": "WDProgressRing",
@@ -487,7 +487,7 @@
         "path": "contracts/WDProgressRing.yaml",
         "sha256": "9df7760a1c90b040558955524391dc62486c1dc82fbe140c5a939db419639fc6"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDProgressRing.json"
     },
     {
       "id": "WDPullRefresh",
@@ -503,7 +503,7 @@
         "path": "contracts/WDPullRefresh.yaml",
         "sha256": "1e64e60292370e9bbe806e8f5cc5460b316c83e5c788c6a26b4d31225ba40e19"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDPullRefresh.json"
     },
     {
       "id": "WDRadio",
@@ -519,7 +519,7 @@
         "path": "contracts/WDRadio.yaml",
         "sha256": "d3961d208e652e194ccfa11b317f1647a4ddb2c8540a514386a9b1edd5e10ed0"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDRadio.json"
     },
     {
       "id": "WDSearchField",
@@ -551,7 +551,7 @@
         "path": "contracts/WDSegmentedControl.yaml",
         "sha256": "9cfe3787e7536810c2ef177e47a5cc60169949bb3948c0c8faf88e3a6666839b"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDSegmentedControl.json"
     },
     {
       "id": "WDSkeleton",
@@ -567,7 +567,7 @@
         "path": "contracts/WDSkeleton.yaml",
         "sha256": "922227563e2566c6761a954b1130b9b58f547b780357ff97db96166a35bfcff9"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDSkeleton.json"
     },
     {
       "id": "WDSlider",
@@ -583,7 +583,7 @@
         "path": "contracts/WDSlider.yaml",
         "sha256": "faa8517894c8ddef6dd9cec9e933a50ee9ef1cd588285872e7c1e1feff9fd11c"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDSlider.json"
     },
     {
       "id": "WDStepper",
@@ -599,7 +599,7 @@
         "path": "contracts/WDStepper.yaml",
         "sha256": "6b97e2e356b41faa3c27bfe36bf5b6b2b3324d684be7dfe10dc6e40e42f80179"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDStepper.json"
     },
     {
       "id": "WDSwitch",
@@ -615,7 +615,7 @@
         "path": "contracts/WDSwitch.yaml",
         "sha256": "7189a1ea57fc81d37f96b4658482df32bddc2b82c7b88a72ccc7606289413719"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDSwitch.json"
     },
     {
       "id": "WDTabBar",
@@ -631,7 +631,7 @@
         "path": "contracts/WDTabBar.yaml",
         "sha256": "33ab6fbe23b55293c755168a9863f8b3e1b5988bbf2e614c19407e912ee63f43"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDTabBar.json"
     },
     {
       "id": "WDTextField",
@@ -647,7 +647,7 @@
         "path": "contracts/WDTextField.yaml",
         "sha256": "51d32379d3174ff47ecda45d537e72b10d86e2be0cd0bec30e59b7bc044c4163"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDTextField.json"
     },
     {
       "id": "WDToast",
@@ -663,7 +663,7 @@
         "path": "contracts/WDToast.yaml",
         "sha256": "28d3736c731cd7348574f34790e782eee1fab552517eab852bd15b63e65d61ba"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDToast.json"
     },
     {
       "id": "WDToolbar",
@@ -679,7 +679,7 @@
         "path": "contracts/WDToolbar.yaml",
         "sha256": "73b58dc7c76142ede662be365ce2662fb47c1bdb906b5c5002ab4378b479fa8f"
       },
-      "overlay": null
+      "overlay": "ai/skill/component-overlays/WDToolbar.json"
     }
   ],
   "sources": [
@@ -689,7 +689,7 @@
     },
     {
       "path": "docs/specs/01-basic.md",
-      "sha256": "e789718d5eaf18f89a13ee495d9049f97d732f227909d97168e08933a363df9a"
+      "sha256": "8efa1736b456a5ea60e9c4aa6473ad6d72b05dc6f997f867e4baba687dcb82aa"
     },
     {
       "path": "docs/specs/02-advanced.md",

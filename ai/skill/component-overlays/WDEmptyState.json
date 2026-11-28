@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDEmptyState",
+  "searchAliases": [
+    "空状态",
+    "空页面",
+    "无内容",
+    "空列表",
+    "empty state"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "page-body"
+  ]
+}

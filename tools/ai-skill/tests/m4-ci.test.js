@@ -154,7 +154,7 @@ for (const flag of ['nativeCompile', 'runtimeMatrix', 'designReview', 'hostLoad'
 
 // 6. unsupported platform only design results
 const unsupportedSpec = {
-  schemaVersion: '1.0', profile: 'core',
+  schemaVersion: '1.1', profile: 'core',
   page: { id: 'web-unsupported', intent: '查询信息', navigation: 'stackRoot', contentPattern: 'overview', primaryAction: 'search' },
   states: [{ id: 'content', kind: 'content' }],
   regions: [{ id: 'summary', kind: 'overview', component: 'WDCard' }],

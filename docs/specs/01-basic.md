@@ -39,7 +39,7 @@
 | `lg` | `size.control.lg` 52 | 20 | 16 | 20 | `radius.full` | — |
 
 表单内的按钮可改用 `radius.md`，与输入框的圆角对齐。
-只有图标的场合必须保持 `size.touch-target-min`（44×44）的热区，视觉可以更小。
+只有图标的场合必须保持 `size.touch-target-min-ios`（44×44）的热区，视觉可以更小（Android 用 `size.touch-target-min-android`，48）。
 
 ### 4. 变体
 
@@ -484,7 +484,7 @@ Android 用 `IconButton` 或 `Box(Modifier.size(44.dp).clickable(...))`。
 ### 6. 布局
 
 - 开关固定在行右侧，与右边缘间距 `space.5`（16）
-- 整行可点：点击标签区域同样切换，热区不小于 `size.touch-target-min`
+- 整行可点：点击标签区域同样切换，热区不小于 `size.touch-target-min-ios`（Android 用 `size.touch-target-min-android`）
 - 与上一行的间距 `space.4`（12）
 
 ### 7. 内容

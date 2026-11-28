@@ -7,7 +7,7 @@
 
 Component: `WDChip`
 Spec: `docs/specs/01-basic.md` (number 10)
-Contract: `contracts/WDChip.yaml` (sha256 `e39ea876f02aad39968c24a6be0a759135a9e82d365074a8bb934054410e7ca9`)
+Contract: `contracts-digest.json#WDChip` (source `contracts/WDChip.yaml`, sha256 `e39ea876f02aad39968c24a6be0a759135a9e82d365074a8bb934054410e7ca9`)
 
 ## 用途（来自正式规格 §1）
 
@@ -16,7 +16,28 @@ Contract: `contracts/WDChip.yaml` (sha256 `e39ea876f02aad39968c24a6be0a759135a9e
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:935,937,943,966,970,971,972,973,982,984,985,986,1002,1004,1005,1006,1007,1008`
+- `docs/specs/01-basic.md:935,937,943,945,947,949,953,954,956,960,961,962,963,964,966,970,971,972,973,982,984,985,986,1002,1004,1005,1006,1007,1008`
+
+## 设计者摘要
+
+高度 标准 32 / 紧凑 28；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 容器 + 可选前导图标 + 文字 + 可选删除键。删除键的热区 28×28，不与容器重叠。（`docs/specs/01-basic.md:947`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 高度=32; 水平内距=12（带图标时左 10 右 14）; 字号=13; 圆角=`radius.full`（`radius.full` = 999）（`docs/specs/01-basic.md:953`）
+- 档=紧凑; 高度=28; 水平内距=10; 字号=12; 圆角=`radius.full`（`radius.full` = 999）（`docs/specs/01-basic.md:954`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=展示; 背景=`surface.card`; 文字=`text.secondary`; 描边=`border.hairline`（`surface.card` = 浅 #FFFFFFF0 / 深 #132836D1；`text.secondary` = 浅 #3E5764 / 深 #A4BCCB；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/01-basic.md:960`）
+- 变体=可选 · 未选; 背景=`surface.card`; 文字=`text.secondary`; 描边=`border.hairline`（`surface.card` = 浅 #FFFFFFF0 / 深 #132836D1；`text.secondary` = 浅 #3E5764 / 深 #A4BCCB；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/01-basic.md:961`）
+- 变体=可选 · 已选; 背景=`surface.tint`; 文字=`text.on-soft`; 描边=`text.brand` 42%（`surface.tint` = 浅 #D9E9F3 / 深 #123348；`text.on-soft` = 浅 #123F5C / 深 #B0D5DF；`text.brand` = 浅 #1677B3 / 深 #7EC4CF）（`docs/specs/01-basic.md:962`）
+- 变体=可删除; 背景=`surface.card`; 文字=`text.secondary`; 描边=`border.hairline`（`surface.card` = 浅 #FFFFFFF0 / 深 #132836D1；`text.secondary` = 浅 #3E5764 / 深 #A4BCCB；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/01-basic.md:963`）
+- 变体=带图标; 背景=同上，图标 15; 文字=—; 描边=—（`docs/specs/01-basic.md:964`）
 
 ## 状态（来自正式规格 §5）
 
@@ -47,9 +68,9 @@ Contract: `contracts/WDChip.yaml` (sha256 `e39ea876f02aad39968c24a6be0a759135a9e
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 标签, 胶囊, 筛选标签, 过滤, chip
+- combinesWith: WDSegmentedControl
+- pageRegions: collection-header, toolbar
 
 ## 平台说明
 

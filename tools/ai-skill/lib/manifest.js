@@ -167,8 +167,12 @@ function designSources() {
   return {
     tokenVersion: tokens.$version || 'unknown',
     tokenHash: sha256File(path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json')),
+    // The package ships tokens/wisdom.tokens.json verbatim; this flag says the value above is a
+    // hash of a file the reader can open inside the package, not just of an outside truth source.
+    tokenShipped: true,
     contractCount: contractFiles.length,
     contractTreeHash: listingHash(contractEntries),
+    contractDigest: 'catalog/contracts-digest.json',
     specTreeHash: subtreeHash(DESIGN_ROOT, ['docs/specs'])
   };
 }
@@ -396,7 +400,7 @@ function buildManifest(root, options) {
     package: options.packageName,
     version: {
       skill: options.skillVersion || SKILL_VERSION,
-      pageSpecSchema: '1.0',
+      pageSpecSchema: '1.1',
       providerSchema: '1.0',
       manifestSchema: '1.0'
     },

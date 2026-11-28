@@ -7,7 +7,7 @@
 
 Component: `WDAvatar`
 Spec: `docs/specs/01-basic.md` (number 12)
-Contract: `contracts/WDAvatar.yaml` (sha256 `28acd147633188be1f9a1b233f3129d1664ae9ec413f184496f1070b74e11866`)
+Contract: `contracts-digest.json#WDAvatar` (source `contracts/WDAvatar.yaml`, sha256 `28acd147633188be1f9a1b233f3129d1664ae9ec413f184496f1070b74e11866`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,30 @@ Contract: `contracts/WDAvatar.yaml` (sha256 `28acd147633188be1f9a1b233f3129d1664
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1115,1117,1119,1120,1145,1149,1150,1151,1159,1161,1162,1163,1165,1167,1171,1172,1173,1174,1176,1177,1178,1179,1180,1194,1196,1197,1198,1199`
+- `docs/specs/01-basic.md:1115,1117,1119,1120,1122,1124,1126,1130,1131,1132,1133,1134,1136,1140,1141,1142,1143,1145,1149,1150,1151,1159,1161,1162,1163,1165,1167,1171,1172,1173,1174,1176,1177,1178,1179,1180,1194,1196,1197,1198,1199`
+
+## 设计者摘要
+
+圆形底 + 内容（首字 / 图标 / 照片）+ 可选在线点。
+
+## 解剖（来自正式规格 §2）
+
+- 圆形底 + 内容（首字 / 图标 / 照片）+ 可选在线点。（`docs/specs/01-basic.md:1124`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=`xs`; 直径=`size.avatar.xs` 20; 首字号=9; 用在哪=堆叠溢出、紧凑行（`size.avatar.xs` = 20）（`docs/specs/01-basic.md:1130`）
+- 档=`sm`; 直径=28; 首字号=11; 用在哪=列表行（`docs/specs/01-basic.md:1131`）
+- 档=`md`; 直径=32; 首字号=12; 用在哪=列表行（默认）（`docs/specs/01-basic.md:1132`）
+- 档=`lg`; 直径=40; 首字号=14; 用在哪=详情页（`docs/specs/01-basic.md:1133`）
+- 档=`xl`; 直径=56; 首字号=18; 用在哪=成员资料、空状态（`docs/specs/01-basic.md:1134`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=文字; 说明=取名字首字，底色按成员固定分配（四档之一，见 §7「四档配色」）（`docs/specs/01-basic.md:1140`）
+- 变体=图标; 说明=无姓名时用 `person` 占位，底 `surface.tint` + 图标 `text.on-soft`（`surface.tint` = 浅 #D9E9F3 / 深 #123348；`text.on-soft` = 浅 #123F5C / 深 #B0D5DF）（`docs/specs/01-basic.md:1141`）
+- 变体=照片; 说明=有头像时用照片，圆形裁切，**2pt 描边**（`size.avatar.ring`）与背景分隔（`size.avatar.ring` = 2）（`docs/specs/01-basic.md:1142`）
+- 变体=在线; 说明=右下角 10×10 状态点，2pt 描边，描边色 = 宿主底色（`docs/specs/01-basic.md:1143`）
 
 ## 状态（来自正式规格 §5）
 
@@ -58,9 +81,9 @@ Contract: `contracts/WDAvatar.yaml` (sha256 `28acd147633188be1f9a1b233f3129d1664
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 头像, 成员头像, 用户头像, avatar
 - combinesWith: none
-- pageRegions: none
+- pageRegions: collection-item, toolbar, card-header
 
 ## 平台说明
 

@@ -7,7 +7,7 @@
 
 Component: `WDPicker`
 Spec: `docs/specs/02-advanced.md` (number 22)
-Contract: `contracts/WDPicker.yaml` (sha256 `ab8df2a53a8bb110ab13f28a45ef28103f20835f5e3fa8e9cc2652c740d6a7e6`)
+Contract: `contracts-digest.json#WDPicker` (source `contracts/WDPicker.yaml`, sha256 `ab8df2a53a8bb110ab13f28a45ef28103f20835f5e3fa8e9cc2652c740d6a7e6`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,32 @@ Contract: `contracts/WDPicker.yaml` (sha256 `ab8df2a53a8bb110ab13f28a45ef28103f2
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:120,122,124,125,155,159,160,161,162,163,171,173,174,175,193,195,196,197,198`
+- `docs/specs/02-advanced.md:120,122,124,125,127,131,132,133,135,139,140,141,142,143,145,149,150,151,153,155,159,160,161,162,163,171,173,174,175,193,195,196,197,198`
+
+## 设计者摘要
+
+触发入口高 44；选项行高 44；弹出层最小宽 180，最大宽 = 屏幕宽 − 32；选项水平内距 14；圆角 `radius.md` 14。
+
+## 解剖（来自正式规格 §2）
+
+- 段=触发入口; 说明=一行，左侧标签，右侧当前值 + `chevron-down`（`docs/specs/02-advanced.md:131`）
+- 段=弹出层; 说明=选项列表，可滚动，当前项打勾（`docs/specs/02-advanced.md:132`）
+- 段=遮罩; 说明=点击关闭（不提交）（`docs/specs/02-advanced.md:133`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=触发入口高; 值=44（`docs/specs/02-advanced.md:139`）
+- 项=选项行高; 值=44（`docs/specs/02-advanced.md:140`）
+- 项=弹出层最小宽; 值=180，最大宽 = 屏幕宽 − 32（`docs/specs/02-advanced.md:141`）
+- 项=圆角; 值=`radius.md` 14（`radius.md` = 14）（`docs/specs/02-advanced.md:142`）
+- 项=选项水平内距; 值=14（`docs/specs/02-advanced.md:143`）
+
+## 变体（来自正式规格 §4）
+
+- 形态=菜单; 说明=从触发入口下方展开; 用在哪=选项 ≤ 10（`docs/specs/02-advanced.md:149`）
+- 形态=滚轮; 说明=底部弹出滚轮; 用在哪=选项多且需要快速滚动（`docs/specs/02-advanced.md:150`）
+- 形态=内联; 说明=直接平铺在页面里; 用在哪=选项 ≤ 8 且表单需要一眼看全（`docs/specs/02-advanced.md:151`）
+- 同一表单里只用一种形态。（`docs/specs/02-advanced.md:153`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +74,9 @@ Contract: `contracts/WDPicker.yaml` (sha256 `ab8df2a53a8bb110ab13f28a45ef28103f2
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 选择器, 滚轮选择, 下拉选择, picker
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form
 
 ## 平台说明
 

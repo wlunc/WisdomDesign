@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDAvatarStack",
+  "searchAliases": [
+    "头像组",
+    "头像叠加",
+    "参与者头像",
+    "avatar stack"
+  ],
+  "combinesWith": [
+    "WDAvatar"
+  ],
+  "pageRegions": [
+    "card-header",
+    "collection-item"
+  ]
+}

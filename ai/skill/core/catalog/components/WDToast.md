@@ -7,7 +7,7 @@
 
 Component: `WDToast`
 Spec: `docs/specs/02-advanced.md` (number 28)
-Contract: `contracts/WDToast.yaml` (sha256 `28d3736c731cd7348574f34790e782eee1fab552517eab852bd15b63e65d61ba`)
+Contract: `contracts-digest.json#WDToast` (source `contracts/WDToast.yaml`, sha256 `28d3736c731cd7348574f34790e782eee1fab552517eab852bd15b63e65d61ba`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,31 @@ Contract: `contracts/WDToast.yaml` (sha256 `28d3736c731cd7348574f34790e782eee1fa
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:754,756,758,759,761,787,791,792,793,794,795,803,805,806,807,825,827,828,829,830,831`
+- `docs/specs/02-advanced.md:754,756,758,759,761,763,765,767,771,772,773,774,775,776,778,782,783,784,785,787,791,792,793,794,795,803,805,806,807,825,827,828,829,830,831`
+
+## 设计者摘要
+
+高度 46（单行）；多行时自适应，最多 2 行；最小宽度 120；最大宽度 屏幕宽 − 2 × `space.6`（40）；水平内距 18；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 玻璃胶囊 + 状态图标 + 文字 + 可选操作按钮。底部距安全区 `space.5`（16）。（`docs/specs/02-advanced.md:765`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=高度; 值=46（单行）；多行时自适应，最多 2 行（`docs/specs/02-advanced.md:771`）
+- 项=最小宽度; 值=120（`docs/specs/02-advanced.md:772`）
+- 项=最大宽度; 值=屏幕宽 − 2 × `space.6`（40）（`docs/specs/02-advanced.md:773`）
+- 项=水平内距; 值=18（`docs/specs/02-advanced.md:774`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/02-advanced.md:775`）
+- 项=图标; 值=16（`docs/specs/02-advanced.md:776`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=成功; 图标=`check` + `text.brand`; 用在哪=保存、同步完成（`text.brand` = 浅 #1677B3 / 深 #7EC4CF）（`docs/specs/02-advanced.md:782`）
+- 变体=信息; 图标=`info`; 用在哪=中性提示（`docs/specs/02-advanced.md:783`）
+- 变体=失败; 图标=`x-circle` + `status.danger`; 用在哪=操作未成功，但可重试（`status.danger` = 浅 #B8564D / 深 #EDA79E）（`docs/specs/02-advanced.md:784`）
+- 变体=带操作; 图标=右侧加一个文字按钮（"撤销"）; 用在哪=删除后撤销（`docs/specs/02-advanced.md:785`）
 
 ## 状态（来自正式规格 §5）
 
@@ -50,9 +74,9 @@ Contract: `contracts/WDToast.yaml` (sha256 `28d3736c731cd7348574f34790e782eee1fa
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 轻提示, 提示条, 短暂提示, toast
 - combinesWith: none
-- pageRegions: none
+- pageRegions: overlay
 
 ## 平台说明
 

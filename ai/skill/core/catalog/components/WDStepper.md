@@ -7,7 +7,7 @@
 
 Component: `WDStepper`
 Spec: `docs/specs/01-basic.md` (number 9)
-Contract: `contracts/WDStepper.yaml` (sha256 `6b97e2e356b41faa3c27bfe36bf5b6b2b3324d684be7dfe10dc6e40e42f80179`)
+Contract: `contracts-digest.json#WDStepper` (source `contracts/WDStepper.yaml`, sha256 `6b97e2e356b41faa3c27bfe36bf5b6b2b3324d684be7dfe10dc6e40e42f80179`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,27 @@ Contract: `contracts/WDStepper.yaml` (sha256 `6b97e2e356b41faa3c27bfe36bf5b6b2b3
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:844,846,848,849,872,876,877,878,879,880,888,890,891,906,908,909,910,911,912`
+- `docs/specs/01-basic.md:844,846,848,849,851,853,855,859,860,862,864,868,869,870,872,876,877,878,879,880,888,890,891,906,908,909,910,911,912`
+
+## 设计者摘要
+
+减号按钮 + 数值 + 加号按钮，包在一个胶囊容器里。数值区不可编辑，避免键盘与步进冲突。
+
+## 解剖（来自正式规格 §2）
+
+- 减号按钮 + 数值 + 加号按钮，包在一个胶囊容器里。数值区不可编辑，避免键盘与步进冲突。（`docs/specs/01-basic.md:853`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 容器高=36; 按钮宽=40; 字号=14（`docs/specs/01-basic.md:859`）
+- 档=紧凑; 容器高=30; 按钮宽=32; 字号=13（`docs/specs/01-basic.md:860`）
+- 容器圆角 `radius.full`；数值区最小宽 26，居中。（`radius.full` = 999）（`docs/specs/01-basic.md:862`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=用于表单（`docs/specs/01-basic.md:868`）
+- 变体=紧凑; 说明=用于列表行内（`docs/specs/01-basic.md:869`）
+- 变体=带单位; 说明=数值后加单位（如"3 个"），单位用 `text.secondary`（`text.secondary` = 浅 #3E5764 / 深 #A4BCCB）（`docs/specs/01-basic.md:870`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +69,9 @@ Contract: `contracts/WDStepper.yaml` (sha256 `6b97e2e356b41faa3c27bfe36bf5b6b2b3
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 步进器, 数量增减, 加减, stepper
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form, collection-item
 
 ## 平台说明
 

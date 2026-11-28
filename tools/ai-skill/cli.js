@@ -156,6 +156,17 @@ function renderInto(out, templatePath = TEMPLATE, repoRoots = {}) {
   // metadata for get_component; shipping them keeps alias search identical in the
   // packaged layout without any outside-package read.
   copyTree(path.join(AI_ROOT, 'component-overlays'), 'component-overlays');
+  // Long-form path table and conflict-resolution order, kept out of the resident entry so the
+  // budget covers routing only. SKILL.md §3 tells the reader to load it before citing a spec line.
+  writeFile(out, 'REFERENCES.md', fs.readFileSync(path.join(AI_ROOT, 'REFERENCES.md'), 'utf8'));
+
+  // The design tokens are the only normative source for visual numbers, and every card and the
+  // renderer quote them by name. Shipping the file itself (one copy, no derived digest) is what
+  // makes "visual numbers" resolvable inside the package: without it SKILL.md's source-priority
+  // paragraph pointed at a path that does not exist in the package at all (P0-1/P0-2).
+  // The copy is byte-identical to tokens/wisdom.tokens.json; manifest.sources.design.tokenHash
+  // pins it, and tests assert the two hashes agree, so this copy cannot silently drift.
+  writeFile(out, 'tokens/wisdom.tokens.json', fs.readFileSync(path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json'), 'utf8'));
 
   const manifest = manifestLib.buildManifest(out, { packageName: 'wisdom-page-core', platforms: ['core'], skillVersion: manifestLib.SKILL_VERSION, banner: BANNER_LINES, repoRoots });
   return { out, skillBytes, files: manifest.contents.fileCount };
@@ -195,7 +206,10 @@ function test() {
     ['contract-selftest.js', path.join(TOOL_ROOT, 'tests', 'contract-selftest.js')],
     ['core-catalog.test.js', path.join(TOOL_ROOT, 'tests', 'core-catalog.test.js')],
     ['runtime.test.js', path.join(TOOL_ROOT, 'tests', 'runtime.test.js')],
-    ['build.test.js', path.join(TOOL_ROOT, 'tests', 'build.test.js')]
+    ['build.test.js', path.join(TOOL_ROOT, 'tests', 'build.test.js')],
+    // The gallery is the only place a reader can see the tokens rendered, so a stale palette
+    // there is a design-review defect, not a cosmetic one. Keep it in the same gate.
+    ['gallery-check.selftest.js', path.join(DESIGN_ROOT, 'tools', 'gallery-check.selftest.js')],
   ];
   for (const [name, script] of tests) {
     const result = spawnSync('node', [script], { encoding: 'utf8' });

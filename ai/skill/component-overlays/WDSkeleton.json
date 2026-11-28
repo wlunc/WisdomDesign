@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDSkeleton",
+  "searchAliases": [
+    "骨架屏",
+    "占位",
+    "加载占位",
+    "skeleton"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "page-body",
+    "collection"
+  ]
+}

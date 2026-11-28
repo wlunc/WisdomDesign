@@ -7,7 +7,7 @@
 
 Component: `WDFAB`
 Spec: `docs/specs/02-advanced.md` (number 36)
-Contract: `contracts/WDFAB.yaml` (sha256 `7a7d3989af4b1f62b8039cac36e56201164167d8db2b97aaf5eccdd30797231c`)
+Contract: `contracts-digest.json#WDFAB` (source `contracts/WDFAB.yaml`, sha256 `7a7d3989af4b1f62b8039cac36e56201164167d8db2b97aaf5eccdd30797231c`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,27 @@ Contract: `contracts/WDFAB.yaml` (sha256 `7a7d3989af4b1f62b8039cac36e56201164167
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1576,1578,1580,1581,1603,1607,1608,1609,1610,1611,1620,1622,1623,1624,1644,1646,1647,1648,1649,1650`
+- `docs/specs/02-advanced.md:1576,1578,1580,1581,1583,1585,1587,1591,1592,1593,1595,1599,1600,1601,1603,1607,1608,1609,1610,1611,1620,1622,1623,1624,1644,1646,1647,1648,1649,1650`
+
+## 设计者摘要
+
+圆角 `radius.fab` 19。
+
+## 解剖（来自正式规格 §2）
+
+- 容器 + 图标（+ 展开后的一组子操作）。（`docs/specs/02-advanced.md:1585`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 尺寸=56×56; 圆角=`radius.fab` 19; 图标=24（`radius.fab` = 19）（`docs/specs/02-advanced.md:1591`）
+- 档=大; 尺寸=64×64; 圆角=22; 图标=28（`docs/specs/02-advanced.md:1592`）
+- 档=小; 尺寸=40×40; 圆角=14; 图标=20（`docs/specs/02-advanced.md:1593`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=圆角方（默认）; 说明=区别于圆形，和卡片体系更协调（`docs/specs/02-advanced.md:1599`）
+- 变体=圆形; 说明=与系统规范一致时使用（`docs/specs/02-advanced.md:1600`）
+- 变体=可展开; 说明=点击展开 2–4 个子操作，图标旋转 45° 变关闭（`docs/specs/02-advanced.md:1601`）
 
 ## 状态（来自正式规格 §5）
 
@@ -50,9 +70,9 @@ Contract: `contracts/WDFAB.yaml` (sha256 `7a7d3989af4b1f62b8039cac36e56201164167
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 悬浮按钮, 主操作按钮, floating action
 - combinesWith: none
-- pageRegions: none
+- pageRegions: overlay
 
 ## 平台说明
 

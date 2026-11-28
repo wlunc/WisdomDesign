@@ -7,7 +7,7 @@
 
 Component: `WDDivider`
 Spec: `docs/specs/01-basic.md` (number 14)
-Contract: `contracts/WDDivider.yaml` (sha256 `3505f4ae6ecd91c75c710f3d953d569d65235c2aa3fb74ffc96c0d4e48e7ba9a`)
+Contract: `contracts-digest.json#WDDivider` (source `contracts/WDDivider.yaml`, sha256 `3505f4ae6ecd91c75c710f3d953d569d65235c2aa3fb74ffc96c0d4e48e7ba9a`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,24 @@ Contract: `contracts/WDDivider.yaml` (sha256 `3505f4ae6ecd91c75c710f3d953d569d65
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1304,1306,1308,1309,1326,1328,1336,1338,1348,1350`
+- `docs/specs/01-basic.md:1304,1306,1308,1309,1311,1313,1315,1319,1320,1322,1324,1326,1328,1336,1338,1348,1350`
+
+## 设计者摘要
+
+一条 1pt 的线，无圆角。
+
+## 解剖（来自正式规格 §2）
+
+- 一条 1pt 的线，无圆角。（`docs/specs/01-basic.md:1313`）
+
+## 尺寸（来自正式规格 §3）
+
+- 变体=全宽; 起点=容器左边缘; 终点=容器右边缘（`docs/specs/01-basic.md:1319`）
+- 变体=内缩; 起点=文本区起始（16 + 34 + 12 = 62）; 终点=容器右边缘（`docs/specs/01-basic.md:1320`）
+
+## 变体（来自正式规格 §4）
+
+- 全宽 / 内缩两种。列表行之间用内缩，卡片内部整体分区用全宽。（`docs/specs/01-basic.md:1324`）
 
 ## 状态（来自正式规格 §5）
 
@@ -40,9 +57,9 @@ Contract: `contracts/WDDivider.yaml` (sha256 `3505f4ae6ecd91c75c710f3d953d569d65
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 分割线, 分隔线, 横线, divider
 - combinesWith: none
-- pageRegions: none
+- pageRegions: collection, form
 
 ## 平台说明
 

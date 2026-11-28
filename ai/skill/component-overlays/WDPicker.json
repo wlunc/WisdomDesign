@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDPicker",
+  "searchAliases": [
+    "选择器",
+    "滚轮选择",
+    "下拉选择",
+    "picker"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form"
+  ]
+}

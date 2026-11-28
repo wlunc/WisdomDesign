@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDDatePicker",
+  "searchAliases": [
+    "日期选择",
+    "日历",
+    "时间选择",
+    "选日期",
+    "date picker"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form"
+  ]
+}

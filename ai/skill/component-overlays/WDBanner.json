@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDBanner",
+  "searchAliases": [
+    "横幅",
+    "通知条",
+    "常驻提示",
+    "banner"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "page-header",
+    "form"
+  ]
+}

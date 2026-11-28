@@ -7,7 +7,7 @@
 
 Component: `WDTabBar`
 Spec: `docs/specs/02-advanced.md` (number 34)
-Contract: `contracts/WDTabBar.yaml` (sha256 `33ab6fbe23b55293c755168a9863f8b3e1b5988bbf2e614c19407e912ee63f43`)
+Contract: `contracts-digest.json#WDTabBar` (source `contracts/WDTabBar.yaml`, sha256 `33ab6fbe23b55293c755168a9863f8b3e1b5988bbf2e614c19407e912ee63f43`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,30 @@ Contract: `contracts/WDTabBar.yaml` (sha256 `33ab6fbe23b55293c755168a9863f8b3e1b
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1356,1358,1360,1361,1386,1390,1391,1392,1393,1401,1403,1404,1405,1421,1423,1424,1425,1426`
+- `docs/specs/02-advanced.md:1356,1358,1360,1361,1363,1365,1367,1371,1372,1373,1374,1375,1376,1377,1379,1383,1384,1386,1390,1391,1392,1393,1401,1403,1404,1405,1421,1423,1424,1425,1426`
+
+## 设计者摘要
+
+高度 58；距左右边缘 `space.5`（16）；距底部安全区 `space.3`（8）；图标 22；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 悬浮玻璃胶囊 + 若干项目（图标 + 标签 + 选中标记）。（`docs/specs/02-advanced.md:1365`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=高度; 值=58（`docs/specs/02-advanced.md:1371`）
+- 项=距左右边缘; 值=`space.5`（16）（`docs/specs/02-advanced.md:1372`）
+- 项=距底部安全区; 值=`space.3`（8）（`docs/specs/02-advanced.md:1373`）
+- 项=图标; 值=22（`docs/specs/02-advanced.md:1374`）
+- 项=标签; 值=10 · 500（选中 600）（`docs/specs/02-advanced.md:1375`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/02-advanced.md:1376`）
+- 项=项目数; 值=2–5（`docs/specs/02-advanced.md:1377`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=iOS 悬浮胶囊; 说明=默认，浮在内容之上，带 `elevation.2`（`elevation.2` = 0 2 6 #0A3C640F ; 0 14 32 #0A3C6417）（`docs/specs/02-advanced.md:1383`）
+- 变体=Android 全宽; 说明=贴底全宽，`surface.glass-strong`，选中项用胶囊底（`surface.glass-strong` = 浅 #FFFFFFDB / 深 #0C202CC7）（`docs/specs/02-advanced.md:1384`）
 
 ## 状态（来自正式规格 §5）
 
@@ -48,9 +71,9 @@ Contract: `contracts/WDTabBar.yaml` (sha256 `33ab6fbe23b55293c755168a9863f8b3e1b
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 标签栏, 底部导航, 底部标签, tab bar
 - combinesWith: none
-- pageRegions: none
+- pageRegions: tab
 
 ## 平台说明
 

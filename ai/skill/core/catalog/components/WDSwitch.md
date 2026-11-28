@@ -7,7 +7,7 @@
 
 Component: `WDSwitch`
 Spec: `docs/specs/01-basic.md` (number 5)
-Contract: `contracts/WDSwitch.yaml` (sha256 `7189a1ea57fc81d37f96b4658482df32bddc2b82c7b88a72ccc7606289413719`)
+Contract: `contracts-digest.json#WDSwitch` (source `contracts/WDSwitch.yaml`, sha256 `7189a1ea57fc81d37f96b4658482df32bddc2b82c7b88a72ccc7606289413719`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,27 @@ Contract: `contracts/WDSwitch.yaml` (sha256 `7189a1ea57fc81d37f96b4658482df32bdd
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:444,446,448,449,451,475,479,480,481,482,490,492,493,514,516,517,518,519,520`
+- `docs/specs/01-basic.md:444,446,448,449,451,453,455,457,461,462,464,466,470,471,473,475,479,480,481,482,490,492,493,514,516,517,518,519,520`
+
+## 设计者摘要
+
+圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 轨道 + 滑块两段。轨道承担状态色，滑块承担位置。整行可点时，标签在左、开关在右。（`docs/specs/01-basic.md:455`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 轨道=51×31; 圆角=`radius.full`; 滑块直径=27（轨道高 − 4）; 行程=20（`radius.full` = 999）（`docs/specs/01-basic.md:461`）
+- 档=紧凑; 轨道=40×24; 圆角=`radius.full`; 滑块直径=20; 行程=16（`radius.full` = 999）（`docs/specs/01-basic.md:462`）
+- 滑块上下左右各留 2 的内边距。（`docs/specs/01-basic.md:464`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=只有标签（`docs/specs/01-basic.md:470`）
+- 变体=带描述; 说明=标签下方一行 `type.footnote` 用 `text.secondary`，说明开关的后果（"关闭后不再收到推送"）（`type.footnote` = 13/18 · 400；`text.secondary` = 浅 #3E5764 / 深 #A4BCCB）（`docs/specs/01-basic.md:471`）
+- 描述只在"用户不看清后果就会误操作"时使用，不是默认。（`docs/specs/01-basic.md:473`）
 
 ## 状态（来自正式规格 §5）
 
@@ -48,9 +68,9 @@ Contract: `contracts/WDSwitch.yaml` (sha256 `7189a1ea57fc81d37f96b4658482df32bdd
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 开关, 拨动开关, toggle, switch
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form, collection-item
 
 ## 平台说明
 

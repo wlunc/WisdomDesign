@@ -10,7 +10,13 @@ function expectInvalid(name,doc,schema,code){ const errors=validateDocument(doc,
 const pageSchema=readJson('page-spec/schema.json');
 for(const f of ['page-spec/examples/task-list.valid.json','page-spec/examples/settings-form.valid.json']) expectValid(f,readJson(f),pageSchema);
 const negatives=readJson('page-spec/examples/invalid-cases.json');
-for(const c of negatives.cases) expectInvalid('negative '+c.id,c.spec,pageSchema);
+// Semantic rules live in runtime/validate-spec.js, not in this structural subset validator.
+// Cases marked `semantic: true` are asserted by runtime.test.js instead of here, so this file
+// keeps testing what it actually implements.
+for(const c of negatives.cases){
+  if(c.expectedError && c.expectedError.semantic) continue;
+  expectInvalid('negative '+c.id,c.spec,pageSchema);
+}
 
 const providerSchema=readJson('provider/provider.schema.json');
 const capsSchema=readJson('provider/capabilities.schema.json');

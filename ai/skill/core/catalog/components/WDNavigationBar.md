@@ -7,7 +7,7 @@
 
 Component: `WDNavigationBar`
 Spec: `docs/specs/02-advanced.md` (number 33)
-Contract: `contracts/WDNavigationBar.yaml` (sha256 `ed51c696550b86ecf1dffe2bbec9d43f4ca058bb645646e234e105783fd0a2e9`)
+Contract: `contracts-digest.json#WDNavigationBar` (source `contracts/WDNavigationBar.yaml`, sha256 `ed51c696550b86ecf1dffe2bbec9d43f4ca058bb645646e234e105783fd0a2e9`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,31 @@ Contract: `contracts/WDNavigationBar.yaml` (sha256 `ed51c696550b86ecf1dffe2bbec9
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1247,1249,1251,1252,1281,1285,1286,1287,1288,1297,1299,1300,1301,1321,1323,1324,1325,1326,1327`
+- `docs/specs/02-advanced.md:1247,1249,1251,1252,1254,1258,1259,1260,1261,1263,1267,1268,1269,1271,1273,1277,1278,1279,1281,1285,1286,1287,1288,1297,1299,1300,1301,1321,1323,1324,1325,1326,1327`
+
+## 设计者摘要
+
+高度 44 / 56 / 96；必有 标题；可选 右侧操作。
+
+## 解剖（来自正式规格 §2）
+
+- 段=返回 / 关闭; 是否必有=条件; 说明=二级页必有；一级页没有（`docs/specs/02-advanced.md:1258`）
+- 段=标题; 是否必有=必有; 说明=内联模式 `type.headline` 17 · 600，居中或左对齐（跟平台）（`type.headline` = 17/22 · 600）（`docs/specs/02-advanced.md:1259`）
+- 段=右侧操作; 是否必有=可选; 说明=**最多 2 个**图标按钮，间距 `space.3`（8）（`docs/specs/02-advanced.md:1260`）
+- 段=大标题; 是否必有=条件; 说明=大标题模式才有，`type.largeTitle` 34 · 700，左对齐（`type.largeTitle` = 34/41 · 700）（`docs/specs/02-advanced.md:1261`）
+
+## 尺寸（来自正式规格 §3）
+
+- 模式=内联（紧凑）; 高度=44; 组成=状态栏下的单行（`docs/specs/02-advanced.md:1267`）
+- 模式=标准; 高度=56; 组成=单行 + 上下留白（`docs/specs/02-advanced.md:1268`）
+- 模式=大标题; 高度=96; 组成=内联行 44 + 大标题区 52（`docs/specs/02-advanced.md:1269`）
+- 图标按钮 32×32 视觉，热区 44×44。左右边距 `space.5`（16）。（`docs/specs/02-advanced.md:1271`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=透明; 说明=页面顶部，内容未滚动时无底色（`docs/specs/02-advanced.md:1277`）
+- 变体=玻璃; 说明=内容滚动到栏下方时切换为 `surface.glass` + `border.glass-top`（`surface.glass` = 浅 #FFFFFFB3 / 深 #0C202C9E；`border.glass-top` = 浅 #FFFFFFCC / 深 #FFFFFF29）（`docs/specs/02-advanced.md:1278`）
+- 变体=大标题; 说明=标题独立成行，滚动时收缩为内联（`docs/specs/02-advanced.md:1279`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +73,9 @@ Contract: `contracts/WDNavigationBar.yaml` (sha256 `ed51c696550b86ecf1dffe2bbec9
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 导航栏, 顶部栏, 标题栏, 返回栏, navigation bar
+- combinesWith: WDIconButton
+- pageRegions: navigation
 
 ## 平台说明
 

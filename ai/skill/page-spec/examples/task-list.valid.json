@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "profile": "cross-platform",
   "page": {
     "id": "task-list",
@@ -43,6 +43,7 @@
       "id": "primary-action",
       "kind": "actions",
       "component": "WDFAB",
+      "action": "createTask",
       "intent": "新建任务"
     }
   ],
@@ -57,27 +58,6 @@
   "acceptance": [
     "空列表显示可执行的空状态",
     "主操作有可读的读屏标签",
-    "底部内容不被 Tab 栏遮挡",
-    "浅色与深色均满足对比门槛"
-  ],
-  "overrides": {
-    "density": "comfortable",
-    "textScalingRequired": true,
-    "colorSchemes": [
-      "light",
-      "dark"
-    ]
-  },
-  "platforms": [
-    {
-      "platform": "ios",
-      "status": "not-verified",
-      "reason": "黄金页面尚未执行 xcodebuild 与 UI 矩阵"
-    },
-    {
-      "platform": "android",
-      "status": "not-verified",
-      "reason": "黄金页面尚未执行 Gradle 与 UI 矩阵"
-    }
+    "底部内容不被 Tab 栏遮挡"
   ]
 }

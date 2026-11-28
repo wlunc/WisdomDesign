@@ -1,0 +1,1602 @@
+{
+  "schemaVersion": "1.0",
+  "generatedBy": "tools/ai-skill/lib/generate-core-catalog.js",
+  "note": "与 contracts/WD*.yaml 同源派生：只保留参数名、槽位、枚举与默认值，不含任何平台签名。",
+  "components": {
+    "WDActionSheet": {
+      "slots": [
+        "title",
+        "message",
+        "items"
+      ],
+      "params": [
+        {
+          "name": "presented",
+          "default": null
+        },
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "message",
+          "default": null
+        },
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "onSelect",
+          "default": null
+        },
+        {
+          "name": "onCancel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDActionSheetItem.Role": [
+          "default",
+          "destructive",
+          "cancel"
+        ]
+      },
+      "defaults": {
+        "title": null,
+        "message": null,
+        "onCancel": null
+      },
+      "source": "contracts/WDActionSheet.yaml",
+      "sourceSha256": "9e21e96912a4859c39e782efe163e6693ae0b863698289ddba7715143bc49ab1"
+    },
+    "WDAlert": {
+      "slots": [
+        "title",
+        "message",
+        "actions"
+      ],
+      "params": [
+        {
+          "name": "presented",
+          "default": null
+        },
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "message",
+          "default": null
+        },
+        {
+          "name": "actions",
+          "default": null
+        },
+        {
+          "name": "onDismiss",
+          "default": null
+        },
+        {
+          "name": "content",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDAlertAction.Role": [
+          "default",
+          "cancel",
+          "destructive"
+        ]
+      },
+      "defaults": {
+        "message": null,
+        "onDismiss": null
+      },
+      "source": "contracts/WDAlert.yaml",
+      "sourceSha256": "4c11e751e3b1f46f2b9b67963b95b01609c5ec1cebd89234725aa6facf8f2498"
+    },
+    "WDAssigneePicker": {
+      "slots": [
+        "items",
+        "label"
+      ],
+      "params": [
+        {
+          "name": "selection",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "unassigned",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "positionText",
+          "default": null
+        },
+        {
+          "name": "onOverflowTap",
+          "default": null
+        },
+        {
+          "name": "overflowAccessibilityLabel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDAssigneePickerSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "unassigned": null,
+        "size": ".standard",
+        "positionText": null,
+        "onOverflowTap": null,
+        "overflowAccessibilityLabel": null
+      },
+      "source": "contracts/WDAssigneePicker.yaml",
+      "sourceSha256": "637def1210eb5678009b4f0f40d45b438e08eb21cf1106ccb6baa5e2cd012033"
+    },
+    "WDAvatar": {
+      "slots": [
+        "icon",
+        "label"
+      ],
+      "params": [
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".md"
+        },
+        {
+          "name": "isOnline",
+          "default": false
+        },
+        {
+          "name": "isDisabled",
+          "default": false
+        },
+        {
+          "name": "tone",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDAvatarSize": [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl"
+        ],
+        "WDMemberTone": [
+          "tone1",
+          "tone2",
+          "tone3",
+          "tone4"
+        ]
+      },
+      "defaults": {
+        "size": ".md",
+        "isOnline": false,
+        "isDisabled": false,
+        "tone": null
+      },
+      "source": "contracts/WDAvatar.yaml",
+      "sourceSha256": "28acd147633188be1f9a1b233f3129d1664ae9ec413f184496f1070b74e11866"
+    },
+    "WDAvatarStack": {
+      "slots": [
+        "items"
+      ],
+      "params": [
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".md"
+        }
+      ],
+      "enums": {
+        "WDAvatarStackSize": [
+          "sm",
+          "md"
+        ]
+      },
+      "defaults": {
+        "size": ".md"
+      },
+      "source": "contracts/WDAvatarStack.yaml",
+      "sourceSha256": "b39f848469f2f4f0bcd9731e977908ee2cbe77f515191e6ea435063dc5c403fc"
+    },
+    "WDBadge": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "variant",
+          "default": ".shared"
+        }
+      ],
+      "enums": {
+        "WDBadgeVariant": [
+          "shared",
+          "schedule",
+          "pending",
+          "success",
+          "warning",
+          "danger"
+        ]
+      },
+      "defaults": {},
+      "source": "contracts/WDBadge.yaml",
+      "sourceSha256": "2c5e0c0ce26ad5d3568e100dab59d03efcb02f845b3b9042d37103b1c582f860"
+    },
+    "WDBanner": {
+      "slots": [
+        "message",
+        "actions"
+      ],
+      "params": [
+        {
+          "name": "visible",
+          "default": null
+        },
+        {
+          "name": "variant",
+          "default": ".info"
+        },
+        {
+          "name": "message",
+          "default": null
+        },
+        {
+          "name": "action",
+          "default": null
+        },
+        {
+          "name": "dismissAccessibilityLabel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDBannerVariant": [
+          "info",
+          "warning",
+          "danger"
+        ]
+      },
+      "defaults": {
+        "variant": ".info",
+        "action": null,
+        "dismissAccessibilityLabel": null
+      },
+      "source": "contracts/WDBanner.yaml",
+      "sourceSha256": "f44a6e955fe11421b9119d47ff0006fb102380f214e508a3b30af6e8fc2a1b00"
+    },
+    "WDBottomSheet": {
+      "slots": [
+        "title",
+        "content",
+        "footer"
+      ],
+      "params": [
+        {
+          "name": "presented",
+          "default": null
+        },
+        {
+          "name": "detents",
+          "default": ".all"
+        },
+        {
+          "name": "initialDetent",
+          "default": ".half"
+        },
+        {
+          "name": "interactiveDismissDisabled",
+          "default": false
+        },
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "closeButtonAccessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "onCloseButtonTap",
+          "default": null
+        },
+        {
+          "name": "onDismiss",
+          "default": null
+        },
+        {
+          "name": "content",
+          "default": null
+        },
+        {
+          "name": "footer",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDBottomSheetDetent": [
+          "half",
+          "large"
+        ],
+        "WDBottomSheetDetents": [
+          "all",
+          "fixed(WDBottomSheetDetent)"
+        ]
+      },
+      "defaults": {
+        "detents": ".all",
+        "initialDetent": ".half",
+        "interactiveDismissDisabled": false,
+        "title": null,
+        "onCloseButtonTap": null,
+        "onDismiss": null
+      },
+      "source": "contracts/WDBottomSheet.yaml",
+      "sourceSha256": "c6182154130b662956f64bd280bb6c33afbcab72fd6fe066477485bc4e5c47f0"
+    },
+    "WDButton": {
+      "slots": [
+        "label",
+        "leadingIcon",
+        "trailingIcon"
+      ],
+      "params": [
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "variant",
+          "default": ".filled"
+        },
+        {
+          "name": "size",
+          "default": ".md"
+        },
+        {
+          "name": "loading",
+          "default": false
+        },
+        {
+          "name": "loadingAccessibilityText",
+          "default": null
+        },
+        {
+          "name": "leadingIcon",
+          "default": null
+        },
+        {
+          "name": "trailingIcon",
+          "default": null
+        },
+        {
+          "name": "action",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDButtonVariant": [
+          "filled",
+          "tonal",
+          "glass",
+          "outline",
+          "plain",
+          "destructive"
+        ],
+        "WDButtonSize": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "variant": ".filled",
+        "size": ".md",
+        "isLoading": false,
+        "loadingAccessibilityText": null,
+        "leadingIcon": null,
+        "trailingIcon": null
+      },
+      "source": "contracts/WDButton.yaml",
+      "sourceSha256": "d24658c03c13ece3a9bb026e43a4385c1e121c6886d3073b5bf6617d3079176e"
+    },
+    "WDCard": {
+      "slots": [
+        "content"
+      ],
+      "params": [
+        {
+          "name": "style",
+          "default": ".elevated"
+        },
+        {
+          "name": "content",
+          "default": null
+        },
+        {
+          "name": "action",
+          "default": null
+        },
+        {
+          "name": "media",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDCardStyle": [
+          "elevated",
+          "outlined",
+          "glass",
+          "sunken",
+          "media"
+        ]
+      },
+      "defaults": {
+        "style": ".elevated",
+        "action": null,
+        "media": null
+      },
+      "source": "contracts/WDCard.yaml",
+      "sourceSha256": "6e12256c34c52689c625fff3172698dcae829f974d9621d5281dfa8fe5a36d1c"
+    },
+    "WDCheckbox": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "checked",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "indeterminate",
+          "default": false
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDCheckboxSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "indeterminate": false,
+        "size": ".standard",
+        "accessibilityLabel": null
+      },
+      "source": "contracts/WDCheckbox.yaml",
+      "sourceSha256": "08d51fd1b73bd7f13f5e0c9dc95dfd69b168e2eea19d551e0f5bbb94b712e37e"
+    },
+    "WDChip": {
+      "slots": [
+        "label",
+        "leadingIcon"
+      ],
+      "params": [
+        {
+          "name": "selected",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "leadingIcon",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "deleteAccessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "onDelete",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDChipSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "leadingIcon": null,
+        "size": ".standard",
+        "deleteAccessibilityLabel": null,
+        "onDelete": null
+      },
+      "source": "contracts/WDChip.yaml",
+      "sourceSha256": "e39ea876f02aad39968c24a6be0a759135a9e82d365074a8bb934054410e7ca9"
+    },
+    "WDDatePicker": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "date",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "mode",
+          "default": ".date"
+        },
+        {
+          "name": "placeholder",
+          "default": null
+        },
+        {
+          "name": "bounds",
+          "default": null
+        },
+        {
+          "name": "quickOptions",
+          "default": []
+        },
+        {
+          "name": "range",
+          "default": null
+        },
+        {
+          "name": "showsClearButton",
+          "default": false
+        },
+        {
+          "name": "clearAccessibilityLabel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDDatePickerMode": [
+          "date",
+          "time",
+          "dateAndTime"
+        ]
+      },
+      "defaults": {
+        "mode": ".date",
+        "bounds": null,
+        "placeholder": null,
+        "quickOptions": [],
+        "range": null,
+        "showsClearButton": false,
+        "clearAccessibilityLabel": null
+      },
+      "source": "contracts/WDDatePicker.yaml",
+      "sourceSha256": "b27941cf9ef0513ba24d1049c8b7ac1b54b7582b0c285cb4ff695de81341ea8c"
+    },
+    "WDDivider": {
+      "slots": [],
+      "params": [
+        {
+          "name": "style",
+          "default": ".full"
+        }
+      ],
+      "enums": {
+        "WDDividerStyle": [
+          "full",
+          "inset"
+        ]
+      },
+      "defaults": {
+        "style": ".full"
+      },
+      "source": "contracts/WDDivider.yaml",
+      "sourceSha256": "3505f4ae6ecd91c75c710f3d953d569d65235c2aa3fb74ffc96c0d4e48e7ba9a"
+    },
+    "WDEmptyState": {
+      "slots": [
+        "icon",
+        "title",
+        "message",
+        "actions"
+      ],
+      "params": [
+        {
+          "name": "icon",
+          "default": null
+        },
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "message",
+          "default": null
+        },
+        {
+          "name": "action",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "icon": null,
+        "message": null,
+        "action": null
+      },
+      "source": "contracts/WDEmptyState.yaml",
+      "sourceSha256": "4d4e0cab2875a5a484210f19f4d4597449032cbfdf65d861bda39eab215bd43e"
+    },
+    "WDFAB": {
+      "slots": [
+        "icon",
+        "label"
+      ],
+      "params": [
+        {
+          "name": "icon",
+          "default": null
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "shape",
+          "default": ".roundedSquare"
+        },
+        {
+          "name": "actions",
+          "default": []
+        },
+        {
+          "name": "action",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDFABSize": [
+          "small",
+          "standard",
+          "large"
+        ],
+        "WDFABShape": [
+          "roundedSquare",
+          "circle"
+        ]
+      },
+      "defaults": {
+        "size": ".standard",
+        "shape": ".roundedSquare",
+        "actions": [],
+        "action": null
+      },
+      "source": "contracts/WDFAB.yaml",
+      "sourceSha256": "7a7d3989af4b1f62b8039cac36e56201164167d8db2b97aaf5eccdd30797231c"
+    },
+    "WDFormRow": {
+      "slots": [
+        "label",
+        "control"
+      ],
+      "params": [
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "layout",
+          "default": ".horizontal"
+        },
+        {
+          "name": "helper",
+          "default": null
+        },
+        {
+          "name": "error",
+          "default": null
+        },
+        {
+          "name": "requiredLabel",
+          "default": null
+        },
+        {
+          "name": "control",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDFormRowLayout": [
+          "horizontal",
+          "vertical"
+        ]
+      },
+      "defaults": {
+        "layout": ".horizontal",
+        "helper": null,
+        "error": null,
+        "requiredLabel": null
+      },
+      "source": "contracts/WDFormRow.yaml",
+      "sourceSha256": "bbc401c07a7e27cf9a9c5d930d31a30faecbffe286c5e0af2166896bda2df94f"
+    },
+    "WDIcon": {
+      "slots": [
+        "icon"
+      ],
+      "params": [
+        {
+          "name": "icon",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".md"
+        }
+      ],
+      "enums": {
+        "WDIconSize": [
+          "sm",
+          "md",
+          "lg",
+          "xl"
+        ]
+      },
+      "defaults": {
+        "size": ".md"
+      },
+      "source": "contracts/WDIcon.yaml",
+      "sourceSha256": "4ef8481cc9f267a6468668a455ef6b5f99e7b828b5e69930a7e160a9dfb7f634"
+    },
+    "WDIconButton": {
+      "slots": [
+        "icon"
+      ],
+      "params": [
+        {
+          "name": "icon",
+          "default": null
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "variant",
+          "default": ".plain"
+        },
+        {
+          "name": "size",
+          "default": ".md"
+        },
+        {
+          "name": "loading",
+          "default": false
+        },
+        {
+          "name": "action",
+          "default": null
+        },
+        {
+          "name": "shape",
+          "default": ".circle"
+        }
+      ],
+      "enums": {
+        "WDIconButtonVariant": [
+          "plain",
+          "filled",
+          "tonal",
+          "glass",
+          "outline"
+        ],
+        "WDIconButtonShape": [
+          "circle",
+          "roundedSquare"
+        ],
+        "WDButtonSize": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "variant": ".plain",
+        "size": ".md",
+        "isLoading": false,
+        "shape": ".circle"
+      },
+      "source": "contracts/WDIconButton.yaml",
+      "sourceSha256": "53b2b74751ff58236070246f167d36c36f88a9de5bde0820794f1d7cbafffbe1"
+    },
+    "WDListRow": {
+      "slots": [
+        "title",
+        "subtitle",
+        "leading",
+        "trailing"
+      ],
+      "params": [
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "subtitle",
+          "default": null
+        },
+        {
+          "name": "leading",
+          "default": ".none"
+        },
+        {
+          "name": "trailing",
+          "default": ".none"
+        },
+        {
+          "name": "selected",
+          "default": false
+        },
+        {
+          "name": "swipeAction",
+          "default": ".none"
+        },
+        {
+          "name": "showsSeparator",
+          "default": true
+        },
+        {
+          "name": "action",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDListRowLeading": [
+          "none",
+          "icon(WDIconName)",
+          "avatar(WDAvatarValue)",
+          "checkbox",
+          "selectionIndicator"
+        ],
+        "WDListRowTrailing": [
+          "none",
+          "value(Text)",
+          "badge(WDBadgeValue)",
+          "avatar(WDAvatarValue)",
+          "disclosure"
+        ],
+        "WDListRowSwipeAction": [
+          "none",
+          "delete(title:onDelete:)"
+        ]
+      },
+      "defaults": {
+        "subtitle": null,
+        "leading": ".none",
+        "trailing": ".none",
+        "isSelected": false,
+        "swipeAction": ".none",
+        "showsSeparator": true,
+        "action": null
+      },
+      "source": "contracts/WDListRow.yaml",
+      "sourceSha256": "a82d8d65e9f008a0adf8f82f91a35efede855b812fd790cd98586643c5badcd1"
+    },
+    "WDListSection": {
+      "slots": [
+        "header",
+        "items",
+        "footer"
+      ],
+      "params": [
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "selection",
+          "default": "[]"
+        },
+        {
+          "name": "header",
+          "default": null
+        },
+        {
+          "name": "headerAction",
+          "default": null
+        },
+        {
+          "name": "row",
+          "default": null
+        },
+        {
+          "name": "footer",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "selection": "[]",
+        "headerAction": null,
+        "footer": "EmptyView（Footer == EmptyView 的重载）"
+      },
+      "source": "contracts/WDListSection.yaml",
+      "sourceSha256": "46e730dbde13fb474b219a9747b6fa3a76829f9897555383ff77f264d9befef7"
+    },
+    "WDNavigationBar": {
+      "slots": [
+        "title",
+        "leading",
+        "trailing"
+      ],
+      "params": [
+        {
+          "name": "title",
+          "default": null
+        },
+        {
+          "name": "mode",
+          "default": ".standard"
+        },
+        {
+          "name": "style",
+          "default": ".transparent"
+        },
+        {
+          "name": "backAccessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "onBack",
+          "default": null
+        },
+        {
+          "name": "actions",
+          "default": []
+        }
+      ],
+      "enums": {
+        "WDNavigationBarMode": [
+          "inline",
+          "standard",
+          "largeTitle"
+        ],
+        "WDNavigationBarStyle": [
+          "transparent",
+          "glass"
+        ]
+      },
+      "defaults": {
+        "mode": ".standard",
+        "style": ".transparent",
+        "backAccessibilityLabel": null,
+        "onBack": null,
+        "actions": []
+      },
+      "source": "contracts/WDNavigationBar.yaml",
+      "sourceSha256": "ed51c696550b86ecf1dffe2bbec9d43f4ca058bb645646e234e105783fd0a2e9"
+    },
+    "WDPicker": {
+      "slots": [
+        "label",
+        "options"
+      ],
+      "params": [
+        {
+          "name": "selection",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "options",
+          "default": null
+        },
+        {
+          "name": "placeholder",
+          "default": null
+        },
+        {
+          "name": "style",
+          "default": ".menu"
+        }
+      ],
+      "enums": {
+        "WDPickerStyle": [
+          "menu",
+          "wheel",
+          "inline"
+        ]
+      },
+      "defaults": {
+        "placeholder": null,
+        "style": ".menu"
+      },
+      "source": "contracts/WDPicker.yaml",
+      "sourceSha256": "ab8df2a53a8bb110ab13f28a45ef28103f20835f5e3fa8e9cc2652c740d6a7e6"
+    },
+    "WDProgressBar": {
+      "slots": [
+        "label",
+        "valueText"
+      ],
+      "params": [
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "segments",
+          "default": null
+        },
+        {
+          "name": "completed",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "valueText",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "label": null,
+        "valueText": null
+      },
+      "source": "contracts/WDProgressBar.yaml",
+      "sourceSha256": "bfd7dbda63e9896e68a5124be9347d85b2f444fccf3f7ce3af87ae4ac5b97ae8"
+    },
+    "WDProgressRing": {
+      "slots": [
+        "label",
+        "valueText"
+      ],
+      "params": [
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "valueText",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDProgressRingSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "size": ".standard",
+        "label": null,
+        "valueText": null
+      },
+      "source": "contracts/WDProgressRing.yaml",
+      "sourceSha256": "9df7760a1c90b040558955524391dc62486c1dc82fbe140c5a939db419639fc6"
+    },
+    "WDPullRefresh": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "refreshing",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "onRefresh",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "label": null
+      },
+      "source": "contracts/WDPullRefresh.yaml",
+      "sourceSha256": "1e64e60292370e9bbe806e8f5cc5460b316c83e5c788c6a26b4d31225ba40e19"
+    },
+    "WDRadio": {
+      "slots": [
+        "label",
+        "options"
+      ],
+      "params": [
+        {
+          "name": "selection",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "options",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        }
+      ],
+      "enums": {
+        "WDRadioSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "size": ".standard"
+      },
+      "source": "contracts/WDRadio.yaml",
+      "sourceSha256": "d3961d208e652e194ccfa11b317f1647a4ddb2c8540a514386a9b1edd5e10ed0"
+    },
+    "WDSearchField": {
+      "slots": [
+        "placeholder",
+        "leadingIcon",
+        "label"
+      ],
+      "params": [
+        {
+          "name": "text",
+          "default": null
+        },
+        {
+          "name": "placeholder",
+          "default": null
+        },
+        {
+          "name": "leadingIcon",
+          "default": ".search"
+        },
+        {
+          "name": "clearAccessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "cancelLabel",
+          "default": null
+        },
+        {
+          "name": "onCancel",
+          "default": null
+        },
+        {
+          "name": "onSubmit",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "leadingIcon": ".search",
+        "cancelLabel": null,
+        "onCancel": null,
+        "onSubmit": null
+      },
+      "source": "contracts/WDSearchField.yaml",
+      "sourceSha256": "f7faf3335575a4bd67f309a41ce93f4d450225ddd8486e84ab1af1fe29c33198"
+    },
+    "WDSegmentedControl": {
+      "slots": [
+        "items"
+      ],
+      "params": [
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "selection",
+          "default": null
+        },
+        {
+          "name": "style",
+          "default": ".solid"
+        }
+      ],
+      "enums": {
+        "WDSegmentedControlStyle": [
+          "glass",
+          "solid"
+        ]
+      },
+      "defaults": {
+        "style": ".solid"
+      },
+      "source": "contracts/WDSegmentedControl.yaml",
+      "sourceSha256": "9cfe3787e7536810c2ef177e47a5cc60169949bb3948c0c8faf88e3a6666839b"
+    },
+    "WDSkeleton": {
+      "slots": [],
+      "params": [
+        {
+          "name": "variant",
+          "default": ".text"
+        },
+        {
+          "name": "lineCount",
+          "default": 3
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDSkeletonVariant": [
+          "text",
+          "list",
+          "card"
+        ]
+      },
+      "defaults": {
+        "variant": ".text",
+        "lineCount": 3,
+        "accessibilityLabel": null
+      },
+      "source": "contracts/WDSkeleton.yaml",
+      "sourceSha256": "922227563e2566c6761a954b1130b9b58f547b780357ff97db96166a35bfcff9"
+    },
+    "WDSlider": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "bounds",
+          "default": "0...1"
+        },
+        {
+          "name": "step",
+          "default": null
+        },
+        {
+          "name": "onEditingChanged",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "bounds": "0...1",
+        "step": null,
+        "onEditingChanged": null
+      },
+      "source": "contracts/WDSlider.yaml",
+      "sourceSha256": "faa8517894c8ddef6dd9cec9e933a50ee9ef1cd588285872e7c1e1feff9fd11c"
+    },
+    "WDStepper": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "value",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "bounds",
+          "default": null
+        },
+        {
+          "name": "step",
+          "default": 1
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        },
+        {
+          "name": "unit",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDStepperSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "step": 1,
+        "size": ".standard",
+        "unit": null
+      },
+      "source": "contracts/WDStepper.yaml",
+      "sourceSha256": "6b97e2e356b41faa3c27bfe36bf5b6b2b3324d684be7dfe10dc6e40e42f80179"
+    },
+    "WDSwitch": {
+      "slots": [
+        "label"
+      ],
+      "params": [
+        {
+          "name": "on",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "description",
+          "default": null
+        },
+        {
+          "name": "size",
+          "default": ".standard"
+        }
+      ],
+      "enums": {
+        "WDSwitchSize": [
+          "standard",
+          "compact"
+        ]
+      },
+      "defaults": {
+        "description": null,
+        "size": ".standard"
+      },
+      "source": "contracts/WDSwitch.yaml",
+      "sourceSha256": "7189a1ea57fc81d37f96b4658482df32bddc2b82c7b88a72ccc7606289413719"
+    },
+    "WDTabBar": {
+      "slots": [
+        "items"
+      ],
+      "params": [
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "selection",
+          "default": null
+        }
+      ],
+      "enums": {},
+      "defaults": {},
+      "source": "contracts/WDTabBar.yaml",
+      "sourceSha256": "33ab6fbe23b55293c755168a9863f8b3e1b5988bbf2e614c19407e912ee63f43"
+    },
+    "WDTextField": {
+      "slots": [
+        "label",
+        "prefix",
+        "accessory",
+        "helper"
+      ],
+      "params": [
+        {
+          "name": "text",
+          "default": null
+        },
+        {
+          "name": "label",
+          "default": null
+        },
+        {
+          "name": "appearance",
+          "default": ".init()"
+        },
+        {
+          "name": "isEditable",
+          "default": true
+        },
+        {
+          "name": "onSubmit",
+          "default": null
+        },
+        {
+          "name": "onEditingChanged",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDTextFieldVariant": [
+          "inset",
+          "outline",
+          "glass"
+        ],
+        "WDTextFieldPrefix": [
+          "none",
+          "icon(WDIconName)",
+          "text(Text)"
+        ],
+        "WDTextFieldAccessory": [
+          "none",
+          "unit(Text)",
+          "clear(accessibilityLabel:)",
+          "reveal(hiddenAccessibilityLabel:shownAccessibilityLabel:)",
+          "count(current:limit:)"
+        ],
+        "WDTextFieldHelper": [
+          "none",
+          "hint(Text)",
+          "error(Text)"
+        ]
+      },
+      "defaults": {
+        "appearance": ".init()",
+        "isEditable": true,
+        "onSubmit": null,
+        "onEditingChanged": null,
+        "appearance.variant": ".inset",
+        "appearance.placeholder": null,
+        "appearance.prefix": ".none",
+        "appearance.accessory": ".none",
+        "appearance.helper": ".none",
+        "appearance.isSecure": false,
+        "appearance.submitLabel": ".done"
+      },
+      "source": "contracts/WDTextField.yaml",
+      "sourceSha256": "51d32379d3174ff47ecda45d537e72b10d86e2be0cd0bec30e59b7bc044c4163"
+    },
+    "WDToast": {
+      "slots": [
+        "message",
+        "actions"
+      ],
+      "params": [
+        {
+          "name": "presented",
+          "default": null
+        },
+        {
+          "name": "variant",
+          "default": ".neutral"
+        },
+        {
+          "name": "message",
+          "default": null
+        },
+        {
+          "name": "action",
+          "default": null
+        },
+        {
+          "name": "durationMilliseconds",
+          "default": 3000
+        },
+        {
+          "name": "onDismiss",
+          "default": null
+        }
+      ],
+      "enums": {
+        "WDToastVariant": [
+          "neutral",
+          "success",
+          "warning",
+          "danger"
+        ]
+      },
+      "defaults": {
+        "variant": ".neutral",
+        "action": null,
+        "durationMilliseconds": 3000,
+        "onDismiss": null
+      },
+      "source": "contracts/WDToast.yaml",
+      "sourceSha256": "28d3736c731cd7348574f34790e782eee1fab552517eab852bd15b63e65d61ba"
+    },
+    "WDToolbar": {
+      "slots": [
+        "items"
+      ],
+      "params": [
+        {
+          "name": "items",
+          "default": null
+        },
+        {
+          "name": "accessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "overflowAccessibilityLabel",
+          "default": null
+        },
+        {
+          "name": "showsTooltips",
+          "default": false
+        }
+      ],
+      "enums": {},
+      "defaults": {
+        "overflowAccessibilityLabel": null,
+        "showsTooltips": false
+      },
+      "source": "contracts/WDToolbar.yaml",
+      "sourceSha256": "73b58dc7c76142ede662be365ce2662fb47c1bdb906b5c5002ab4378b479fa8f"
+    }
+  }
+}

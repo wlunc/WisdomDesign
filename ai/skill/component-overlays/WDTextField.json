@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDTextField",
+  "searchAliases": [
+    "输入框",
+    "文本输入",
+    "文本框",
+    "输入",
+    "text field"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form",
+    "toolbar"
+  ]
+}

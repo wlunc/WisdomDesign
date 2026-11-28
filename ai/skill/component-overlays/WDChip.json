@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDChip",
+  "searchAliases": [
+    "标签",
+    "胶囊",
+    "筛选标签",
+    "过滤",
+    "chip"
+  ],
+  "combinesWith": [
+    "WDSegmentedControl"
+  ],
+  "pageRegions": [
+    "collection-header",
+    "toolbar"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDStepper",
+  "searchAliases": [
+    "步进器",
+    "数量增减",
+    "加减",
+    "stepper"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form",
+    "collection-item"
+  ]
+}

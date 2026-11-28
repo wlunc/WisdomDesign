@@ -7,7 +7,7 @@
 
 Component: `WDPullRefresh`
 Spec: `docs/specs/02-advanced.md` (number 32)
-Contract: `contracts/WDPullRefresh.yaml` (sha256 `1e64e60292370e9bbe806e8f5cc5460b316c83e5c788c6a26b4d31225ba40e19`)
+Contract: `contracts-digest.json#WDPullRefresh` (source `contracts/WDPullRefresh.yaml`, sha256 `1e64e60292370e9bbe806e8f5cc5460b316c83e5c788c6a26b4d31225ba40e19`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,32 @@ Contract: `contracts/WDPullRefresh.yaml` (sha256 `1e64e60292370e9bbe806e8f5cc546
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1140,1142,1144,1145,1175,1179,1180,1181,1182,1190,1192,1193,1194,1214,1216,1217,1218,1219`
+- `docs/specs/02-advanced.md:1140,1142,1144,1145,1147,1149,1153,1154,1155,1156,1158,1162,1163,1164,1165,1166,1168,1172,1173,1175,1179,1180,1181,1182,1190,1192,1193,1194,1214,1216,1217,1218,1219`
+
+## 设计者摘要
+
+触发阈值 64（下拉超过此距离松手才刷新）；指示器直径 24；环线宽 2；指示器与首行间距 `space.4`（12）。
+
+## 解剖（来自正式规格 §2）
+
+- 下拉指示器 + 文字状态 + 刷新中的进度环。（`docs/specs/02-advanced.md:1149`）
+- 阶段=下拉未达阈值; 显示=环从左到右画出进度，文字"下拉刷新"（`docs/specs/02-advanced.md:1153`）
+- 阶段=达到阈值; 显示=环变成完整圆，文字"松开刷新"（`docs/specs/02-advanced.md:1154`）
+- 阶段=刷新中; 显示=环旋转，文字"正在刷新"（`docs/specs/02-advanced.md:1155`）
+- 阶段=完成; 显示=环收起，列表内容回到原位（`docs/specs/02-advanced.md:1156`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=触发阈值; 值=64（下拉超过此距离松手才刷新）（`docs/specs/02-advanced.md:1162`）
+- 项=指示器直径; 值=24（`docs/specs/02-advanced.md:1163`）
+- 项=环线宽; 值=2（`docs/specs/02-advanced.md:1164`）
+- 项=指示器与首行间距; 值=`space.4`（12）（`docs/specs/02-advanced.md:1165`）
+- 项=最大下拉距离; 值=120（超过后阻力显著增加）（`docs/specs/02-advanced.md:1166`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=品牌进度; 说明=环用 `text.brand`，默认（`text.brand` = 浅 #1677B3 / 深 #7EC4CF）（`docs/specs/02-advanced.md:1172`）
+- 变体=极简; 说明=只有环，没有文字（空间极紧时）（`docs/specs/02-advanced.md:1173`）
 
 ## 状态（来自正式规格 §5）
 
@@ -48,9 +73,9 @@ Contract: `contracts/WDPullRefresh.yaml` (sha256 `1e64e60292370e9bbe806e8f5cc546
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 下拉刷新, 刷新, pull refresh
 - combinesWith: none
-- pageRegions: none
+- pageRegions: collection
 
 ## 平台说明
 

@@ -7,7 +7,7 @@
 
 Component: `WDTextField`
 Spec: `docs/specs/01-basic.md` (number 3)
-Contract: `contracts/WDTextField.yaml` (sha256 `51d32379d3174ff47ecda45d537e72b10d86e2be0cd0bec30e59b7bc044c4163`)
+Contract: `contracts-digest.json#WDTextField` (source `contracts/WDTextField.yaml`, sha256 `51d32379d3174ff47ecda45d537e72b10d86e2be0cd0bec30e59b7bc044c4163`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,37 @@ Contract: `contracts/WDTextField.yaml` (sha256 `51d32379d3174ff47ecda45d537e72b1
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:223,225,227,228,262,266,267,268,269,270,278,280,281,282,283,301,303,304,305,306,307`
+- `docs/specs/01-basic.md:223,225,227,228,230,234,235,236,237,238,239,241,245,246,247,248,249,250,251,252,254,258,259,260,262,266,267,268,269,270,278,280,281,282,283,301,303,304,305,306,307`
+
+## 设计者摘要
+
+高度 **46**（固定，所有变体一致）；水平内距 12；前缀与输入区间距 `space.3` 8；后缀与输入区间距 `space.3` 8；圆角 `radius.md` 14；必有 字段标签 / 容器 / 输入区；可选 前缀 / 后缀。
+
+## 解剖（来自正式规格 §2）
+
+- 段=字段标签; 是否必有=必有; 说明=常驻在输入框上方，`type.footnote`，用 `text.secondary`（`type.footnote` = 13/18 · 400；`text.secondary` = 浅 #3E5764 / 深 #A4BCCB）（`docs/specs/01-basic.md:234`）
+- 段=容器; 是否必有=必有; 说明=固定高度 46（`docs/specs/01-basic.md:235`）
+- 段=前缀; 是否必有=可选; 说明=图标 17，或文字（货币符号），色 `text.tertiary`（`text.tertiary` = 浅 #4C616D / 深 #839EB0）（`docs/specs/01-basic.md:236`）
+- 段=输入区; 是否必有=必有; 说明=`type.body`（17），占位符 `text.tertiary`（`text.tertiary` = 浅 #4C616D / 深 #839EB0）（`docs/specs/01-basic.md:237`）
+- 段=后缀; 是否必有=可选; 说明=**最多一个**：单位 / 清除 / 显隐 / 计数 / 下拉（`docs/specs/01-basic.md:238`）
+- 段=辅助文案; 是否必有=条件; 说明=错误时必有；常态可选。`type.footnote`（`type.footnote` = 13/18 · 400）（`docs/specs/01-basic.md:239`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=高度; 值=**46**（固定，所有变体一致）（`docs/specs/01-basic.md:245`）
+- 项=圆角; 值=`radius.md` 14（`radius.md` = 14）（`docs/specs/01-basic.md:246`）
+- 项=水平内距; 值=12（`docs/specs/01-basic.md:247`）
+- 项=前缀与输入区间距; 值=`space.3` 8（`space.3` = 8）（`docs/specs/01-basic.md:248`）
+- 项=后缀与输入区间距; 值=`space.3` 8（`space.3` = 8）（`docs/specs/01-basic.md:249`）
+- 项=标签与容器间距; 值=`space.2` 4（`space.2` = 4）（`docs/specs/01-basic.md:250`）
+- 项=辅助文案与容器间距; 值=`space.2` 4（`space.2` = 4）（`docs/specs/01-basic.md:251`）
+- 项=最小宽度; 值=190（`docs/specs/01-basic.md:252`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=`inset`（默认）; 背景=`fill.field`; 描边=无; 用在哪=表单内（`fill.field` = 浅 #0A1B240D / 深 #FFFFFF12）（`docs/specs/01-basic.md:258`）
+- 变体=`outline`; 背景=透明; 描边=`border.hairline-strong`; 用在哪=白底卡片上，视觉更轻（`border.hairline-strong` = 浅 #0A1B2429 / 深 #FFFFFF2E）（`docs/specs/01-basic.md:259`）
+- 变体=`glass`; 背景=`surface.glass-strong`; 描边=`border.hairline`; 用在哪=浮在图片或内容之上（`surface.glass-strong` = 浅 #FFFFFFDB / 深 #0C202CC7；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/01-basic.md:260`）
 
 ## 状态（来自正式规格 §5）
 
@@ -51,9 +81,9 @@ Contract: `contracts/WDTextField.yaml` (sha256 `51d32379d3174ff47ecda45d537e72b1
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 输入框, 文本输入, 文本框, 输入, text field
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form, toolbar
 
 ## 平台说明
 

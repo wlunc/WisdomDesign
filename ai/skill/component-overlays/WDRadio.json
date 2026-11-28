@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDRadio",
+  "searchAliases": [
+    "单选框",
+    "单选",
+    "互斥选项",
+    "radio"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form"
+  ]
+}

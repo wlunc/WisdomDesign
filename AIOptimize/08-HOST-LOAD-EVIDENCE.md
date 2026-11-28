@@ -192,6 +192,70 @@ cp -R dist/ai-skill/v1.0.0/wisdom-page-ios ~/.dsh/skills/wisdom-page-ios
 
 端点验证：design 包无 `platforms/` 且 query/validate 均 exit 0；iOS 包 79 卡 + 脚手架存在；Android 包 17 卡、status=experimental；all 包双端目录均在。
 
+
+### 重新构建并安装（2026-11-28）
+
+按 `SkillFeedback/wisdom-page-design-usage-feedback.md` 的复核结论（见同目录 `wisdom-page-design-optimization-plan.md` §七）修复后重打包安装。相对上一版（2026-11-27）的差异：
+
+| 目录 | name | 文件（旧 → 新） | 新增内容 |
+| --- | --- | --- | --- |
+| `wisdom-page-design` | `wisdom-page-design` | 53 → 95 | 无（设计语义 + tokens + digest + REFERENCES + runtime） |
+| `wisdom-page-ios` | `wisdom-page-ios` | 141 → 183 | 79 张 SwiftUI 卡 + 模板 + 脚手架 |
+| `wisdom-page-android` | `wisdom-page-android` | 78 → 120 | 17 张 Compose 卡 + 模板（experimental / paused） |
+| `wisdom-page` | `wisdom-page` | 166 → 208 | 双端 provider |
+
+四个包共同新增：`tokens/wisdom.tokens.json`（逐字节副本，`manifest.sources.design.tokenShipped=true` 与 `tokenHash` 锁定）、`catalog/contracts-digest.json`（去平台语法的契约摘要）、`REFERENCES.md`（按需加载的真源路径与冲突裁决）、`runtime/resolve-token.js`（包内令牌解析）。
+
+Page Spec 升至 `1.1`（`manifest.version.pageSpecSchema`）：新增 `regions[].variant/action/extension`，删除 `kind:"custom"`，`itemPattern` 改枚举，语义层新增 `UNKNOWN_VARIANT / PRIMARY_ACTION_NOT_CONNECTED / NAVIGATION_CONFLICT / UNREGISTERED_EXTENSION`，并落地 `warnings` 通道。
+
+安装方式（`tools/install-skills.sh`，先备份再替换）：
+
+```bash
+cd wisdomdesign && node tools/ai-skill/cli.js build --out ai/skill/core/dist/wisdom-page-core
+node tools/ai-skill/package.js --platforms core,ios,android
+bash tools/install-skills.sh   # 备份到 ~/.dsh/skills/.backup-<stamp>/ 后替换四个目录
+```
+
+安装后冒烟（在 `~/.dsh/skills/` 内执行，全部通过）：
+
+| 检查 | 结果 |
+| --- | --- |
+| `get-component --query 按钮` | `WDButton` 首位，`matched: alias:exact:按钮` |
+| `get-component --query 输入框` | `WDTextField` 首位 |
+| `resolve-token --path text.tertiary` | `#4C616D`（= 令牌值，非 gallery 的旧 `#5B7784`） |
+| `validate-spec task-list.valid.json` (1.1) | VALID |
+| `validate-spec settings-form.valid.json` | VALID + 两条 `STATE_INCOMPLETE` warning |
+| `WDListRow.md` 章节数 | 12（含 设计者摘要 / 解剖 / 尺寸 / 变体） |
+| iOS 脚手架 `--list` | `task-list available` |
+
+回滚：`rm -rf ~/.dsh/skills/wisdom-page* && cp -R ~/.dsh/skills/.backup-20261128-092502/* ~/.dsh/skills/`。
+
+
+### render_spec：从 spec 到可看图（2026-11-28，同日补）
+
+原反馈 P0-1 的最终落差是「走完流程产不出一张能看的图」。本轮补上 `runtime/render-spec.js`：
+
+```bash
+node runtime/render-spec.js --file page-spec/examples/task-list.valid.json --out preview.html
+node runtime/render-spec.js --file my-spec.json --scheme dark --out preview-dark.html
+```
+
+设计约束（三条都写进了脚本头注释与测试）：
+
+1. **视觉数值在运行时从 `tokens/wisdom.tokens.json` 派生**，包内没有第二份配色；测试断言语义色/间距/圆角/字阶确实出现在产物里，且**已废弃的 `#5B7784` 不得出现**（出现即说明引入了一份过期调色板）。
+2. **只证明布局与层级**：产物 `gates` 与 `validate-spec` 完全一致（`nativeCompile / snapshotUi / visualDesignReview / hostLoad` 全为 `not-evaluated`），页面顶部横幅写明「结构预览，非最终视觉」。
+3. **确定性且自包含**：同一 spec 逐字节一致、无时间戳、无绝对路径、无 `<script>`、无外链，可直接进 CI diff。
+
+37 个 canonical 组件全部有渲染分支（测试断言无遗漏）。已验证的输出：
+
+| 输入 | 结果 |
+| --- | --- |
+| `task-list.valid.json`（light） | 11,427 B，2/2 region，列表 + FAB 层级正确 |
+| `settings-form.valid.json`（light） | filled 保存 / plain 放弃，层级可见 |
+| HOH 录入页（dark，含 `WDStateSegment` 扩展） | 三档状态控件按扩展渲染，warning 来自扩展登记而非编造 |
+
+口径仍不变：这是**布局证据**，不是视觉验收。像素级确认要回到 iOS/Android 端跑快照矩阵。
+
 ## 9. 卸载
 
 

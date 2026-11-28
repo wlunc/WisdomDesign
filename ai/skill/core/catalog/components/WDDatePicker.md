@@ -7,7 +7,7 @@
 
 Component: `WDDatePicker`
 Spec: `docs/specs/02-advanced.md` (number 23)
-Contract: `contracts/WDDatePicker.yaml` (sha256 `b27941cf9ef0513ba24d1049c8b7ac1b54b7582b0c285cb4ff695de81341ea8c`)
+Contract: `contracts-digest.json#WDDatePicker` (source `contracts/WDDatePicker.yaml`, sha256 `b27941cf9ef0513ba24d1049c8b7ac1b54b7582b0c285cb4ff695de81341ea8c`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,32 @@ Contract: `contracts/WDDatePicker.yaml` (sha256 `b27941cf9ef0513ba24d1049c8b7ac1
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:225,227,229,230,259,263,264,265,266,267,268,276,278,279,280,297,299,300,301,302,303`
+- `docs/specs/02-advanced.md:225,227,229,230,232,236,237,238,239,241,245,246,247,248,250,254,255,256,257,259,263,264,265,266,267,268,276,278,279,280,297,299,300,301,302,303`
+
+## 设计者摘要
+
+触发入口高 44；快捷 Chip 高 32；日历单元 44×44；圆角 触发入口 `radius.md`，弹出层 `radius.xl`。
+
+## 解剖（来自正式规格 §2）
+
+- 段=触发入口; 说明=一行，左侧标签，右侧当前值 + `calendar` 图标（`docs/specs/02-advanced.md:236`）
+- 段=快捷选项; 说明=可选，「今天 / 明天 / 下周一」三个 Chip（`docs/specs/02-advanced.md:237`）
+- 段=选择器; 说明=系统日历 / 滚轮（`docs/specs/02-advanced.md:238`）
+- 段=清除; 说明=可选，用于"无截止日期"（`docs/specs/02-advanced.md:239`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=触发入口高; 值=44（`docs/specs/02-advanced.md:245`）
+- 项=快捷 Chip 高; 值=32（`docs/specs/02-advanced.md:246`）
+- 项=日历单元; 值=44×44（`docs/specs/02-advanced.md:247`）
+- 项=圆角; 值=触发入口 `radius.md`，弹出层 `radius.xl`（`radius.md` = 14；`radius.xl` = 24）（`docs/specs/02-advanced.md:248`）
+
+## 变体（来自正式规格 §4）
+
+- 形态=日期; 说明=只选日期（`docs/specs/02-advanced.md:254`）
+- 形态=时间; 说明=只选时间（`docs/specs/02-advanced.md:255`）
+- 形态=日期 + 时间; 说明=两段式，先日期后时间（`docs/specs/02-advanced.md:256`）
+- 形态=范围; 说明=起止两个日期，起始不得晚于结束（`docs/specs/02-advanced.md:257`）
 
 ## 状态（来自正式规格 §5）
 
@@ -51,9 +76,9 @@ Contract: `contracts/WDDatePicker.yaml` (sha256 `b27941cf9ef0513ba24d1049c8b7ac1
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 日期选择, 日历, 时间选择, 选日期, date picker
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form
 
 ## 平台说明
 

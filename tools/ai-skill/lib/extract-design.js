@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { parseYaml } = require('./simple-yaml');
+const tokenIndex = require('./token-index');
 
 const VERSION = '1.0';
 const EXPECTED_COMPONENT_COUNT = 37;
@@ -102,7 +103,12 @@ function extractPurpose(section, file) {
   for (const ref of refs) { const key = JSON.stringify(ref); if (!seen.has(key)) { seen.add(key); unique.push(ref); } }
   return [{ summary, summaryRef, bullets, notes, sourceRefs: unique }, issues];
 }
-function extractConclusions(section, file, number) {
+// §2/§3/§4 carry editorial decision records as blockquotes (`> **2026-11-14 用户裁决…**`).
+// They are narrative, not component anatomy: quoting them as table rows produced fragments like
+// "`> `（`border.glass-top`）。这是…" and buried the actual anatomy rows. They stay reachable
+// through 来源追溯, which already lists every line of the section.
+function extractConclusions(section, file, number, options) {
+  const skipBlockquotes = Boolean(options && options.skipBlockquotes);
   const range = subsectionRange(section.lines, number);
   if (!range) return null;
   const [start, finish] = range;
@@ -113,15 +119,20 @@ function extractConclusions(section, file, number) {
   for (const [absoluteIndex, line] of body) {
     const stripped = line.trim();
     if (stripped === '') continue;
+    if (skipBlockquotes && stripped.startsWith('>')) continue;
     let text;
     if (stripped.startsWith('|')) {
       const cells = stripped.split('|').map((c) => c.trim()).filter((c) => c !== '');
       if (cells.length === 0 || cells.every((c) => /^:?-{3,}:?$/.test(c))) continue;
+      // A section may hold more than one table (§4 often pairs a variant table with prose).
+      // Without this reset the second table's header row was consumed as data and every later
+      // row inherited the wrong column names.
       if (headerCells === null) { headerCells = cells; continue; }
       text = cells.map((cell, index) => headerCells[index] ? headerCells[index] + '=' + cell : cell).join('; ');
     } else if (stripped.startsWith('- ')) {
+      headerCells = null;
       text = stripped.replace(/^-\s*/, '');
-    } else text = stripped;
+    } else { headerCells = null; text = stripped; }
     items.push({ text, lineText: stripped, sourceRef: sourceRef(file, absoluteIndex + 1) });
   }
   if (items.length === 0) return null;
@@ -151,6 +162,18 @@ function loadSpecs(issues) {
         content: extractConclusions(section, file, 7),
         accessibility: extractConclusions(section, file, 10),
       };
+      // §2 anatomy / §3 size / §4 variants are the only place the specs state what a component
+      // is made of and how big it is. They were never extracted, which is why a card could talk
+      // about a component's purpose but never let a designer draw it (P0-1).
+      const visualOptions = { skipBlockquotes: true };
+      const visual = {
+        anatomy: extractConclusions(section, file, 2, visualOptions),
+        size: extractConclusions(section, file, 3, visualOptions),
+        variants: extractConclusions(section, file, 4, visualOptions),
+      };
+      for (const [key, block] of Object.entries(visual)) {
+        if (!block) issues.push(rel(file) + ': ' + componentId + ' 缺少视觉结论（§' + { anatomy: 2, size: 3, variants: 4 }[key] + '）');
+      }
       for (const [key, block] of Object.entries(conclusions)) {
         if (!block) issues.push(rel(file) + ': ' + componentId + ' 缺少' + key + '结论（§' + { states: 5, content: 7, accessibility: 10 }[key] + '）');
       }
@@ -159,7 +182,7 @@ function loadSpecs(issues) {
         const range = subsectionRange(section.lines, n);
         sectionLines[String(n)] = range ? [section.headerLine + range[0], section.headerLine + range[1]] : null;
       }
-      specs[componentId] = { component: componentId, specNumber: Number(section.id), specName: name, path: rel(file), headingLine: section.headerLine, purpose, conclusions, sectionLines };
+      specs[componentId] = { component: componentId, specNumber: Number(section.id), specName: name, path: rel(file), headingLine: section.headerLine, purpose, conclusions, visual, sectionLines };
     }
     const recipes = splitSections(lines, /^# (R[1-5]) · (.+)$/);
     if (recipes.length === 0) continue;
@@ -251,6 +274,38 @@ function loadOverlays(componentIds, issues) {
   }
   return overlays;
 }
+// Every token name a component's §2/§3/§4 mentions must resolve against the token truth source.
+// This is the guard that keeps a card from quoting a number nobody can look up: without it the
+// card would print a token name and leave the reader to guess the value — or worse, hardcode it.
+// Names that fail here are real design-source defects (e.g. `size.touch-target-min`, renamed to
+// the two-key form `touch-target-min-ios` / `-android` in M0-1), so they surface as build errors.
+const TOKEN_SPAN = /`([a-z][A-Za-z0-9-]*(?:\.[A-Za-z0-9-]+)+)`/g;
+function tokenRefsIn(blocks) {
+  const found = [];
+  for (const block of blocks) {
+    if (!block || !Array.isArray(block.items)) continue;
+    for (const item of block.items) {
+      TOKEN_SPAN.lastIndex = 0;
+      let match;
+      while ((match = TOKEN_SPAN.exec(item.text)) !== null) found.push({ name: match[1], block, item });
+    }
+  }
+  return found;
+}
+function resolveVisualTokens(document, component, issues) {
+  const blocks = [component.visual.anatomy, component.visual.size, component.visual.variants];
+  for (const ref of tokenRefsIn(blocks)) {
+    const resolved = tokenIndex.resolve(document, ref.name, 'light');
+    if (!resolved) {
+      issues.push(component.id + ' §' + ref.item.sourceRef.line + ': 令牌无法解析 `' + ref.name + '`（' + ref.item.sourceRef.path + ':' + ref.item.sourceRef.line + '）；视觉结论必须引用 tokens/wisdom.tokens.json 里存在的路径');
+      continue;
+    }
+    const entry = { name: ref.name, path: resolved.path, value: tokenIndex.formatValue(document, ref.name, 'light') };
+    if (!Array.isArray(ref.item.tokens)) ref.item.tokens = [];
+    if (!ref.item.tokens.some(token => token.name === entry.name)) ref.item.tokens.push(entry);
+  }
+}
+
 function build() {
   const issues = [];
   const specs = loadSpecs(issues);
@@ -261,18 +316,25 @@ function build() {
   const accessibility = loadRuleDocument('06-accessibility.md', issues, ['## 2. 四条底线', '## 3. 屏幕阅读器', '## 4. 动态字体', '## 5. 对比度']);
   const content = loadRuleDocument('07-content.md', issues, ['## 1. 三条原则', '## 2. 句式规则', '## 3. 时间与日期', '## 4. 长度上限', '## 5. 分场景写法']);
   if (issues.length) throw new ExtractError(issues);
+  const tokenDocument = tokenIndex.readTokens(path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json'));
   const components = Object.keys(specs).sort().map((componentId) => {
     const spec = specs[componentId];
     const contract = contracts[componentId];
     const overlay = overlays[componentId] || {};
+    const visual = {
+      anatomy: spec.visual.anatomy, size: spec.visual.size, variants: spec.visual.variants,
+    };
+    resolveVisualTokens(tokenDocument, { id: componentId, visual }, issues);
+    const visualRefs = Object.values(visual).flatMap(block => (block || {}).sourceRefs || []);
     const refs = [
       sourceRef(path.join(DESIGN_ROOT, spec.path), spec.headingLine),
       sourceRef(path.join(DESIGN_ROOT, contract.path), 1),
       ...spec.purpose.sourceRefs,
       ...['states', 'content', 'accessibility'].flatMap((key) => ((spec.conclusions[key] || {}).sourceRefs || [])),
+      ...visualRefs,
     ];
     return {
-      id: componentId, specNumber: spec.specNumber, specName: spec.specName, purpose: spec.purpose, conclusions: spec.conclusions,
+      id: componentId, specNumber: spec.specNumber, specName: spec.specName, purpose: spec.purpose, conclusions: spec.conclusions, visual,
       contract: { path: contract.path, sha256: contract.sha256, params: contract.params, slots: contract.slots, default: contract.default, enums: contract.enums },
       overlay: {
         path: Object.prototype.hasOwnProperty.call(overlays, componentId) ? rel(path.join(OVERLAY_ROOT, componentId + '.json')) : null,
@@ -281,6 +343,9 @@ function build() {
       sourceRefs: refs,
     };
   });
+  // The map above adds token-resolution issues per component; the earlier throw ran before it,
+  // so this second check is what actually fails the build when a §2/§3/§4 token name is unknown.
+  if (issues.length) throw new ExtractError(issues);
   return {
     schemaVersion: '1.0', extractorVersion: VERSION,
     policy: {

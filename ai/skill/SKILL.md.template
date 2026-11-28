@@ -21,7 +21,7 @@ Do not use for: generating SwiftUI / Compose code directly, claiming a platform 
 
 | Mode | Flow | Loaded content |
 | --- | --- | --- |
-| Design | request to Page Brief to Page Spec to structural validation to design review | SKILL.md + page-spec + catalog short lines; never platform API |
+| Design | request to Page Brief to Page Spec to structural validation to preview (optional) to design review | SKILL.md + page-spec + catalog short lines + tokens; never platform API |
 | Single Platform | request to page pattern to target Provider to exact API to native template to business differences to platform verification | switch to the matching platform Provider package; Core provides semantics only |
 | Cross Platform | one Page Spec to iOS Provider / Android Provider mapped separately, each verified separately | Core semantics + both Providers; never mechanically translate one platform into another |
 
@@ -29,11 +29,13 @@ The Core package has no Provider, API card, or native template. Any code-generat
 
 ## 3. Entry points and forbidden reads
 
-The only resident entry point is this file. Load on demand: page-spec/schema.json, page-spec/examples/, catalog/catalog.md, catalog/components/WD*.md, runtime/validate-spec.js, runtime/get-component.js.
+The only resident entry point is this file. `package:` paths resolve inside the package; `source-repo:` paths exist only in the wisdomdesign checkout.
 
-Forbidden as normative sources: design/gallery/**, docs/02-components.md, historical review / schedule / audit narratives, platform internal symbols, uncompiled signature guesses.
+Load on demand (`package:`): page-spec/{schema,extensions}.json, page-spec/examples/, catalog/{catalog.md,contracts-digest.json,components/WD*.md}, tokens/wisdom.tokens.json, runtime/{validate-spec,get-component,resolve-token,render-spec}.js.
 
-Source priority: platform API truth comes from platform Provider packages; params / slots / defaults / enums come from contracts/WD*.yaml; purpose / counterexamples / state / content / accessibility conclusions come from docs/specs/01-basic.md, 02-advanced.md, 03-patterns.md; visual numbers come from tokens/wisdom.tokens.json; layout / accessibility / content rules come from docs/09-layout.md, 06-accessibility.md, 07-content.md. The shipped catalog manifest records the same policy under catalog/manifest.json (policy) and per-card source anchors; when sources disagree, the order above decides and the conflict is reported instead of silently merged.
+Forbidden as normative sources: design/gallery/**, docs/02-components.md, review or audit narratives, platform internal symbols, uncompiled signature guesses.
+
+Source priority, conflict order and the `source-repo:` list live in `package: REFERENCES.md` — load it before citing a spec line. Never retype a visual number: resolve it with runtime/resolve-token.js.
 
 ## 4. Page Brief and Page Spec
 
@@ -41,11 +43,11 @@ Write a Page Brief first: user intent, navigation skeleton, content pattern, pri
 
 ## 5. On-demand loading rules
 
-- Component selection: read catalog/catalog.md short lines first; read a single catalog/components/<ID>.md only after candidates are clear.
-- Keyword queries use runtime/get-component.js, returning <= 8 candidates by default, hard cap 20.
-- Exact ID queries return one semantic-card summary, never the whole library.
-- Validation uses runtime/validate-spec.js; fix by code/jsonPath/message/suggestion, never bypass rules.
-- Platform APIs are read precisely per component only inside the platform Provider package; Core carries no resident API data.
+- Selection: read catalog/catalog.md first; open one catalog/components/<ID>.md only after candidates narrow.
+- Queries use runtime/get-component.js (<= 8 by default, cap 20); exact IDs return one card, never the library.
+- Validation uses runtime/validate-spec.js; fix by code/jsonPath/message/suggestion, never bypass rules. Warnings are advisory, errors are blocking.
+- Visual numbers: runtime/resolve-token.js --path <token>. Never retype a value from a card or the gallery.
+- Platform APIs only inside the platform Provider package; Core carries no resident API data.
 
 ## 6. Scaffold and business modification boundary
 
@@ -53,7 +55,7 @@ Platform packages ship a scaffolder: `platforms/<id>/tools/scaffold.js --list`, 
 
 ## 7. Verification loop
 
-Structure: Page Spec validation + component existence + catalog anti-drift. Native: compile / snapshot / UI / device run through platform repo commands, results in reports. Design: information architecture, primary-action hierarchy, state completeness confirmed by an independent design review. Passing one layer never substitutes the next; unexecuted layers are marked not-verified / not-evaluated.
+Structure: Page Spec validation + component existence + catalog anti-drift. Preview: runtime/render-spec.js shows layout from spec + tokens — layout evidence only, never visual sign-off. Native: compile / snapshot / UI / device run through platform repo commands, results in reports. Design: information architecture, primary-action hierarchy, state completeness confirmed by an independent design review. Passing one layer never substitutes the next; unexecuted layers are marked not-verified / not-evaluated. When structure passes: preview (runtime/render-spec.js) for layout review, resolve-token for exact values, or the platform Provider for code.
 
 ## 8. Stop conditions
 

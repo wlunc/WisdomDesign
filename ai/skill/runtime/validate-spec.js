@@ -5,6 +5,16 @@ const path = require('path');
 
 const SKILL_ROOT = path.resolve(__dirname, '..');
 const SCHEMA_PATH = path.join(SKILL_ROOT, 'page-spec', 'schema.json');
+// Contract defaults/enums are derived from contracts/WD*.yaml into the shipped digest. Without it
+// the validator could only compare `variant` against a list it did not have, which is exactly how
+// the emphasis rule degraded into "count the buttons in an actions region" (P1-1/P1-2).
+// Same two-layout resolution as get-component.js: packaged layout keeps the catalog beside the
+// runtime, the source-repo layout keeps it under core/catalog.
+function digestPath() {
+  const packaged = path.join(SKILL_ROOT, 'catalog', 'contracts-digest.json');
+  if (fs.existsSync(packaged)) return packaged;
+  return path.join(SKILL_ROOT, 'core', 'catalog', 'contracts-digest.json');
+}
 const TOOL_NAME = 'validate_spec';
 const STRUCTURE_NOTICE = 'Structural validation does not prove native compilation, snapshot/UI, visual design review, or host loading.';
 
@@ -124,7 +134,7 @@ function domainError(error) {
   const keyword = error.keyword;
   const jsonPath = error.path || '';
   const message = error.message;
-  if (jsonPath === '/schemaVersion') return { code: 'INVALID_SCHEMA_VERSION', message: 'schemaVersion must be 1.0.', suggestion: 'Set schemaVersion to the frozen 1.0 value.' };
+  if (jsonPath === '/schemaVersion') return { code: 'INVALID_SCHEMA_VERSION', message: 'schemaVersion must be 1.1.', suggestion: 'Set schemaVersion to "1.1" (the variant/action/extension revision).' };
   if (jsonPath === '/page/primaryAction' && keyword === 'required') return { code: 'NO_PRIMARY_ACTION', message: 'page.primaryAction is required.', suggestion: 'Add a stable business action ID such as createTask.' };
   if (keyword === 'additionalProperties') return { code: 'UNKNOWN_FIELD', message, suggestion: 'Remove the unknown field; Page Spec has no free-form extension fields.' };
   if (jsonPath === '/page/navigation') return { code: 'INVALID_NAVIGATION', message, suggestion: 'navigation must be tabRoot, stackRoot, detail, or modal.' };
@@ -137,19 +147,128 @@ function domainError(error) {
   if (keyword === 'enum') return { code: 'INVALID_VALUE', message, suggestion: 'Use a value from the schema enum.' };
   return { code: 'INVALID_FIELD', message, suggestion: 'Correct this field according to page-spec/schema.json.' };
 }
+function loadDigest() {
+  try { return JSON.parse(fs.readFileSync(digestPath(), 'utf8')); }
+  catch (error) { return null; }
+}
+
+function loadExtensions() {
+  try { return JSON.parse(fs.readFileSync(path.join(SKILL_ROOT, 'page-spec', 'extensions.json'), 'utf8')); }
+  catch (error) { return { extensions: [] }; }
+}
+
+// Emphasis is DERIVED, never declared. A region is primary when it carries the page's own
+// primaryAction, when its component is the floating primary-action control, or when its resolved
+// variant (explicit, else the contract default) is `filled`. Deriving it is what stops a caller
+// from switching the rule off by editing `kind` (M-2) and what lets a spec legitimately place two
+// secondary buttons side by side (P1-1).
+function resolveVariant(region, contract) {
+  if (typeof region.variant === 'string' && region.variant !== '') return region.variant;
+  const defaults = contract && contract.defaults ? contract.defaults : {};
+  const direct = defaults.variant !== undefined ? defaults.variant : defaults.style;
+  if (typeof direct !== 'string') return null;
+  return direct.replace(/^\./, '');
+}
+
+function emphasisOf(region, page, digest) {
+  if (!region || typeof region !== 'object') return 'secondary';
+  if (page && typeof page.primaryAction === 'string' && region.action === page.primaryAction) return 'primary';
+  if (region.component === 'WDFAB') return 'primary';
+  const contract = digest && digest.components ? digest.components[region.component] : null;
+  return resolveVariant(region, contract) === 'filled' ? 'primary' : 'secondary';
+}
+
 function semanticErrors(spec, schemaErrors) {
   const errors = [];
+  const warnings = [];
   const page = spec && typeof spec.page === 'object' ? spec.page : null;
   const states = Array.isArray(spec && spec.states) ? spec.states : [];
   const regions = Array.isArray(spec && spec.regions) ? spec.regions : [];
+  const digest = loadDigest();
+  const extensions = loadExtensions();
+
   if (page && page.contentPattern === 'collection' && !states.some(state => state && state.kind === 'empty')) {
     errors.push({ code: 'COLLECTION_MISSING_EMPTY', jsonPath: '/states', message: 'collection pages must include an empty state.', suggestion: 'Add a state with kind empty and describe the empty-state action.' });
     for (let i = schemaErrors.length - 1; i >= 0; i -= 1) if (schemaErrors[i].keyword === 'contains' && schemaErrors[i].path === '/states') schemaErrors.splice(i, 1);
   }
-  const actionComponents = new Set(['WDButton', 'WDIconButton', 'WDFAB']);
-  const primaryRegions = regions.filter(region => region && region.kind === 'actions' && actionComponents.has(region.component));
-  if (primaryRegions.length > 1) errors.push({ code: 'MULTIPLE_PRIMARY_ACTIONS', jsonPath: '/regions', message: 'More than one primary action region detected; at most one is allowed.', suggestion: 'Keep one action component and demote or remove the rest.' });
-  return errors;
+
+  // One primary action at most, judged on derived emphasis rather than on how many buttons happen
+  // to sit in an `actions` region.
+  const primaries = regions.filter(region => emphasisOf(region, page, digest) === 'primary');
+  if (primaries.length > 1) {
+    errors.push({
+      code: 'MULTIPLE_PRIMARY_ACTIONS',
+      jsonPath: '/regions',
+      message: 'More than one region resolves to primary emphasis (' + primaries.map(region => region.id).join(', ') + '); at most one is allowed.',
+      suggestion: 'Declare variant (e.g. "tonal") on the secondary buttons, or move its action off page.primaryAction. Per spec.md §1, a screen has one filled action and the rest are tonal/glass/plain.',
+    });
+  }
+
+  // A declared primary action must be performed by some region. It is a hard error when the page
+  // does have an actions region that carries a different action — that is a contradiction, not an
+  // implicit gesture. On pages whose primary action is whole-row (tapping a card), no actions
+  // region exists and the mapping is advisory, so it stays a warning: the intent is still recorded
+  // and a reviewer can see it, without failing a spec that is genuinely fine.
+  if (page && typeof page.primaryAction === 'string') {
+    const carries = regions.some(region => region && region.action === page.primaryAction);
+    const actionRegions = regions.filter(region => region && region.kind === 'actions');
+    if (!carries && actionRegions.length > 0) {
+      errors.push({ code: 'PRIMARY_ACTION_NOT_CONNECTED', jsonPath: '/page/primaryAction', message: 'page.primaryAction is ' + page.primaryAction + ' but the actions region(s) ' + actionRegions.map(region => region.id).join(', ') + ' declare a different action.', suggestion: 'Set action: "' + page.primaryAction + '" on the region that performs it, or change page.primaryAction.' });
+    } else if (!carries) {
+      warnings.push({ code: 'PRIMARY_ACTION_IMPLICIT', jsonPath: '/page/primaryAction', message: 'page.primaryAction is not declared by any regions[].action; the primary action is inferred from component emphasis only.', suggestion: 'Set regions[].action on the region that performs it so the mapping is checkable.' });
+    }
+  }
+
+  // Variant must be something the component contract actually declares.
+  if (digest && digest.components) {
+    regions.forEach((region, index) => {
+      if (!region || region.variant === undefined) return;
+      const contract = digest.components[region.component];
+      if (!contract) return;
+      const values = new Set();
+      for (const list of Object.values(contract.enums || {})) for (const value of list) values.add(value);
+      const defaultVariant = resolveVariant({}, contract);
+      if (defaultVariant) values.add(defaultVariant);
+      if (values.size > 0 && !values.has(region.variant)) {
+        errors.push({ code: 'UNKNOWN_VARIANT', jsonPath: '/regions/' + index + '/variant', message: region.component + ' has no variant ' + region.variant + '.', suggestion: 'Use one of: ' + [...values].sort().join(', ') + '.' });
+      }
+    });
+  }
+
+  // A top-level page has no back affordance, so a navigation bar there contradicts itself.
+  if (page && page.navigation === 'tabRoot') {
+    const navBar = regions.find(region => region && region.component === 'WDNavigationBar');
+    if (navBar) {
+      errors.push({ code: 'NAVIGATION_CONFLICT', jsonPath: '/regions', message: 'tabRoot page ' + page.id + ' uses WDNavigationBar, which is for second-level and deeper pages (spec §1: 一级页面没有返回).', suggestion: 'Drop the navigation bar, or use WDToolbar if the page needs page-level actions.' });
+    }
+  }
+
+  // Extensions have a registered home; proposed ones are accepted with a visible warning.
+  const registered = new Map((extensions.extensions || []).map(entry => [entry.id, entry]));
+  regions.forEach((region, index) => {
+    if (!region || !region.extension) return;
+    const entry = registered.get(region.extension.id);
+    if (!entry) {
+      errors.push({ code: 'UNREGISTERED_EXTENSION', jsonPath: '/regions/' + index + '/extension/id', message: 'extension ' + region.extension.id + ' is not registered in page-spec/extensions.json.', suggestion: 'Register the extension (id, basedOn, status, summary) or use a canonical component.' });
+      return;
+    }
+    const status = region.extension.status || entry.status;
+    if (status !== 'accepted') {
+      warnings.push({ code: 'PROPOSED_EXTENSION', jsonPath: '/regions/' + index + '/extension', message: 'extension ' + entry.id + ' is ' + status + '; it is accepted as a registered proposal, not as a shipped component.', suggestion: 'Track it in page-spec/extensions.json until the design system ships or rejects it.' });
+    }
+  });
+
+  // State completeness: empty is mandatory for collections (hard rule above); the remaining
+  // canonical states are advisory because not every page owns every one.
+  const kinds = new Set(states.map(state => state && state.kind));
+  for (const required of ['content']) {
+    if (!kinds.has(required)) warnings.push({ code: 'STATE_INCOMPLETE', jsonPath: '/states', message: 'no "' + required + '" state declared; design review cannot confirm the page has renderable content.', suggestion: 'Declare the states the page really has, including content.' });
+  }
+  for (const optional of ['loading', 'error']) {
+    if (!kinds.has(optional)) warnings.push({ code: 'STATE_INCOMPLETE', jsonPath: '/states', message: 'no "' + optional + '" state declared.', suggestion: 'Add it if the page actually fetches data; otherwise say so in acceptance.' });
+  }
+
+  return { errors, warnings };
 }
 function validate(spec, schema) {
   const schemaErrors = [];
@@ -159,7 +278,7 @@ function validate(spec, schema) {
   // a semantic-only failure is never reported as a structural failure.
   const semantic = semanticErrors(spec, schemaErrors);
   const structureValid = schemaErrors.length === 0;
-  const errors = [...semantic, ...schemaErrors.map(error => {
+  const errors = [...semantic.errors, ...schemaErrors.map(error => {
     const mapped = domainError(error);
     return { code: mapped.code, jsonPath: error.path || '', message: mapped.message, suggestion: mapped.suggestion };
   })];
@@ -169,17 +288,24 @@ function validate(spec, schema) {
     const key = [error.code, error.jsonPath, error.message].join('|');
     if (!seen.has(key)) { seen.add(key); unique.push(error); }
   }
-  return { errors: unique, structureValid, semanticValid: semantic.length === 0 };
+  const uniqueWarnings = [];
+  const seenWarnings = new Set();
+  for (const warning of semantic.warnings || []) {
+    const key = [warning.code, warning.jsonPath, warning.message].join('|');
+    if (!seenWarnings.has(key)) { seenWarnings.add(key); uniqueWarnings.push(warning); }
+  }
+  return { errors: unique, warnings: uniqueWarnings, structureValid, semanticValid: semantic.errors.length === 0 };
 }
 function buildReport(file, outcome, readError) {
   const errors = outcome ? outcome.errors : [];
+  const warnings = outcome ? outcome.warnings || [] : [];
   const structureValid = Boolean(outcome && outcome.structureValid && !readError);
   const semanticValid = Boolean(outcome && outcome.semanticValid && !readError);
   const valid = !readError && errors.length === 0;
   const gate = (ok) => readError ? 'not-evaluated' : (ok ? 'passed' : 'failed');
   return {
     schemaVersion: '1.0', tool: TOOL_NAME, specPath: file, valid, structureValid, semanticValid,
-    structure: { valid: structureValid }, semantics: { valid: semanticValid }, errors, warnings: [],
+    structure: { valid: structureValid }, semantics: { valid: semanticValid }, errors, warnings,
     gates: {
       structure: gate(structureValid),
       semantics: gate(semanticValid),
@@ -208,6 +334,7 @@ function main() {
     if (result.readError) console.error('ERROR ' + result.readError);
     console.log((result.valid ? 'VALID ' : 'INVALID ') + result.specPath);
     for (const error of result.errors) console.log('  ' + error.code + ' ' + error.jsonPath + ': ' + error.message);
+    for (const warning of result.warnings) console.log('  WARN ' + warning.code + ' ' + warning.jsonPath + ': ' + warning.message);
     console.log('NOTICE ' + result.notice);
   }
   if (readError) process.exit(2);

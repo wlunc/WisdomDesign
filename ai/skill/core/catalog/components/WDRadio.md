@@ -7,7 +7,7 @@
 
 Component: `WDRadio`
 Spec: `docs/specs/01-basic.md` (number 7)
-Contract: `contracts/WDRadio.yaml` (sha256 `d3961d208e652e194ccfa11b317f1647a4ddb2c8540a514386a9b1edd5e10ed0`)
+Contract: `contracts-digest.json#WDRadio` (source `contracts/WDRadio.yaml`, sha256 `d3961d208e652e194ccfa11b317f1647a4ddb2c8540a514386a9b1edd5e10ed0`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,26 @@ Contract: `contracts/WDRadio.yaml` (sha256 `d3961d208e652e194ccfa11b317f1647a4dd
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:656,658,660,661,683,687,688,689,690,698,700,701,702,716,718,719,720,721,722`
+- `docs/specs/01-basic.md:656,658,660,661,663,665,667,671,672,674,676,680,681,683,687,688,689,690,698,700,701,702,716,718,719,720,721,722`
+
+## 设计者摘要
+
+圆形底 + 内圆点 + 标签。内圆点是**实心圆**而不是勾，用于和 Checkbox 在形状上区分。
+
+## 解剖（来自正式规格 §2）
+
+- 圆形底 + 内圆点 + 标签。内圆点是**实心圆**而不是勾，用于和 Checkbox 在形状上区分。（`docs/specs/01-basic.md:665`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 外圆=26; 内圆点=12; 标签=`type.subheadline` 15（`type.subheadline` = 15/20 · 400）（`docs/specs/01-basic.md:671`）
+- 档=紧凑; 外圆=22; 内圆点=10; 标签=`type.footnote` 13（`type.footnote` = 13/18 · 400）（`docs/specs/01-basic.md:672`）
+- 外圆与标签间距 `space.3`（8）；同组内两项间距 `space.4`（12）；热区 ≥ 44×44。（`docs/specs/01-basic.md:674`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=兜底（`docs/specs/01-basic.md:680`）
+- 变体=带描述; 说明=选项下方一行 `type.footnote` 说明差异，仅在选项含义不易区分时使用（`type.footnote` = 13/18 · 400）（`docs/specs/01-basic.md:681`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +68,9 @@ Contract: `contracts/WDRadio.yaml` (sha256 `d3961d208e652e194ccfa11b317f1647a4dd
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 单选框, 单选, 互斥选项, radio
 - combinesWith: none
-- pageRegions: none
+- pageRegions: form
 
 ## 平台说明
 

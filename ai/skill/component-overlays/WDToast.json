@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDToast",
+  "searchAliases": [
+    "轻提示",
+    "提示条",
+    "短暂提示",
+    "toast"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "overlay"
+  ]
+}

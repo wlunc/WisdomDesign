@@ -64,7 +64,11 @@ test('manifest.json is schema-valid with real file counts and content hash', () 
   assert.match(manifest.contents.contentHash, /^[0-9a-f]{64}$/);
   assert.deepStrictEqual(manifest.contents.platforms, ['core']);
   assert.strictEqual(manifest.package, 'wisdom-page-core');
-  assert.strictEqual(manifest.status.releaseKind, 'workspace-snapshot');
+  // releaseKind is derived from the working tree, not asserted to a constant: a clean checkout
+  // must produce 'release' and a dirty one 'workspace-snapshot'. Pinning it to the snapshot value
+  // made the suite fail purely because the repository happened to be clean (M-6).
+  const dirty = manifest.sources.repositories.wisdomdesign.dirty;
+  assert.strictEqual(manifest.status.releaseKind, dirty ? 'workspace-snapshot' : 'release', 'releaseKind must follow the recorded dirty state');
   const filesIndex = JSON.parse(fs.readFileSync(path.join(DEFAULT_PKG, 'files.json'), 'utf8'));
   assert.strictEqual(filesIndex.fileCount + 2, actual);
   for (const excluded of ['manifest.json', 'files.json']) assert.ok(filesIndex.excludes.includes(excluded));
@@ -103,6 +107,10 @@ test('generated package has no absolute paths, machine info, timestamps, or plat
     assert.ok(!/Users\//.test(content), 'machine path in ' + relative);
     assert.ok(!/var\/folders/.test(content), 'temp path in ' + relative);
     assert.ok(!/\r\n/.test(content), 'CRLF in ' + relative);
+    // tokens/wisdom.tokens.json is a verbatim design truth source: its $description fields are
+    // prose that legitimately names platform concepts (e.g. "由 Modifier.wdTouchTarget() 实现").
+    // It carries no API signature, so the leak scan applies to authored package content only.
+    if (relative === path.join('tokens', 'wisdom.tokens.json')) continue;
     assert.ok(!/api\/cards|@escaping|Binding<|Modifier\./.test(content), 'platform API leak in ' + relative);
   }
 });
@@ -116,6 +124,33 @@ test('Core package has no provider, api-card, or native template content', () =>
   assert.deepStrictEqual(manifest.coverage.components, { specOnly: 37, experimental: 0, verified: 0, unsupported: 0 });
 });
 
+// The shipped token copy is the single source of visual numbers; if it ever diverges from the
+// hash the manifest records, every card quote and the renderer would silently be wrong.
+test('shipped design tokens are byte-identical to the hashed truth source', () => {
+  const shipped = path.join(DEFAULT_PKG, 'tokens', 'wisdom.tokens.json');
+  assert.ok(fs.existsSync(shipped), 'tokens/wisdom.tokens.json must ship in the Core package');
+  const manifest = readManifest();
+  const truth = path.join(DESIGN_ROOT, 'tokens', 'wisdom.tokens.json');
+  const digest = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  assert.strictEqual(digest(shipped), digest(truth), 'shipped tokens must be byte-identical to tokens/wisdom.tokens.json');
+  assert.strictEqual(digest(shipped), manifest.sources.design.tokenHash, 'shipped tokens must match manifest.sources.design.tokenHash');
+  const filesIndex = JSON.parse(fs.readFileSync(path.join(DEFAULT_PKG, 'files.json'), 'utf8'));
+  assert.strictEqual(filesIndex.sha256['tokens/wisdom.tokens.json'], digest(shipped), 'files.json must hash the shipped tokens');
+});
+// P1: the contract digest is what lets the validator judge `variant` inside the package, so it must
+// ship, cover all 37 components, and stay free of the platform signatures contracts/*.yaml carries.
+test('contract digest ships, covers every component and leaks no platform API', () => {
+  const digestPath = path.join(DEFAULT_PKG, 'catalog', 'contracts-digest.json');
+  assert.ok(fs.existsSync(digestPath), 'catalog/contracts-digest.json must ship');
+  const digest = JSON.parse(fs.readFileSync(digestPath, 'utf8'));
+  const ids = Object.keys(digest.components);
+  assert.strictEqual(ids.length, 37, 'digest must cover all 37 components');
+  assert.match(readManifest().sources.design.contractDigest, /contracts-digest\.json$/);
+  const text = fs.readFileSync(digestPath, 'utf8');
+  assert.doesNotMatch(text, /@escaping|Binding<|Modifier\.|\(\) -> Void/, 'digest must stay platform-free');
+  assert.ok(digest.components.WDButton.enums.WDButtonVariant.includes('filled'), 'button variants must be present');
+  assert.strictEqual(digest.components.WDButton.defaults.variant, '.filled');
+});
 test('component overlay retrieval metadata ships inside the package', () => {
   const files = Object.keys(treeDigest(DEFAULT_PKG));
   assert.ok(files.includes('component-overlays/WDSearchField.json'), 'overlay must ship so package keyword search stays alias-aware');

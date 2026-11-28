@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDNavigationBar",
+  "searchAliases": [
+    "导航栏",
+    "顶部栏",
+    "标题栏",
+    "返回栏",
+    "navigation bar"
+  ],
+  "combinesWith": [
+    "WDIconButton"
+  ],
+  "pageRegions": [
+    "navigation"
+  ]
+}

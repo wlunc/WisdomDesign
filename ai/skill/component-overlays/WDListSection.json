@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDListSection",
+  "searchAliases": [
+    "列表分组",
+    "列表区",
+    "分组列表",
+    "list section"
+  ],
+  "combinesWith": [
+    "WDListRow"
+  ],
+  "pageRegions": [
+    "collection"
+  ]
+}

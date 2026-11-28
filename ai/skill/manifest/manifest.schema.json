@@ -251,6 +251,16 @@
             "specTreeHash": {
               "type": "string",
               "pattern": "^[0-9a-f]{64}$"
+            },
+            "tokenShipped": {
+              "type": "boolean",
+              "description": "tokens/wisdom.tokens.json ships verbatim in the package, so tokenHash is a hash of a file the reader can open."
+            },
+            "contractDigest": {
+              "type": "string",
+              "description": "Package-relative path of the platform-free contract digest derived from contracts/WD*.yaml.",
+              "minLength": 1,
+              "maxLength": 120
             }
           }
         }

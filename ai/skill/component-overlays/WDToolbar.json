@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDToolbar",
+  "searchAliases": [
+    "工具栏",
+    "操作栏",
+    "底部操作栏",
+    "toolbar"
+  ],
+  "combinesWith": [
+    "WDIconButton"
+  ],
+  "pageRegions": [
+    "toolbar"
+  ]
+}

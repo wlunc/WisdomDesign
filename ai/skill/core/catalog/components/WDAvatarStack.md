@@ -7,7 +7,7 @@
 
 Component: `WDAvatarStack`
 Spec: `docs/specs/01-basic.md` (number 13)
-Contract: `contracts/WDAvatarStack.yaml` (sha256 `b39f848469f2f4f0bcd9731e977908ee2cbe77f515191e6ea435063dc5c403fc`)
+Contract: `contracts-digest.json#WDAvatarStack` (source `contracts/WDAvatarStack.yaml`, sha256 `b39f848469f2f4f0bcd9731e977908ee2cbe77f515191e6ea435063dc5c403fc`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,27 @@ Contract: `contracts/WDAvatarStack.yaml` (sha256 `b39f848469f2f4f0bcd9731e977908
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1222,1224,1226,1227,1249,1251,1259,1261,1262,1263,1277,1279,1280,1281`
+- `docs/specs/01-basic.md:1222,1224,1226,1227,1229,1231,1233,1237,1238,1239,1240,1242,1246,1247,1249,1251,1259,1261,1262,1263,1277,1279,1280,1281`
+
+## 设计者摘要
+
+头像档位 `sm` 28 或 `md` 32；重叠量 直径的 30%（28 → 8，32 → 9）；描边 2pt，颜色取所在容器底色（卡片或画布）；最大显示数 4。
+
+## 解剖（来自正式规格 §2）
+
+- 最多 4 个头像 + 溢出计数。溢出项显示 `+n`，底色用 `surface.glass-strong`。（`surface.glass-strong` = 浅 #FFFFFFDB / 深 #0C202CC7）（`docs/specs/01-basic.md:1231`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=头像档位; 值=`sm` 28 或 `md` 32（`docs/specs/01-basic.md:1237`）
+- 项=重叠量; 值=直径的 30%（28 → 8，32 → 9）（`docs/specs/01-basic.md:1238`）
+- 项=描边; 值=2pt，颜色取所在容器底色（卡片或画布）（`docs/specs/01-basic.md:1239`）
+- 项=最大显示数; 值=4（`docs/specs/01-basic.md:1240`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=最多 4 个 + 溢出计数（`docs/specs/01-basic.md:1246`）
+- 变体=无溢出; 说明=总数 ≤ 4 时不显示 `+n`（`docs/specs/01-basic.md:1247`）
 
 ## 状态（来自正式规格 §5）
 
@@ -44,9 +64,9 @@ Contract: `contracts/WDAvatarStack.yaml` (sha256 `b39f848469f2f4f0bcd9731e977908
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 头像组, 头像叠加, 参与者头像, avatar stack
+- combinesWith: WDAvatar
+- pageRegions: card-header, collection-item
 
 ## 平台说明
 

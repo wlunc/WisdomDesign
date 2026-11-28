@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDBadge",
+  "searchAliases": [
+    "徽标",
+    "角标",
+    "计数",
+    "未读数",
+    "badge"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "toolbar",
+    "collection-item",
+    "tab"
+  ]
+}

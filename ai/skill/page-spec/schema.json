@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wisdomdesign.local/ai-skill/page-spec/1.0/schema.json",
-  "title": "WisdomDesign Page Spec v1",
+  "$id": "https://wisdomdesign.local/ai-skill/page-spec/1.1/schema.json",
+  "title": "WisdomDesign Page Spec v1.1",
   "description": "Platform-neutral page exchange contract. It excludes Swift/Kotlin/platform API types and is not a runtime UI VM.",
   "type": "object",
   "additionalProperties": false,
@@ -19,11 +19,17 @@
     "COLLECTION_MISSING_EMPTY": "collection pages must include an empty state.",
     "UNKNOWN_COMPONENT": "regions[].component enum is the 37 canonical IDs from contracts.",
     "UNKNOWN_FIELD": "additionalProperties is false at every object level.",
-    "INVALID_SCHEMA_VERSION": "schemaVersion const is 1.0."
+    "INVALID_SCHEMA_VERSION": "schemaVersion const is 1.0.",
+    "MULTIPLE_PRIMARY_ACTIONS": "At most one region may resolve to primary emphasis. Emphasis is derived: a region is primary when its action equals page.primaryAction, or when its component is WDFAB, or when its resolved variant (regions[].variant, falling back to the contract default) is `filled`. Declaring the variant is therefore enough to mark a secondary action without touching kind.",
+    "UNKNOWN_VARIANT": "regions[].variant must be a value the component contract declares in contracts-digest.json enums, or match its default. An unknown variant is a typo, not a design decision.",
+    "PRIMARY_ACTION_NOT_CONNECTED": "page.primaryAction must be performed by some region (regions[].action). A declared primary action that no region carries is a dangling intent.",
+    "NAVIGATION_CONFLICT": "A tabRoot page must not use WDNavigationBar: a top-level page has no back affordance, and the component spec says so explicitly.",
+    "UNREGISTERED_EXTENSION": "regions[].extension.id must appear in page-spec/extensions.json. Proposed extensions pass with a warning so a product-specific composition has a legal home instead of an invented component ID.",
+    "STATE_INCOMPLETE": "collection pages need an empty state (hard error); missing loading/content/error states are reported as warnings because not every page owns all of them."
   },
   "properties": {
     "schemaVersion": {
-      "const": "1.0",
+      "const": "1.1",
       "description": "Page Spec schema version, independent from Skill/Token/component-library versions."
     },
     "profile": {
@@ -154,6 +160,7 @@
           },
           "kind": {
             "type": "string",
+            "description": "Region PURPOSE only. Emphasis is derived from variant/defaults, never declared here: when kind also gated emphasis, changing it to `custom` silently switched the one-primary-action rule off (M-2). `custom` is retired in 1.1 for the same reason.",
             "enum": [
               "collection",
               "form",
@@ -161,9 +168,34 @@
               "overview",
               "actions",
               "feedback",
-              "navigation",
-              "custom"
+              "navigation"
             ]
+          },
+          "variant": {
+            "type": "string",
+            "description": "Component variant for this region (e.g. filled / tonal / plain for WDButton). Validated against contracts-digest.json enums; emphasis is resolved from it plus the contract default, so a spec can state two secondary buttons without being read as two primaries.",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "action": {
+            "type": "string",
+            "description": "Stable business action ID this region performs. A region whose action matches page.primaryAction IS the primary action, so `primaryAction` stops being a dangling string.",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          },
+          "extension": {
+            "type": "object",
+            "description": "Controlled extension channel for a product-specific composition based on a canonical component. Unregistered ids fail; registered ones pass with a warning. Replaces the old choice between inventing an ID and lying about `kind`.",
+            "additionalProperties": false,
+            "required": ["id", "basedOn"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1, "maxLength": 60, "pattern": "^[A-Z][A-Za-z0-9]*$" },
+              "basedOn": { "type": "string", "minLength": 1, "maxLength": 60 },
+              "status": { "type": "string", "enum": ["proposed", "accepted", "deprecated"] },
+              "note": { "type": "string", "maxLength": 300 }
+            }
           },
           "component": {
             "type": "string",
@@ -210,9 +242,14 @@
           },
           "itemPattern": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 80,
-            "pattern": "^[A-Z][a-zA-Z0-9]*$"
+            "description": "Canonical row pattern from docs/specs/03-patterns.md (R1-R5) or a registered extension id. Free text was accepted by a pattern regex that only proved the first letter was uppercase, so `TotallyMadeUp` validated.",
+            "enum": [
+              "TaskRow",
+              "SharedBadge",
+              "StreakRing",
+              "ReminderChip",
+              "FamilySpaceCard"
+            ]
           },
           "intent": {
             "type": "string",

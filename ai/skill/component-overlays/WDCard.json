@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDCard",
+  "searchAliases": [
+    "卡片",
+    "内容卡",
+    "分组容器",
+    "card"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "collection",
+    "overview"
+  ]
+}

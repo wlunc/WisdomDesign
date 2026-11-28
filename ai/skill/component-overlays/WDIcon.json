@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDIcon",
+  "searchAliases": [
+    "图标",
+    "图形符号",
+    "icon"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "toolbar",
+    "collection-item"
+  ]
+}

@@ -7,7 +7,7 @@
 
 Component: `WDProgressBar`
 Spec: `docs/specs/01-basic.md` (number 15)
-Contract: `contracts/WDProgressBar.yaml` (sha256 `bfd7dbda63e9896e68a5124be9347d85b2f444fccf3f7ce3af87ae4ac5b97ae8`)
+Contract: `contracts-digest.json#WDProgressBar` (source `contracts/WDProgressBar.yaml`, sha256 `bfd7dbda63e9896e68a5124be9347d85b2f444fccf3f7ce3af87ae4ac5b97ae8`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,29 @@ Contract: `contracts/WDProgressBar.yaml` (sha256 `bfd7dbda63e9896e68a5124be9347d
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1371,1373,1375,1376,1400,1404,1405,1406,1407,1416,1418,1419,1420,1436,1438,1439,1440,1441,1442`
+- `docs/specs/01-basic.md:1371,1373,1375,1376,1378,1380,1382,1386,1387,1388,1389,1391,1395,1396,1397,1398,1400,1404,1405,1406,1407,1416,1418,1419,1420,1436,1438,1439,1440,1441,1442`
+
+## 设计者摘要
+
+高度 6；最小宽度 100；分段模式的段间距 2；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 轨道 + 填充两段。轨道用浅色，填充用中蓝，两者颜色差是唯一的进度信号。（`docs/specs/01-basic.md:1380`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=高度; 值=6（`docs/specs/01-basic.md:1386`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/01-basic.md:1387`）
+- 项=最小宽度; 值=100（`docs/specs/01-basic.md:1388`）
+- 项=分段模式的段间距; 值=2（`docs/specs/01-basic.md:1389`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=确定; 说明=按百分比填充; 用在哪=上传、下载（`docs/specs/01-basic.md:1395`）
+- 变体=分段; 说明=用 n 段表示"n 项里完成几项"; 用在哪=家务完成度（比百分比直观）（`docs/specs/01-basic.md:1396`）
+- 变体=不确定; 说明=一段来回移动，不表达进度; 用在哪=等待时间未知（`docs/specs/01-basic.md:1397`）
+- 变体=完成; 说明=填满 + `status.success` 底色; 用在哪=流程结束（`status.success` = 浅 #2A7F5C / 深 #7FD3B4）（`docs/specs/01-basic.md:1398`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +71,9 @@ Contract: `contracts/WDProgressBar.yaml` (sha256 `bfd7dbda63e9896e68a5124be9347d
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 进度条, 线性进度, progress bar
 - combinesWith: none
-- pageRegions: none
+- pageRegions: collection-item, card
 
 ## 平台说明
 

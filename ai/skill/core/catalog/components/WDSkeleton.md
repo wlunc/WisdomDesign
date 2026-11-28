@@ -7,7 +7,7 @@
 
 Component: `WDSkeleton`
 Spec: `docs/specs/02-advanced.md` (number 31)
-Contract: `contracts/WDSkeleton.yaml` (sha256 `922227563e2566c6761a954b1130b9b58f547b780357ff97db96166a35bfcff9`)
+Contract: `contracts-digest.json#WDSkeleton` (source `contracts/WDSkeleton.yaml`, sha256 `922227563e2566c6761a954b1130b9b58f547b780357ff97db96166a35bfcff9`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,29 @@ Contract: `contracts/WDSkeleton.yaml` (sha256 `922227563e2566c6761a954b1130b9b58
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:1055,1057,1059,1060,1084,1086,1094,1096,1097,1112,1114,1115,1116,1117`
+- `docs/specs/02-advanced.md:1055,1057,1059,1060,1062,1064,1065,1067,1071,1072,1073,1074,1076,1080,1081,1082,1084,1086,1094,1096,1097,1112,1114,1115,1116,1117`
+
+## 设计者摘要
+
+灰色块 + 微光扫过。骨架的**形状必须和真实内容一致**——形状不一致的骨架比没有骨架更糟，。
+
+## 解剖（来自正式规格 §2）
+
+- 灰色块 + 微光扫过。骨架的**形状必须和真实内容一致**——形状不一致的骨架比没有骨架更糟，（`docs/specs/02-advanced.md:1064`）
+- 因为它会误导用户对内容的预期。（`docs/specs/02-advanced.md:1065`）
+
+## 尺寸（来自正式规格 §3）
+
+- 形态=文本行; 规格=高 11，圆角 6，宽度按真实文本比例（70% / 45%）（`docs/specs/02-advanced.md:1071`）
+- 形态=列表行; 规格=与 `WDListRow` 等高（44 / 60 / 76）（`docs/specs/02-advanced.md:1072`）
+- 形态=卡片; 规格=与真实卡片同尺寸、同圆角、同内边距（`docs/specs/02-advanced.md:1073`）
+- 形态=头像; 规格=圆形，直径同真实头像（`docs/specs/02-advanced.md:1074`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=文本; 说明=3–4 行文本块（`docs/specs/02-advanced.md:1080`）
+- 变体=列表; 说明=5–6 行列表项，前导圆形 + 两行文本（`docs/specs/02-advanced.md:1081`）
+- 变体=卡片; 说明=卡片轮廓 + 卡内两行 + 一个按钮宽度的块（`docs/specs/02-advanced.md:1082`）
 
 ## 状态（来自正式规格 §5）
 
@@ -44,9 +66,9 @@ Contract: `contracts/WDSkeleton.yaml` (sha256 `922227563e2566c6761a954b1130b9b58
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 骨架屏, 占位, 加载占位, skeleton
 - combinesWith: none
-- pageRegions: none
+- pageRegions: page-body, collection
 
 ## 平台说明
 

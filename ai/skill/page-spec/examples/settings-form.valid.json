@@ -1,15 +1,14 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "profile": "cross-platform",
   "page": {
     "id": "settings-form",
-    "intent": "编辑家庭与通知设置",
-    "navigation": "stackRoot",
+    "intent": "修改家庭与个人偏好设置",
+    "navigation": "detail",
     "contentPattern": "form",
     "primaryAction": "saveSettings",
     "sourceRefs": [
-      "docs/specs/02-advanced.md#WDFormRow",
-      "docs/09-layout.md#1.2"
+      "docs/specs/03-patterns.md#R2"
     ]
   },
   "states": [
@@ -18,61 +17,52 @@
       "kind": "content"
     },
     {
-      "id": "loading",
-      "kind": "loading"
-    },
-    {
-      "id": "error",
-      "kind": "error"
-    },
-    {
-      "id": "success",
-      "kind": "success"
+      "id": "disabled",
+      "kind": "disabled",
+      "note": "没有可保存的改动时主操作禁用"
     }
   ],
   "regions": [
     {
-      "id": "settings",
+      "id": "nav",
+      "kind": "navigation",
+      "component": "WDNavigationBar",
+      "intent": "返回上一级"
+    },
+    {
+      "id": "fields",
       "kind": "form",
-      "component": "WDFormRow",
-      "intent": "逐项设置"
+      "component": "WDListSection",
+      "intent": "分组设置项"
     },
     {
       "id": "save",
       "kind": "actions",
       "component": "WDButton",
+      "variant": "filled",
+      "action": "saveSettings",
       "intent": "保存设置"
+    },
+    {
+      "id": "cancel",
+      "kind": "actions",
+      "component": "WDButton",
+      "variant": "plain",
+      "action": "discardSettings",
+      "intent": "放弃修改（次级操作）"
     }
   ],
   "accessibility": {
     "title": "设置",
     "readingOrder": "visual-order",
-    "focusReturn": "返回设置入口"
-  },
-  "acceptance": [
-    "键盘弹出后聚焦字段仍可见",
-    "保存失败时保留已输入内容",
-    "大字体下标签与控件不重叠",
-    "系统返回前提示未保存修改"
-  ],
-  "overrides": {
-    "density": "comfortable",
-    "textScalingRequired": true,
-    "colorSchemes": [
-      "light",
-      "dark"
+    "focusReturn": "返回上一级后焦点回到设置入口",
+    "announcements": [
+      "设置已保存"
     ]
   },
-  "platforms": [
-    {
-      "platform": "ios",
-      "status": "not-verified",
-      "reason": "黄金页面尚未执行 xcodebuild 与 UI 矩阵"
-    },
-    {
-      "platform": "android",
-      "status": "not-verified",
-      "reason": "黄金页面尚未执行 Gradle 与 UI 矩阵"
-    }
+  "acceptance": [
+    "保存后返回上一级并提示",
+    "无改动时保存禁用",
+    "两个按钮的层级与 filled/plain 一致"
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDCheckbox",
+  "searchAliases": [
+    "复选框",
+    "勾选框",
+    "多选",
+    "完成任务",
+    "checkbox"
+  ],
+  "combinesWith": [
+    "WDListRow"
+  ],
+  "pageRegions": [
+    "collection-item",
+    "form"
+  ]
+}

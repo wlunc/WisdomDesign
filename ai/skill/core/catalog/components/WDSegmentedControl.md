@@ -7,7 +7,7 @@
 
 Component: `WDSegmentedControl`
 Spec: `docs/specs/02-advanced.md` (number 21)
-Contract: `contracts/WDSegmentedControl.yaml` (sha256 `9cfe3787e7536810c2ef177e47a5cc60169949bb3948c0c8faf88e3a6666839b`)
+Contract: `contracts-digest.json#WDSegmentedControl` (source `contracts/WDSegmentedControl.yaml`, sha256 `9cfe3787e7536810c2ef177e47a5cc60169949bb3948c0c8faf88e3a6666839b`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,31 @@ Contract: `contracts/WDSegmentedControl.yaml` (sha256 `9cfe3787e7536810c2ef177e4
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:13,15,17,18,20,49,53,54,55,56,64,66,67,68,89,91,92,93,94,95`
+- `docs/specs/02-advanced.md:13,15,17,18,20,22,26,27,28,30,34,35,36,37,38,40,44,45,47,49,53,54,55,56,64,66,67,68,89,91,92,93,94,95`
+
+## 设计者摘要
+
+容器高 38（内容 32 + 上下内边距 3）；单段最小宽 56；段水平内距 14；字号 13 · 500（选中 600）；圆角 `radius.full`。
+
+## 解剖（来自正式规格 §2）
+
+- 段=容器; 说明=胶囊，内边距 3，底 `surface.card` 或玻璃（`surface.card` = 浅 #FFFFFFF0 / 深 #132836D1）（`docs/specs/02-advanced.md:26`）
+- 段=选中指示块; 说明=圆角胶囊，随选中项滑动；底色 `surface.card-solid` + `elevation.1`（`surface.card-solid` = 浅 #FFFFFF / 深 #0C212D；`elevation.1` = 0 1 2 #0A3C640A ; 0 6 16 #0A3C640F）（`docs/specs/02-advanced.md:27`）
+- 段=各段; 说明=等宽，文字居中，竖向居中（`docs/specs/02-advanced.md:28`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=容器高; 值=38（内容 32 + 上下内边距 3）（`docs/specs/02-advanced.md:34`）
+- 项=单段最小宽; 值=56（`docs/specs/02-advanced.md:35`）
+- 项=段水平内距; 值=14（`docs/specs/02-advanced.md:36`）
+- 项=字号; 值=13 · 500（选中 600）（`docs/specs/02-advanced.md:37`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/02-advanced.md:38`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=玻璃; 容器底=`surface.glass` + `border.hairline`; 用在哪=浮在内容或图片之上（`surface.glass` = 浅 #FFFFFFB3 / 深 #0C202C9E；`border.hairline` = 浅 #0A1B2414 / 深 #FFFFFF1A）（`docs/specs/02-advanced.md:44`）
+- 变体=实底; 容器底=`fill.field`; 用在哪=页面内常规位置（`fill.field` = 浅 #0A1B240D / 深 #FFFFFF12）（`docs/specs/02-advanced.md:45`）
+- 2–5 段均可；段宽等分，不按文字长度分配。（`docs/specs/02-advanced.md:47`）
 
 ## 状态（来自正式规格 §5）
 
@@ -49,9 +73,9 @@ Contract: `contracts/WDSegmentedControl.yaml` (sha256 `9cfe3787e7536810c2ef177e4
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 分段控件, 分段, 视图切换, segmented control
+- combinesWith: WDChip
+- pageRegions: collection-header, toolbar
 
 ## 平台说明
 

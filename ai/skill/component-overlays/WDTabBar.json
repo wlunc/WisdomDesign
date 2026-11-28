@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDTabBar",
+  "searchAliases": [
+    "标签栏",
+    "底部导航",
+    "底部标签",
+    "tab bar"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "tab"
+  ]
+}

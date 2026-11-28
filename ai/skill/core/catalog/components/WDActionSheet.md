@@ -7,7 +7,7 @@
 
 Component: `WDActionSheet`
 Spec: `docs/specs/02-advanced.md` (number 27)
-Contract: `contracts/WDActionSheet.yaml` (sha256 `9e21e96912a4859c39e782efe163e6693ae0b863698289ddba7715143bc49ab1`)
+Contract: `contracts-digest.json#WDActionSheet` (source `contracts/WDActionSheet.yaml`, sha256 `9e21e96912a4859c39e782efe163e6693ae0b863698289ddba7715143bc49ab1`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,33 @@ Contract: `contracts/WDActionSheet.yaml` (sha256 `9e21e96912a4859c39e782efe163e6
 
 ## 来源追溯
 
-- `docs/specs/02-advanced.md:653,655,657,658,689,693,694,695,696,704,706,707,708,723,725,726,727,728`
+- `docs/specs/02-advanced.md:653,655,657,658,660,664,665,666,668,670,674,675,676,677,678,679,681,685,686,687,689,693,694,695,696,704,706,707,708,723,725,726,727,728`
+
+## 设计者摘要
+
+操作行高 44；行水平内距 16；取消胶囊高 48；与安全区间距 `space.3`（8）。
+
+## 解剖（来自正式规格 §2）
+
+- 段=遮罩; 说明=半透明，点击关闭（`docs/specs/02-advanced.md:664`）
+- 段=操作列表; 说明=纵向，每项 44 高，图标可选（`docs/specs/02-advanced.md:665`）
+- 段=取消; 说明=**独立的胶囊**，与操作列表分离，固定在最下（`docs/specs/02-advanced.md:666`）
+- 取消按钮之所以独立，是为了让"取消"永远不会被误认为另一个操作。（`docs/specs/02-advanced.md:668`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=操作行高; 值=44（`docs/specs/02-advanced.md:674`）
+- 项=行水平内距; 值=16（`docs/specs/02-advanced.md:675`）
+- 项=列表圆角; 值=`radius.lg` 18（`radius.lg` = 18）（`docs/specs/02-advanced.md:676`）
+- 项=取消胶囊高; 值=48（`docs/specs/02-advanced.md:677`）
+- 项=与安全区间距; 值=`space.3`（8）（`docs/specs/02-advanced.md:678`）
+- 项=操作列表与取消的间距; 值=`space.3`（8）（`docs/specs/02-advanced.md:679`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=全部为普通操作（`docs/specs/02-advanced.md:685`）
+- 变体=含破坏性; 说明=破坏性操作单独成组，用 `status.danger`（`status.danger` = 浅 #B8564D / 深 #EDA79E）（`docs/specs/02-advanced.md:686`）
+- 变体=带图标; 说明=每项前置 20pt 图标（`docs/specs/02-advanced.md:687`）
 
 ## 状态（来自正式规格 §5）
 
@@ -48,9 +74,9 @@ Contract: `contracts/WDActionSheet.yaml` (sha256 `9e21e96912a4859c39e782efe163e6
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 操作表, 操作菜单, 更多操作, 长按菜单, action sheet
 - combinesWith: none
-- pageRegions: none
+- pageRegions: overlay, collection-item
 
 ## 平台说明
 

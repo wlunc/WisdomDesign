@@ -7,7 +7,7 @@
 
 Component: `WDCheckbox`
 Spec: `docs/specs/01-basic.md` (number 6)
-Contract: `contracts/WDCheckbox.yaml` (sha256 `08d51fd1b73bd7f13f5e0c9dc95dfd69b168e2eea19d551e0f5bbb94b712e37e`)
+Contract: `contracts-digest.json#WDCheckbox` (source `contracts/WDCheckbox.yaml`, sha256 `08d51fd1b73bd7f13f5e0c9dc95dfd69b168e2eea19d551e0f5bbb94b712e37e`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,30 @@ Contract: `contracts/WDCheckbox.yaml` (sha256 `08d51fd1b73bd7f13f5e0c9dc95dfd69b
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:547,549,551,552,581,585,586,587,588,589,590,598,600,601,602,622,624,625,626,627,628,629`
+- `docs/specs/01-basic.md:547,549,551,552,554,556,560,561,562,564,568,569,571,573,577,578,579,581,585,586,587,588,589,590,598,600,601,602,622,624,625,626,627,628,629`
+
+## 设计者摘要
+
+圆角 9。
+
+## 解剖（来自正式规格 §2）
+
+- 方框 + 勾 + 光晕三段。勾是**描边画出来的**而不是图标，这样才能做描边动画。（`docs/specs/01-basic.md:556`）
+- 段=方框; 说明=26×26，圆角 `radius.checkbox` 9（约 35%，接近 squircle，不用正圆）（`radius.checkbox` = 9）（`docs/specs/01-basic.md:560`）
+- 段=勾; 说明=白色描边 2.2pt，`rotate(42deg)`（`docs/specs/01-basic.md:561`）
+- 段=光晕; 说明=选中瞬间向外扩散的径向光晕，只播一次（`docs/specs/01-basic.md:562`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=标准; 方框=`size.checkbox` 26; 圆角=9; 标签=`type.subheadline` 15（`size.checkbox` = 26；`type.subheadline` = 15/20 · 400）（`docs/specs/01-basic.md:568`）
+- 档=紧凑; 方框=22; 圆角=7; 标签=`type.footnote` 13（`type.footnote` = 13/18 · 400）（`docs/specs/01-basic.md:569`）
+- 方框与标签间距 `space.3`（8）。热区 ≥ 44×44。（`docs/specs/01-basic.md:571`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=方框 + 标签（`docs/specs/01-basic.md:577`）
+- 变体=无标签; 说明=只用于表头全选，必须有独立的无障碍标签（`docs/specs/01-basic.md:578`）
+- 变体=任务行; 说明=与 `WDListRow` 组合，勾选后标题加删除线并降到 `text.tertiary`（`text.tertiary` = 浅 #4C616D / 深 #839EB0）（`docs/specs/01-basic.md:579`）
 
 ## 状态（来自正式规格 §5）
 
@@ -52,9 +75,9 @@ Contract: `contracts/WDCheckbox.yaml` (sha256 `08d51fd1b73bd7f13f5e0c9dc95dfd69b
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
-- combinesWith: none
-- pageRegions: none
+- searchAliases: 复选框, 勾选框, 多选, 完成任务, checkbox
+- combinesWith: WDListRow
+- pageRegions: collection-item, form
 
 ## 平台说明
 

@@ -7,7 +7,7 @@
 
 Component: `WDSearchField`
 Spec: `docs/specs/01-basic.md` (number 4)
-Contract: `contracts/WDSearchField.yaml` (sha256 `f7faf3335575a4bd67f309a41ce93f4d450225ddd8486e84ab1af1fe29c33198`)
+Contract: `contracts-digest.json#WDSearchField` (source `contracts/WDSearchField.yaml`, sha256 `f7faf3335575a4bd67f309a41ce93f4d450225ddd8486e84ab1af1fe29c33198`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,32 @@ Contract: `contracts/WDSearchField.yaml` (sha256 `f7faf3335575a4bd67f309a41ce93f
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:336,338,340,341,370,374,375,376,377,378,386,388,389,390,411,413,414,415,416,417`
+- `docs/specs/01-basic.md:336,338,340,341,343,347,348,349,350,351,353,357,358,359,360,361,363,367,368,370,374,375,376,377,378,386,388,389,390,411,413,414,415,416,417`
+
+## 设计者摘要
+
+高度 **46**（与 `WDTextField` 一致，同一页面里两者高度必须相同）；水平内距 12；前导图标与输入区间距 `space.3` 8；容器与取消按钮间距 `space.4` 12；圆角 `radius.full`；必有 容器 / 前导图标 / 输入区。
+
+## 解剖（来自正式规格 §2）
+
+- 段=容器; 是否必有=必有; 说明=胶囊底，与输入框同高（`docs/specs/01-basic.md:347`）
+- 段=前导图标; 是否必有=必有; 说明=搜索图标 `size.icon.md`，色 `text.tertiary`，位置固定不随状态变动（`size.icon.md` = 20；`text.tertiary` = 浅 #4C616D / 深 #839EB0）（`docs/specs/01-basic.md:348`）
+- 段=输入区; 是否必有=必有; 说明=`type.body` 17（`type.body` = 17/22 · 400）（`docs/specs/01-basic.md:349`）
+- 段=清除按钮; 是否必有=条件; 说明=有值时出现，清空内容但保持聚焦（`docs/specs/01-basic.md:350`）
+- 段=取消按钮; 是否必有=条件; 说明=聚焦时出现在**容器外**右侧，不挤占容器内空间（`docs/specs/01-basic.md:351`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=高度; 值=**46**（与 `WDTextField` 一致，同一页面里两者高度必须相同）（`docs/specs/01-basic.md:357`）
+- 项=圆角; 值=`radius.full`（`radius.full` = 999）（`docs/specs/01-basic.md:358`）
+- 项=水平内距; 值=12（`docs/specs/01-basic.md:359`）
+- 项=前导图标与输入区间距; 值=`space.3` 8（`space.3` = 8）（`docs/specs/01-basic.md:360`）
+- 项=容器与取消按钮间距; 值=`space.4` 12（`space.4` = 12）（`docs/specs/01-basic.md:361`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=标准; 说明=空态 → 有值 → 聚焦三态（`docs/specs/01-basic.md:367`）
+- 变体=带取消; 说明=聚焦时展开取消按钮；不聚焦时不占位（`docs/specs/01-basic.md:368`）
 
 ## 状态（来自正式规格 §5）
 
@@ -50,7 +75,7 @@ Contract: `contracts/WDSearchField.yaml` (sha256 `f7faf3335575a4bd67f309a41ce93f
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: 搜索框, 查询输入, filter input
+- searchAliases: 搜索框, 查询输入, 搜索, filter input, search
 - combinesWith: WDChip, WDSegmentedControl
 - pageRegions: toolbar, collection-header
 

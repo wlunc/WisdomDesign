@@ -598,6 +598,69 @@ function assertContrast(t, schemes) {
       );
     }
   }
+  assertGradientInkContrast(t, schemes);
+}
+
+/*
+ * 渐变面上的文字对比度断言（复核补口，2026-11-28）。
+ *
+ * 原先 assertContrast 只检查 4 个文字槽 × 5 个不透明面，渐变被整体排除：渐变不是单一颜色，
+ * 而表面集合是手写列表。结果是 text.on-fill 在深色 gradient.fill 起点上只有 4.07:1
+ * （浅色端 5.40–6.92 才是规格 §4 写的 5.4–6.9），没有任何断言覆盖。
+ *
+ * 口径：渐变两端各取最不利值。Button 标签是 17pt/600（WCAG 大字，3:1 即达标），但规格 §10
+ * 自订正文下限 4.5:1，内部断言不得比自订下限更松。
+ */
+function readSemanticLeaf(t, scheme, dotted) {
+  let node = t.semantic[scheme];
+  for (const part of String(dotted).split('.')) {
+    if (node === null || typeof node !== 'object') return null;
+    node = node[part];
+  }
+  if (!node || typeof node !== 'object' || node.$value === undefined) return null;
+  return node.$value;
+}
+
+// 已登记、待设计侧裁定的例外。**只能放已知且被跟踪的缺陷**，不是放宽口径的后门：
+// 每一项都必须有一条对应的待办，修掉后从本表删除，断言随之收紧。
+// 目前唯一一条：深色 filled 按钮的 text.on-fill #DCEEF4 在 gradient.fill 起点 #1677B3 上
+// 仅 4.07:1。Button 标签 17pt/600 属 WCAG 大字（AA 3:1 达标），但低于规格 §10 自订的 4.5:1。
+// 两个候选修法（改字色为 text.on-dark，或压深渐变起点）都会改变已发布的视觉，需设计侧裁决，
+// 因此这里记录而非静默通过：断言依然跑，只是按大字口径 3:1 判并把违约打印出来。
+const KNOWN_GRADIENT_EXCEPTIONS = new Set(['dark text.on-fill']);
+const GRADIENT_WCAG_LARGE_FLOOR = 3.0;
+
+function assertGradientInkContrast(t, schemes) {
+  const pairs = [
+    { gradient: 'gradient.fill', ink: 'text.on-fill', label: 'filled 按钮' },
+    { gradient: 'gradient.surface', ink: 'text.on-soft', label: 'tonal 按钮' },
+  ];
+  const GRADIENT_FLOOR = 4.5;
+  for (const scheme of schemes) {
+    for (const pair of pairs) {
+      const gradient = readSemanticLeaf(t, scheme.name, pair.gradient);
+      if (gradient === null) continue;
+      const stops = String(gradient).match(/#[0-9A-Fa-f]{6}/g) || [];
+      if (stops.length === 0) continue;
+      const ink = readSemanticLeaf(t, scheme.name, pair.ink);
+      if (ink === null) continue;
+      let worst = { ratio: Infinity, stop: null };
+      for (const stop of stops) {
+        const ratio = contrast(ink, stop);
+        if (ratio < worst.ratio) worst = { ratio, stop };
+      }
+      const floor = KNOWN_GRADIENT_EXCEPTIONS.has(scheme.name + ' ' + pair.ink) ? GRADIENT_WCAG_LARGE_FLOOR : GRADIENT_FLOOR;
+      if (worst.ratio < floor) {
+        throw new Error(
+          `渐变文字对比度失败：${scheme.name} · ${pair.label} 的 ${pair.ink} = ${ink} 在 ${pair.gradient} 的 ${worst.stop} 上仅 ` +
+            `${worst.ratio.toFixed(2)}:1，低于 ${floor}:1（规格 §10 自订正文下限；Button 17pt/600 虽属 WCAG 大字，` +
+            `但内部口径不得比自订下限更松）`,
+        );
+      }
+      const note = floor < GRADIENT_FLOOR ? `；⚠ 低于自订 ${GRADIENT_FLOOR}:1，已登记为待裁定缺陷` : '';
+      console.log(`✓ 渐变字 ${scheme.name}·${pair.label} ${worst.ratio.toFixed(2)}:1（最不利 ${worst.stop}）${note}`);
+    }
+  }
 }
 
 // ---------------------------------------------------------------- 产物骨架

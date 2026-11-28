@@ -7,7 +7,7 @@
 
 Component: `WDIcon`
 Spec: `docs/specs/01-basic.md` (number 20)
-Contract: `contracts/WDIcon.yaml` (sha256 `4ef8481cc9f267a6468668a455ef6b5f99e7b828b5e69930a7e160a9dfb7f634`)
+Contract: `contracts-digest.json#WDIcon` (source `contracts/WDIcon.yaml`, sha256 `4ef8481cc9f267a6468668a455ef6b5f99e7b828b5e69930a7e160a9dfb7f634`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,32 @@ Contract: `contracts/WDIcon.yaml` (sha256 `4ef8481cc9f267a6468668a455ef6b5f99e7b
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1894,1896,1898,1899,1928,1930,1931,1939,1943,1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1955,1966,1968,1969,1970,1971`
+- `docs/specs/01-basic.md:1894,1896,1898,1899,1901,1903,1907,1908,1909,1910,1912,1916,1917,1918,1919,1921,1923,1925,1926,1928,1930,1931,1939,1943,1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1955,1966,1968,1969,1970,1971`
+
+## 设计者摘要
+
+图标 + 可选底座两段。
+
+## 解剖（来自正式规格 §2）
+
+- 图标 + 可选底座两段。（`docs/specs/01-basic.md:1903`）
+- 底座=无; 尺寸=—; 圆角=—; 背景=—; 图标色=`currentColor`（`docs/specs/01-basic.md:1907`）
+- 底座=浅底座（默认）; 尺寸=34×34; 圆角=`radius.sm`; 背景=`gradient.surface`; 图标色=`text.on-soft`（`radius.sm` = 10；`gradient.surface` = 浅 linear-gradient(135deg,#B0D5DF 0%,#7EC4CF 100%) / 深 linear-gradient(135deg,#123449 0%,#0F4055 100%)；`text.on-soft` = 浅 #123F5C / 深 #B0D5DF）（`docs/specs/01-basic.md:1908`）
+- 底座=深底座; 尺寸=34×34; 圆角=`radius.sm`; 背景=`gradient.mid`; 图标色=白（`radius.sm` = 10；`gradient.mid` = linear-gradient(135deg,#4FB0C8 0%,#1685A9 100%)）（`docs/specs/01-basic.md:1909`）
+- 底座=大底座; 尺寸=40×40; 圆角=`radius.lg`; 背景=`gradient.surface`; 图标色=`text.on-soft`（`radius.lg` = 18；`gradient.surface` = 浅 linear-gradient(135deg,#B0D5DF 0%,#7EC4CF 100%) / 深 linear-gradient(135deg,#123449 0%,#0F4055 100%)；`text.on-soft` = 浅 #123F5C / 深 #B0D5DF）（`docs/specs/01-basic.md:1910`）
+
+## 尺寸（来自正式规格 §3）
+
+- 档=`sm`; 尺寸=16; 用在哪=行内文字旁、尾部（`docs/specs/01-basic.md:1916`）
+- 档=`md`; 尺寸=20; 用在哪=表单前缀、列表（`docs/specs/01-basic.md:1917`）
+- 档=`lg`; 尺寸=24; 用在哪=导航栏、Tab 栏、工具栏（`docs/specs/01-basic.md:1918`）
+- 档=`xl`; 尺寸=28; 用在哪=强调、空状态（`docs/specs/01-basic.md:1919`）
+- 同一层级内不混用档位。描边粗细按尺寸匹配：24pt 图标线宽约 1.8–2。（`docs/specs/01-basic.md:1921`）
+
+## 变体（来自正式规格 §4）
+
+- 同一语义在两端各有一套：iOS 用 SF Symbols（优先 `.rounded` 变体），Android 用 Material Symbols Rounded。（`docs/specs/01-basic.md:1925`）
+- 两端靠**语义名称**对照，不逐像素对齐。（`docs/specs/01-basic.md:1926`）
 
 ## 状态（来自正式规格 §5）
 
@@ -55,9 +80,9 @@ Contract: `contracts/WDIcon.yaml` (sha256 `4ef8481cc9f267a6468668a455ef6b5f99e7b
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 图标, 图形符号, icon
 - combinesWith: none
-- pageRegions: none
+- pageRegions: toolbar, collection-item
 
 ## 平台说明
 

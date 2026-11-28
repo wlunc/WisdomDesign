@@ -7,7 +7,7 @@
 
 Component: `WDProgressRing`
 Spec: `docs/specs/01-basic.md` (number 16)
-Contract: `contracts/WDProgressRing.yaml` (sha256 `9df7760a1c90b040558955524391dc62486c1dc82fbe140c5a939db419639fc6`)
+Contract: `contracts-digest.json#WDProgressRing` (source `contracts/WDProgressRing.yaml`, sha256 `9df7760a1c90b040558955524391dc62486c1dc82fbe140c5a939db419639fc6`)
 
 ## 用途（来自正式规格 §1）
 
@@ -18,7 +18,28 @@ Contract: `contracts/WDProgressRing.yaml` (sha256 `9df7760a1c90b040558955524391d
 
 ## 来源追溯
 
-- `docs/specs/01-basic.md:1465,1467,1469,1470,1493,1497,1498,1499,1508,1510,1511,1512,1528,1530,1531,1532,1533`
+- `docs/specs/01-basic.md:1465,1467,1469,1470,1472,1474,1476,1480,1481,1482,1483,1485,1489,1490,1491,1493,1497,1498,1499,1508,1510,1511,1512,1528,1530,1531,1532,1533`
+
+## 设计者摘要
+
+直径 60（标准）/ 44（紧凑）；线宽 6（标准）/ 5（紧凑）；起点 12 点方向，顺时针；环内留白 直径 − 2 × 线宽。
+
+## 解剖（来自正式规格 §2）
+
+- 轨道环 + 进度弧 + 环内内容（数值或图标）。（`docs/specs/01-basic.md:1474`）
+
+## 尺寸（来自正式规格 §3）
+
+- 项=直径; 值=60（标准）/ 44（紧凑）（`docs/specs/01-basic.md:1480`）
+- 项=线宽; 值=6（标准）/ 5（紧凑）（`docs/specs/01-basic.md:1481`）
+- 项=起点; 值=12 点方向，顺时针（`docs/specs/01-basic.md:1482`）
+- 项=环内留白; 值=直径 − 2 × 线宽（`docs/specs/01-basic.md:1483`）
+
+## 变体（来自正式规格 §4）
+
+- 变体=百分比; 说明=环内显示"60%"（`docs/specs/01-basic.md:1489`）
+- 变体=计数; 说明=环内显示"3/5"，用于离散总量（`docs/specs/01-basic.md:1490`）
+- 变体=完成; 说明=环色换 `status.success`，环内显示对勾（`status.success` = 浅 #2A7F5C / 深 #7FD3B4）（`docs/specs/01-basic.md:1491`）
 
 ## 状态（来自正式规格 §5）
 
@@ -47,9 +68,9 @@ Contract: `contracts/WDProgressRing.yaml` (sha256 `9df7760a1c90b040558955524391d
 
 ## 检索与组合 overlay（不得覆盖真源）
 
-- searchAliases: none
+- searchAliases: 进度环, 环形进度, 圆环, progress ring
 - combinesWith: none
-- pageRegions: none
+- pageRegions: card, overview
 
 ## 平台说明
 

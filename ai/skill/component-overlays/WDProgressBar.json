@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDProgressBar",
+  "searchAliases": [
+    "进度条",
+    "线性进度",
+    "progress bar"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "collection-item",
+    "card"
+  ]
+}

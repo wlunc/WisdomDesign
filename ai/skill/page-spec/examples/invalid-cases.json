@@ -1,5 +1,5 @@
 {
-  "description": "M0 反例固定集。每个 case 必须按 expectedError.code 失败；M1 校验器应返回 code/jsonPath/message/suggestion。",
+  "description": "M0/M1 反例固定集。每个 case 必须按 expectedError.code 失败；M1 校验器应返回 code/jsonPath/message/suggestion。`semantic: true` 的用例由 runtime/validate-spec.js 判定（结构层检查器不实现语义规则，只由 schema-lite 校结构）。",
   "cases": [
     {
       "id": "unknown-component",
@@ -8,7 +8,7 @@
         "jsonPath": "/regions/0/component"
       },
       "spec": {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "page": {
           "id": "bad-component",
           "intent": "查看任务",
@@ -54,10 +54,11 @@
       "id": "collection-missing-empty",
       "expectedError": {
         "code": "COLLECTION_MISSING_EMPTY",
-        "jsonPath": "/states"
+        "jsonPath": "/states",
+        "semantic": true
       },
       "spec": {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "page": {
           "id": "missing-empty",
           "intent": "查看任务",
@@ -99,10 +100,11 @@
       "id": "no-primary-action",
       "expectedError": {
         "code": "NO_PRIMARY_ACTION",
-        "jsonPath": "/page/primaryAction"
+        "jsonPath": "/page/primaryAction",
+        "semantic": true
       },
       "spec": {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "page": {
           "id": "no-action",
           "intent": "查看任务",
@@ -150,7 +152,7 @@
         "jsonPath": "/page/unexpected"
       },
       "spec": {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "page": {
           "id": "extra",
           "intent": "查看任务",
@@ -200,7 +202,7 @@
         "jsonPath": "/regions/0/component"
       },
       "spec": {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "page": {
           "id": "leak",
           "intent": "查看任务",
@@ -290,6 +292,316 @@
           "列表可读"
         ]
       }
+    },
+    {
+      "id": "multiple-primary-actions-derived",
+      "expectedError": {
+        "code": "MULTIPLE_PRIMARY_ACTIONS",
+        "jsonPath": "/regions",
+        "semantic": true
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "two-filled",
+          "intent": "两个 filled 按钮",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doA"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "a",
+            "kind": "actions",
+            "component": "WDButton",
+            "variant": "filled",
+            "action": "doA"
+          },
+          {
+            "id": "b",
+            "kind": "actions",
+            "component": "WDButton",
+            "variant": "filled"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "两个 filled 变体 → 两个 primary；这正是原规则的意图，只是现在按 variant 判而不是按 kind 数。"
+    },
+    {
+      "id": "primary-action-not-connected",
+      "expectedError": {
+        "code": "PRIMARY_ACTION_NOT_CONNECTED",
+        "jsonPath": "/page/primaryAction",
+        "semantic": true
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "dangling",
+          "intent": "主操作悬空",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "deleteEverything"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "body",
+            "kind": "collection",
+            "component": "WDListSection"
+          },
+          {
+            "id": "actions",
+            "kind": "actions",
+            "component": "WDButton",
+            "variant": "filled",
+            "action": "createTask"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "actions 区存在但声明的是 createTask，而 page.primaryAction 是 deleteEverything —— 这是矛盾，不是隐式手势。原实现从不做这个交叉校验。"
+    },
+    {
+      "id": "navigation-conflict-tab-root",
+      "expectedError": {
+        "code": "NAVIGATION_CONFLICT",
+        "jsonPath": "/regions",
+        "semantic": true
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "tab-root-navbar",
+          "intent": "一级页带返回",
+          "navigation": "tabRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doThing"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "nav",
+            "kind": "navigation",
+            "component": "WDNavigationBar"
+          },
+          {
+            "id": "body",
+            "kind": "overview",
+            "component": "WDCard",
+            "action": "doThing"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "tabRoot + WDNavigationBar 是自相矛盾组合；规格 §1 明写一级页面没有返回。"
+    },
+    {
+      "id": "unknown-variant",
+      "expectedError": {
+        "code": "UNKNOWN_VARIANT",
+        "jsonPath": "/regions/1/variant",
+        "semantic": true
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "probe",
+          "intent": "检测",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doThing"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "body",
+            "kind": "overview",
+            "component": "WDCard"
+          },
+          {
+            "id": "cta",
+            "kind": "actions",
+            "component": "WDButton",
+            "variant": "loud",
+            "action": "doThing"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "variant 必须来自契约枚举；拼错是笔误，不是设计决定。"
+    },
+    {
+      "id": "unregistered-extension",
+      "expectedError": {
+        "code": "UNREGISTERED_EXTENSION",
+        "jsonPath": "/regions/1/extension/id",
+        "semantic": true
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "probe",
+          "intent": "检测",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doThing"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "body",
+            "kind": "overview",
+            "component": "WDCard"
+          },
+          {
+            "id": "state",
+            "kind": "actions",
+            "component": "WDSegmentedControl",
+            "extension": {
+              "id": "WDImaginaryThing",
+              "basedOn": "WDSegmentedControl"
+            },
+            "action": "doThing"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "扩展有受控通道：登记即可通过，未登记必须失败（而不是逼人编 ID 或改 kind）。"
+    },
+    {
+      "id": "retired-custom-kind",
+      "expectedError": {
+        "code": "INVALID_VALUE",
+        "jsonPath": "/regions/0/kind"
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "probe",
+          "intent": "检测",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doThing"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "body",
+            "kind": "custom",
+            "component": "WDCard",
+            "action": "doThing"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "kind:\"custom\" 在 1.1 删除：它曾是关闭语义规则的静默后门。"
+    },
+    {
+      "id": "free-text-item-pattern",
+      "expectedError": {
+        "code": "INVALID_VALUE",
+        "jsonPath": "/regions/1/itemPattern"
+      },
+      "spec": {
+        "schemaVersion": "1.1",
+        "page": {
+          "id": "probe",
+          "intent": "检测",
+          "navigation": "stackRoot",
+          "contentPattern": "overview",
+          "primaryAction": "doThing"
+        },
+        "states": [
+          {
+            "id": "content",
+            "kind": "content"
+          }
+        ],
+        "regions": [
+          {
+            "id": "body",
+            "kind": "overview",
+            "component": "WDCard"
+          },
+          {
+            "id": "items",
+            "kind": "collection",
+            "component": "WDListSection",
+            "itemPattern": "TotallyMadeUp",
+            "action": "doThing"
+          }
+        ],
+        "accessibility": {
+          "title": "检测"
+        },
+        "acceptance": [
+          "可验证"
+        ]
+      },
+      "note": "itemPattern 改为 canonical 枚举（R1–R5）；原正则只要求首字母大写，什么都放得进去。"
     }
   ]
 }

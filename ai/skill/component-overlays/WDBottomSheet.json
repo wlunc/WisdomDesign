@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDBottomSheet",
+  "searchAliases": [
+    "底部弹层",
+    "半屏面板",
+    "抽屉",
+    "bottom sheet"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "overlay"
+  ]
+}

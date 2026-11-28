@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDButton",
+  "searchAliases": [
+    "按钮",
+    "主按钮",
+    "操作按钮",
+    "提交按钮",
+    "button"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "actions",
+    "form",
+    "collection-item"
+  ]
+}

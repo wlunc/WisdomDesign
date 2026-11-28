@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "component": "WDSlider",
+  "searchAliases": [
+    "滑块",
+    "拖动条",
+    "拖动取值",
+    "slider"
+  ],
+  "combinesWith": [],
+  "pageRegions": [
+    "form"
+  ]
+}
